@@ -18,7 +18,7 @@ let iPhoneSE = CGSize(width: 320, height: 568)
 
 let iOSVersion = UIDevice.current.systemVersion
 let iPhoneDevice = UIDevice.current.modelName
-let appVersion = "1.0.0"
+let appVersion : Any! = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
 
 func makeTwoDigitString(_ number : Int) -> String {
     switch number {

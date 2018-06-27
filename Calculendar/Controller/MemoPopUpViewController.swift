@@ -1,13 +1,15 @@
 
 import UIKit
+import GoogleMobileAds
 
-class MemoPopUpViewController: UIViewController {
+class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
 
     @IBOutlet weak var memoBackView: UIView!
     @IBOutlet weak var memoTextView: UITextView!
     @IBOutlet weak var saveMemoButton: UIButton!
 
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var bannerView: GADBannerView!
     
     var delegate: PopupDelegate?
     
@@ -22,6 +24,26 @@ class MemoPopUpViewController: UIViewController {
         
         setShadow()
         
+        setAdMob()
+        
+    }
+    
+    func setAdMob() {
+        bannerView.adSize = kGADAdSizeBanner
+        bannerView.adUnitID = "ca-app-pub-5095960781666456/3159653643"
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        bannerView.delegate = self
+        
+        //  Device Type 에 따라 화면 조정
+        switch UIScreen.main.bounds.size {
+        case iPhoneX, iPhone8, iPhone8Plus:
+            bannerView.isHidden = true
+        case iPhoneSE:  //  iPhoneSE만 메모화면 광고넣기
+            bannerView.isHidden = false
+        default:
+            bannerView.isHidden = true
+        }
     }
     
     @IBAction func backgroundButtonAction(_ sender: Any) {

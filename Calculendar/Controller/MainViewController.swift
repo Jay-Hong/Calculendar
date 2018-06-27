@@ -23,6 +23,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     @IBOutlet weak var sideMenuBackView: UIView!
     @IBOutlet weak var sideMenuIcon: UIImageView!
     @IBOutlet weak var sideMenuLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var versionLabel: UILabel!
     
     var pageVC = UIPageViewController()
     
@@ -63,7 +64,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
 
     func setAdMob() {
         bannerView.adSize = kGADAdSizeBanner
-        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        bannerView.adUnitID = "ca-app-pub-5095960781666456/5274670381"
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
         bannerView.delegate = self
@@ -77,11 +78,18 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             topBarViewHeightConstraint.constant = 60
             bannerBackViewHeightConstraint.constant = 0
             bannerBackView.isHidden = true
-            print("\niPhone SE Detected\n")
+//            print("\niPhone SE Detected\n")
             
+//        case iPhone8Plus, iPhone8:
+//            topBarViewHeightConstraint.constant = 70
+//            bannerBackViewHeightConstraint.constant = 0
+//            bannerBackView.isHidden = true
+        
         case iPhoneX:   //  Top Bar 80으로 늘려주기
             topBarViewHeightConstraint.constant = 80
-            print("\niPhoneX Detected\n")
+//            bannerBackViewHeightConstraint.constant = 0
+//            bannerBackView.isHidden = true
+//            print("\niPhoneX Detected\n")
             
         default: break
         }
@@ -107,6 +115,9 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         displayMonthlyUnitOfWork()
         displayDaylyPay()
         displayMonthlySalaly()
+        
+        //  SideMenu 하단 Version 출력
+        versionLabel.text = "v\(appVersion!)"
     }
     
     func setSideMenu() {
@@ -143,16 +154,14 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         nextYear = calendar.component(.year, from: currentDate)
         nextMonth = calendar.component(.month, from: currentDate)
         nextDay = (nextYear == toYear && nextMonth == toMonth) ? toDay : 1
-        print("\(nextYear)월 \(nextMonth)년 달력 방향 터치")
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         
         let calendarVC = previousViewControllers[0] as! CalendarViewController
         let currentDate = calendarVC.date
-        let year = calendar.component(.year, from: currentDate)
+//        let year = calendar.component(.year, from: currentDate)
         let month = calendar.component(.month, from: currentDate)
-        print("이전꺼는 \(year)월 \(month)년 달력")
         
         if month != nextMonth && completed {
             mainYearMonthButton.setTitle("\(nextYear)년 \(nextMonth)월", for: .normal)
@@ -232,7 +241,6 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             let popup = segue.destination as! PayPopUpViewController
             popup.delegate = self
             popup.selectedMonth = 0
-            print("\ntoBasePayPopUpViewControllerSegue\n")
         }
     }
     
@@ -397,6 +405,7 @@ extension MainViewController: PopupDelegate {
         let basePayTemp = basePay == "" ? "0" : basePay
         UserDefaults.standard.set(basePayTemp, forKey: "basePay")
         sideMenuLeadingConstraint.constant = -250
+        UIView.animate(withDuration: 0.3, animations: {self.view.layoutIfNeeded()})
         sideMenuBackButton.isHidden = true
         bannerView.isHidden = false
         displayDaylyPay()
@@ -503,7 +512,6 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         switch indexPath.row {
             
         case 0:
-//            cell.contentLabel.textAlignment = .center
             cell.contentLabel.text = strMonthlyUnitOfWrk
             cell.descriptionLabel.text = "\(selectedMonth)월 공수"
             cell.unitLabel.text = "공수"
@@ -538,11 +546,11 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
 extension MainViewController: MFMailComposeViewControllerDelegate {
     
     @IBAction func setBasePayButtonAction(_ sender: UIButton) {
-        print("\nsetBasePayButtonAction\n")
+//        print("\nsetBasePayButtonAction\n")
     }
     
     @IBAction func openDescriptionPage(_ sender: UIButton) {
-        print("\nopenDescriptionPage\n")
+//        print("\nopenDescriptionPage\n")
     }
     
     @IBAction func sendMailButtonAction(_ sender: UIButton) {
@@ -559,7 +567,7 @@ extension MainViewController: MFMailComposeViewControllerDelegate {
     
     func configureMailController() -> MFMailComposeViewController {
         let messageBody = "\n\n\n\n\n\n\n\n\n\niOS version: \(iOSVersion)"
-            + "\nApp version : \(appVersion)\nDevice type: \(iPhoneDevice)"
+            + "\nApp version : \(appVersion!)\nDevice type: \(iPhoneDevice)"
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self
         mailComposerVC.setToRecipients(["hjpyooo@gmail.com"])
