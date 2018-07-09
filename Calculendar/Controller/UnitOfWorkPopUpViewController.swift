@@ -58,7 +58,7 @@ class UnitOfWorkPopUpViewController: UIViewController, GADBannerViewDelegate {
         }
         strNumber = strNumber == "" ? "0" : strNumber
         numberDisplay()
-        descriptionLabel.text = "\(selectedMonth)월 \(selectedDay)일 공수"
+        descriptionLabel.text = "\(selectedMonth)월 \(selectedDay)일"
     }
     
     func numberDisplay() {

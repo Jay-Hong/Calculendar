@@ -85,30 +85,49 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                     let numUnitOfWork = monthlyItemArray[itemArrayIndex].numUnitOfWork
                     switch numUnitOfWork {
                     case 0:
-                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.6312795164, green: 0.6869744353, blue: 0.699911484, alpha: 1)
-                    case 0.0001 ... 0.9999:
-                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.494656867, green: 0.6382678452, blue: 1, alpha: 1)
-                    case 1 ... 1.4999:
-                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 1, green: 0.805794555, blue: 0.2924747302, alpha: 1)
-                    case 1.5 ... 1.9999:
-                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.8951854988, green: 0.5099442633, blue: 0.8664344656, alpha: 1)
-                    case 2 ... 2.9999:
-                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 1, green: 0.5480514099, blue: 0.443981049, alpha: 1)
-                    case 3 ... 3.9999:
-                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.3594583542, green: 0.8026477833, blue: 0.2852157565, alpha: 1)
-                    case 4 ... 4.9999:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.631372549, green: 0.6869744353, blue: 0.699911484, alpha: 1)
+                    case 0.0001 ..< 1:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.3800676739, green: 0.5721034273, blue: 1, alpha: 1)
+                    case 1 ..< 1.5:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.1841003787, green: 0.7484605911, blue: 0.06411089568, alpha: 1)
+                    case 1.5 ..< 2:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.977601601, green: 0.7735045688, blue: 0.1866027329, alpha: 1)
+                    case 2 ..< 3:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 1, green: 0.4626982859, blue: 0.3224007863, alpha: 1)
+                    case 3 ..< 4:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.8951854988, green: 0.4097951526, blue: 0.834882776, alpha: 1)
+                    case 4 ..< 5:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.1601935674, green: 0.4833306365, blue: 1, alpha: 1)
-                    case 5 ... 5.9999:
+                    case 5 ..< 6:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.9470828202, green: 0.7243243667, blue: 0.006854730531, alpha: 1)
-                    case 6 ... 6.9999:
+                    case 6 ..< 7:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.8951854988, green: 0.1315182108, blue: 0.8058782186, alpha: 1)
-                    case 7 ... 7.9999:
+                    case 7 ..< 8:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 1, green: 0.2863476879, blue: 0.06880125082, alpha: 1)
-                    case 8 ... 8.9999:
-                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.098727484, green: 0.8026477833, blue: 0, alpha: 1)
+                    case 8 ..< 9:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.1841003787, green: 0.7484605911, blue: 0.06411089568, alpha: 1)
+                    case 9 ..< 10:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.977601601, green: 0.7735045688, blue: 0.1866027329, alpha: 1)
+                    case 10 ..< 11:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.977601601, green: 0.7735045688, blue: 0.1866027329, alpha: 1)
+                    case 11 ..< 12:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 1, green: 0.4626982859, blue: 0.3224007863, alpha: 1)
+                    case 12 ..< 13:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.8951854988, green: 0.4097951526, blue: 0.834882776, alpha: 1)
+                    case 13 ..< 14:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.8951854988, green: 0.2140718176, blue: 0.7878490385, alpha: 1)
+                    case 14 ..< 15:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 1, green: 0.3743945629, blue: 0.1582283342, alpha: 1)
+                    case 15 ..< 16:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 1, green: 0.2206499482, blue: 0.04487571603, alpha: 1)
+                    case 16 ..< 17:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
                     default:
-                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.2385891318, green: 0.2385891318, blue: 0.2385891318, alpha: 1)
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.200000003, green: 0.200000003, blue: 0.200000003, alpha: 1)
                     }
+                    cell.setCalendarCellUnitOfWorkLabelHeightConstrint()
+                    cell.unitOfWorkLabel.layer.cornerRadius = 2
+                    cell.unitOfWorkLabel.layer.masksToBounds = true
                 }
                 if monthlyItemArray[itemArrayIndex].memo == "" {   // 메모가 비었을 경우
                     cell.memoLabel.isHidden = true
@@ -126,7 +145,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                 if dayCounter > 0 {
                     cell.dayLabel.textColor = UIColor.blue }
             default: break
-            }
+            }   
             
             if (year == toYear && month == toMonth && dayCounter == toDay) {
                 firstDayIndexPath = indexPath
@@ -135,12 +154,10 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
             }
             
             if dayCounter == day {
-                cell.backgroundColor = #colorLiteral(red: 0.9011314655, green: 0.9011314655, blue: 0.9011314655, alpha: 1)
+                cell.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
                 preIndexPath = indexPath
             }
-            
-            cell.unitOfWorkLabel.layer.cornerRadius = 9
-            cell.unitOfWorkLabel.layer.masksToBounds = true
+
         }
         return cell
     }
@@ -151,7 +168,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         delegate?.selectYearMonthDay(year: year, month: month, day: dayCounter)
         collectionView.cellForItem(at: preIndexPath)?.backgroundColor = UIColor.clear
         collectionView.cellForItem(at: firstDayIndexPath)?.backgroundColor = UIColor.clear
-        collectionView.cellForItem(at: indexPath)?.backgroundColor = #colorLiteral(red: 0.9011314655, green: 0.9011314655, blue: 0.9011314655, alpha: 1)
+        collectionView.cellForItem(at: indexPath)?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
         preIndexPath = indexPath
     }
     

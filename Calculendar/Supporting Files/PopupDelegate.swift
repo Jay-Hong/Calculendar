@@ -15,4 +15,5 @@ protocol PopupDelegate {
     func saveMemo(memo: String)
     func savePay(pay: String)
     func saveBasePay(basePay: String)
+    func applySetting()
 }

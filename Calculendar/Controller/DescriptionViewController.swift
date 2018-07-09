@@ -14,15 +14,15 @@ class DescriptionViewController: UIViewController {
         let myRequest = URLRequest(url: myURL!)
         descriptionWebView.load(myRequest)
         
-        //  Device Type 에 따라 화면 조정
+        //  Device Type 에 따라 Top Bar 조정
         switch UIScreen.main.bounds.size {
-        case iPhoneSE:  //  메인화면 광고 없애기
+        case iPhoneSE:
             topBarHeightConstraint.constant = 60
 
         case iPhone8Plus, iPhone8:
             topBarHeightConstraint.constant = 60
 
-        case iPhoneX:   //  Top Bar 80으로 늘려주기
+        case iPhoneX:
             topBarHeightConstraint.constant = 80
             
         default: break

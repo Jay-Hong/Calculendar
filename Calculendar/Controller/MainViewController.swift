@@ -7,9 +7,10 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     //MARK:  - Valuables
     @IBOutlet weak var mainYearMonthButton: UIButton!
     @IBOutlet weak var pageCalendarView: UIView!
+    @IBOutlet weak var inputUnitOfWorkButton: UIButton!
     @IBOutlet weak var dashBoardCollectionView: UICollectionView!
     
-    //  광고 광고 백뷰
+    //  광고 , 광고 백뷰
     @IBOutlet weak var bannerBackView: UIView!
     @IBOutlet weak var bannerView: GADBannerView!
     //  메인화면 광고 back View 높이 설정
@@ -54,10 +55,11 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setTopBar()
         makeCalendarMainScreen()
         setDashBoard()
         setAdMob()
-        setSideMenu()
+        setInitialSideMenuPosition()
         
 //        print(dataFilePath)
     }
@@ -70,30 +72,29 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         bannerView.delegate = self
     }
     
-    func makeCalendarMainScreen() {
-        
+    func setTopBar() {
         //  Device Type 에 따라 화면 조정
         switch UIScreen.main.bounds.size {
         case iPhoneSE:  //  메인화면 광고 없애기
             topBarViewHeightConstraint.constant = 60
             bannerBackViewHeightConstraint.constant = 0
             bannerBackView.isHidden = true
-//            print("\niPhone SE Detected\n")
             
-//        case iPhone8Plus, iPhone8:
-//            topBarViewHeightConstraint.constant = 70
-//            bannerBackViewHeightConstraint.constant = 0
-//            bannerBackView.isHidden = true
-        
+        case iPhone8Plus, iPhone8:
+            topBarViewHeightConstraint.constant = 70
+            bannerBackView.isHidden = false
+            
         case iPhoneX:   //  Top Bar 80으로 늘려주기
             topBarViewHeightConstraint.constant = 80
-//            bannerBackViewHeightConstraint.constant = 0
-//            bannerBackView.isHidden = true
-//            print("\niPhoneX Detected\n")
+            bannerBackView.isHidden = false
             
-        default: break
+        default:
+            bannerBackView.isHidden = false
         }
-        
+    }
+    
+    func makeCalendarMainScreen() {
+
         pageVC = self.storyboard?.instantiateViewController(withIdentifier: "pageViewController") as! UIPageViewController
         pageVC.view.frame = pageCalendarView.bounds
         addChildViewController(pageVC)
@@ -110,6 +111,14 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         selectYearMonthDay(year: toYear, month: toMonth, day: toDay)
         strYearMonth = "\(toYear)\(makeTwoDigitString(toMonth))"
         
+        //  일급:0 / 시급:1  따른  공수입력 / 시간입력  버튼 출력
+        switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
+        case 0:
+            inputUnitOfWorkButton.setTitle("공수입력", for: .normal)
+        default:
+            inputUnitOfWorkButton.setTitle("시간입력", for: .normal)
+        }
+        
         // 해당 월 공수 , 급여 , 단가 출력
         loadItems()
         displayMonthlyUnitOfWork()
@@ -120,7 +129,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         versionLabel.text = "v\(appVersion!)"
     }
     
-    func setSideMenu() {
+    func setInitialSideMenuPosition() {
         sideMenuLeadingConstraint.constant = -250
         sideMenuBackButton.isHidden = true
         sideMenuIcon.layer.cornerRadius = 35
@@ -180,7 +189,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         var year = calendar.component(.year, from: currentDate)
         var month = calendar.component(.month, from: currentDate)
         calendarVC.calendarCollectionView.cellForItem(at: calendarVC.preIndexPath)?.backgroundColor = UIColor.clear
-        calendarVC.calendarCollectionView.cellForItem(at: calendarVC.firstDayIndexPath)?.backgroundColor = #colorLiteral(red: 0.9011314655, green: 0.9011314655, blue: 0.9011314655, alpha: 1)
+        calendarVC.calendarCollectionView.cellForItem(at: calendarVC.firstDayIndexPath)?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
         
         switch month {
         case 12:
@@ -200,7 +209,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         var year = calendar.component(.year, from: currentDate)
         var month = calendar.component(.month, from: currentDate)
         calendarVC.calendarCollectionView.cellForItem(at: calendarVC.preIndexPath)?.backgroundColor = UIColor.clear
-        calendarVC.calendarCollectionView.cellForItem(at: calendarVC.firstDayIndexPath)?.backgroundColor = #colorLiteral(red: 0.9011314655, green: 0.9011314655, blue: 0.9011314655, alpha: 1)
+        calendarVC.calendarCollectionView.cellForItem(at: calendarVC.firstDayIndexPath)?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
         
         switch month {
         case 1:
@@ -241,7 +250,11 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             let popup = segue.destination as! PayPopUpViewController
             popup.delegate = self
             popup.selectedMonth = 0
+        } else if segue.identifier == "toSettingViewControllerSegue" {
+            let popup = segue.destination as! SettingViewController
+            popup.delegate = self
         }
+        
     }
     
     //MARK:  - DashBoard 출력
@@ -475,6 +488,17 @@ extension MainViewController: PopupDelegate {
         displayDaylyPay()
         displayMonthlySalaly()
     }
+    
+    func applySetting() {
+        //  일급:0 / 시급:1
+        switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
+        case 0:
+            inputUnitOfWorkButton.setTitle("공수입력", for: .normal)
+        default:
+            inputUnitOfWorkButton.setTitle("시간입력", for: .normal)
+        }
+        dashBoardCollectionView.reloadData()
+    }
 }
 
 extension MainViewController: CalendarDelegate {
@@ -513,8 +537,15 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             
         case 0:
             cell.contentLabel.text = strMonthlyUnitOfWrk
-            cell.descriptionLabel.text = "\(selectedMonth)월 공수"
-            cell.unitLabel.text = "공수"
+            cell.descriptionLabel.text = "\(selectedMonth)월 근무"
+            //  일급:0 / 시급:1
+            switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
+            case 0:
+                cell.unitLabel.text = "공수"
+            default:
+                cell.unitLabel.text = "시간"
+            }
+            
             cell.backView.backgroundColor = #colorLiteral(red: 0, green: 0.7568627451, blue: 0.8431372549, alpha: 1)
             cell.imgBackView.backgroundColor = #colorLiteral(red: 0, green: 0.662745098, blue: 0.7411764706, alpha: 1)
             cell.iconImgView.image = #imageLiteral(resourceName: "ic_schedule")

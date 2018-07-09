@@ -11,6 +11,11 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var bannerView: GADBannerView!
     
+    @IBOutlet weak var fromTopToMemoBackViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var fromBottomToMemoBackViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var fromRightToMemoBackViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var fromLeftToMemoBackViewWidthConstraint: NSLayoutConstraint!
+    
     var delegate: PopupDelegate?
     
     var selectedMonth = Int()
@@ -21,11 +26,38 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
         super.viewDidLoad()
         
         readyToMemo()
-        
+        setMemoBackViewConstraint()
         setShadow()
-        
         setAdMob()
         
+    }
+    
+    func setMemoBackViewConstraint() {
+        //  Device Type 에 따라 메모화면 조정
+        switch UIScreen.main.bounds.size {
+        case iPhoneX:
+            fromTopToMemoBackViewHeightConstraint.constant = 58
+            fromBottomToMemoBackViewHeightConstraint.constant = 360
+            fromRightToMemoBackViewWidthConstraint.constant = 10
+            fromLeftToMemoBackViewWidthConstraint.constant = 10
+        case iPhone8:
+            fromTopToMemoBackViewHeightConstraint.constant = 57
+            fromBottomToMemoBackViewHeightConstraint.constant = 320
+            fromRightToMemoBackViewWidthConstraint.constant = 10
+            fromLeftToMemoBackViewWidthConstraint.constant = 10
+        case iPhone8Plus:
+            fromTopToMemoBackViewHeightConstraint.constant = 54
+            fromBottomToMemoBackViewHeightConstraint.constant = 330
+            fromRightToMemoBackViewWidthConstraint.constant = 10
+            fromLeftToMemoBackViewWidthConstraint.constant = 10
+        case iPhoneSE:
+            fromTopToMemoBackViewHeightConstraint.constant = 44
+            fromBottomToMemoBackViewHeightConstraint.constant = 303
+            fromRightToMemoBackViewWidthConstraint.constant = 10
+            fromLeftToMemoBackViewWidthConstraint.constant = 10
+        default:
+            break
+        }
     }
     
     func setAdMob() {
@@ -35,15 +67,6 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
         bannerView.load(GADRequest())
         bannerView.delegate = self
         
-        //  Device Type 에 따라 화면 조정
-        switch UIScreen.main.bounds.size {
-        case iPhoneX, iPhone8, iPhone8Plus:
-            bannerView.isHidden = true
-        case iPhoneSE:  //  iPhoneSE만 메모화면 광고넣기
-            bannerView.isHidden = false
-        default:
-            bannerView.isHidden = true
-        }
     }
     
     @IBAction func backgroundButtonAction(_ sender: Any) {
@@ -57,7 +80,7 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
     func readyToMemo() {
         memoTextView.text = memo
         memoTextView.becomeFirstResponder()
-        descriptionLabel.text = "\(selectedDay)일 메모"
+        descriptionLabel.text = "\(selectedMonth)월 \(selectedDay)일"
     }
     
     func setShadow() {

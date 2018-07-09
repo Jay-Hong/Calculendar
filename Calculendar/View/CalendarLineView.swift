@@ -17,7 +17,7 @@ class CalendarLineView: UIView {
         path.lineWidth = width
         
         // Line Color
-        #colorLiteral(red: 0.7733028017, green: 0.7733028017, blue: 0.7733028017, alpha: 1).setStroke()
+        #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.28).setStroke()
         path.stroke()
     }
     

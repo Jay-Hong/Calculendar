@@ -18,24 +18,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_app_B&amp;W" translatesAutoresizingMaskIntoConstraints="NO" id="Hs7-6i-Cvn">
-                                <rect key="frame" x="117.5" y="263.5" width="140" height="140"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="140" id="2f6-jm-1dz"/>
-                                    <constraint firstAttribute="width" constant="140" id="UJT-4W-YDw"/>
-                                </constraints>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gdX-8w-ZIz">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
-                                <color key="backgroundColor" red="0.25490196078431371" green="0.25490196078431371" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.94999999999999996" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="hvQ-NU-f6s"/>
                                 </constraints>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Ic_app_200" translatesAutoresizingMaskIntoConstraints="NO" id="Hs7-6i-Cvn">
+                                <rect key="frame" x="87.5" y="213.5" width="200" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="2f6-jm-1dz"/>
+                                    <constraint firstAttribute="width" constant="200" id="UJT-4W-YDw"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.95463541666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Hs7-6i-Cvn" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="8sl-dr-4b3"/>
+                            <constraint firstItem="Hs7-6i-Cvn" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-20" id="8sl-dr-4b3"/>
                             <constraint firstItem="Hs7-6i-Cvn" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Fnb-rL-3sn"/>
                             <constraint firstItem="gdX-8w-ZIz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="USP-Ob-Gh6"/>
                             <constraint firstItem="gdX-8w-ZIz" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="iT2-jk-m81"/>
@@ -50,6 +50,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic_app_B&amp;W" width="70" height="70"/>
+        <image name="Ic_app_200" width="200" height="200"/>
     </resources>
 </document>
