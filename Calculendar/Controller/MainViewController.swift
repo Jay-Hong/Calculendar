@@ -276,11 +276,11 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
     func displayMonthlySalaly() {
-        var monthlySalaly = Float()
+        var monthlySalaly = Double()
         for item in itemArray {
-            monthlySalaly += item.numUnitOfWork * item.pay
+            monthlySalaly += Double(item.numUnitOfWork * item.pay)
         }
-        strMonthlySalaly = String(monthlySalaly)
+        strMonthlySalaly = String(format: "%.4f", monthlySalaly)
         if strMonthlySalaly.contains(".") {
             while (strMonthlySalaly.hasSuffix("0")) {
                 strMonthlySalaly.removeLast() }

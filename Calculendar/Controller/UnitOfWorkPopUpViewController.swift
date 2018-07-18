@@ -75,7 +75,10 @@ class UnitOfWorkPopUpViewController: UIViewController, GADBannerViewDelegate {
                 strNumber.removeFirst()
             }
         }
-        accumulator(digit: sender.currentTitle!)
+        //  . 없이는 2자리까지만 입력 가능
+        if strNumber.contains(".") || (strNumber.count < 2) {
+            accumulator(digit: sender.currentTitle!)
+        }
         numberDisplay()
     }
     
