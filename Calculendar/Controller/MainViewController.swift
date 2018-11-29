@@ -61,11 +61,13 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         setAdMob()
         setInitialSideMenuPosition()
         
-//        print(dataFilePath)
+//        print("\n\n\(dataFilePath)\n\n")
     }
 
     func setAdMob() {
-        bannerView.adSize = kGADAdSizeBanner
+//        let adSize = GADAdSizeFromCGSize(CGSize(width: 320, height: 50))
+//        let adSize2 = GADAdSizeFromCGSize(CGSize(width: bannerView.frame.width, height: bannerView.frame.height))
+        bannerView.adSize = kGADAdSizeSmartBannerPortrait
         bannerView.adUnitID = "ca-app-pub-5095960781666456/5274670381"
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
@@ -75,16 +77,16 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     func setTopBar() {
         //  Device Type 에 따라 화면 조정
         switch UIScreen.main.bounds.size {
-        case iPhoneSE:  //  메인화면 광고 없애기
+        case iPhoneSE:  //  메인화면 광고 없애기 , Top Bar 60으로 줄이기
             topBarViewHeightConstraint.constant = 60
             bannerBackViewHeightConstraint.constant = 0
             bannerBackView.isHidden = true
             
-        case iPhone8Plus, iPhone8:
+        case iPhone8Plus, iPhone8:  // Top Bar 70 유지
             topBarViewHeightConstraint.constant = 70
             bannerBackView.isHidden = false
             
-        case iPhoneX:   //  Top Bar 80으로 늘려주기
+        case iPhoneXS, iPhoneXSMAX, iPhoneXR:   //  Top Bar 80으로 늘려주기
             topBarViewHeightConstraint.constant = 80
             bannerBackView.isHidden = false
             
@@ -97,9 +99,9 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
 
         pageVC = self.storyboard?.instantiateViewController(withIdentifier: "pageViewController") as! UIPageViewController
         pageVC.view.frame = pageCalendarView.bounds
-        addChildViewController(pageVC)
+        addChild(pageVC)
         pageCalendarView.addSubview(pageVC.view)
-        pageVC.didMove(toParentViewController: self)
+        pageVC.didMove(toParent: self)
         pageVC.dataSource = self
         pageVC.delegate = self
         
@@ -515,12 +517,12 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func setDashBoard() {
         
-        dashBoardCollectionView.register(UINib.init(nibName: "DashBoardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "dashIdentififer")
+//        dashBoardCollectionView.register(UINib.init(nibName: "DashBoardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "dashIdentififer")
         
         let flowLayout = UPCarouselFlowLayout()
         flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.size.width - 40.0, height: dashBoardCollectionView.frame.size.height - 4)
         flowLayout.scrollDirection = .horizontal
-        flowLayout.sideItemScale = 0.95
+        flowLayout.sideItemScale = 0.9
         flowLayout.sideItemAlpha = 0.5
         flowLayout.spacingMode = .fixed(spacing: 10)
         dashBoardCollectionView.collectionViewLayout = flowLayout
@@ -531,7 +533,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = dashBoardCollectionView.dequeueReusableCell(withReuseIdentifier: "dashIdentififer", for: indexPath) as! DashBoardCollectionViewCell
+        let cell = dashBoardCollectionView.dequeueReusableCell(withReuseIdentifier: "dashboardcell", for: indexPath) as! DashBoardCell
         
         switch indexPath.row {
             
@@ -569,6 +571,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         default:
             break
         }
+        cell.setDashBoardCollectionViewCellConstraints()
         return cell
     }
 }

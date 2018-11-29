@@ -42,7 +42,7 @@ class UnitOfWorkPopUpViewController: UIViewController, GADBannerViewDelegate {
     }
     
     func setAdMob() {
-        bannerView.adSize = kGADAdSizeBanner
+        bannerView.adSize = GADAdSizeFromCGSize(CGSize(width: bannerView.frame.width, height: bannerView.frame.height))
         bannerView.adUnitID = "ca-app-pub-5095960781666456/1535171668"
         bannerView.rootViewController = self
         bannerView.load(GADRequest())

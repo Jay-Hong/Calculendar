@@ -22,7 +22,7 @@ class DescriptionViewController: UIViewController {
         case iPhone8Plus, iPhone8:
             topBarHeightConstraint.constant = 60
 
-        case iPhoneX:
+        case iPhoneXS, iPhoneXSMAX, iPhoneXR:
             topBarHeightConstraint.constant = 80
             
         default: break

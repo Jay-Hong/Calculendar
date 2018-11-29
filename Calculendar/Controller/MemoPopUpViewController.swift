@@ -35,9 +35,19 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
     func setMemoBackViewConstraint() {
         //  Device Type 에 따라 메모화면 조정
         switch UIScreen.main.bounds.size {
-        case iPhoneX:
+        case iPhoneXS:
             fromTopToMemoBackViewHeightConstraint.constant = 58
             fromBottomToMemoBackViewHeightConstraint.constant = 360
+            fromRightToMemoBackViewWidthConstraint.constant = 10
+            fromLeftToMemoBackViewWidthConstraint.constant = 10
+        case iPhoneXSMAX:
+            fromTopToMemoBackViewHeightConstraint.constant = 58
+            fromBottomToMemoBackViewHeightConstraint.constant = 370
+            fromRightToMemoBackViewWidthConstraint.constant = 10
+            fromLeftToMemoBackViewWidthConstraint.constant = 10
+        case iPhoneXR:
+            fromTopToMemoBackViewHeightConstraint.constant = 58
+            fromBottomToMemoBackViewHeightConstraint.constant = 365
             fromRightToMemoBackViewWidthConstraint.constant = 10
             fromLeftToMemoBackViewWidthConstraint.constant = 10
         case iPhone8:
@@ -61,7 +71,7 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
     }
     
     func setAdMob() {
-        bannerView.adSize = kGADAdSizeBanner
+        bannerView.adSize = GADAdSizeFromCGSize(CGSize(width: bannerView.frame.width, height: bannerView.frame.height))
         bannerView.adUnitID = "ca-app-pub-5095960781666456/3159653643"
         bannerView.rootViewController = self
         bannerView.load(GADRequest())

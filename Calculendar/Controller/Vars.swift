@@ -11,7 +11,9 @@ let toWeekday = calendar.component(.weekday , from: today)    // 한 주의시�
 let toMonth = calendar.component(.month , from: today)
 let toYear = calendar.component(.year, from: today)
 
-let iPhoneX = CGSize(width: 375, height: 812)
+let iPhoneXS = CGSize(width: 375, height: 812)
+let iPhoneXSMAX = CGSize(width: 414, height: 896)
+let iPhoneXR = CGSize(width: 413, height: 896)
 let iPhone8  = CGSize(width: 375, height: 667)
 let iPhone8Plus = CGSize(width: 414, height: 736)
 let iPhoneSE = CGSize(width: 320, height: 568)
@@ -58,6 +60,11 @@ public extension UIDevice {
         case "iPhone10,1", "iPhone10,4":                return "iPhone 8"
         case "iPhone10,2", "iPhone10,5":                return "iPhone 8 Plus"
         case "iPhone10,3", "iPhone10,6":                return "iPhone X"
+        case "iPhone11,2":                              return "iPhone XS"
+        case "iPhone11,4":                              return "iPhone XS Max"
+        case "iPhone11,6":                              return "iPhone XS Max China"
+        case "iPhone11,8":                              return "iPhone XR"
+            
         case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":return "iPad 2"
         case "iPad3,1", "iPad3,2", "iPad3,3":           return "iPad 3"
         case "iPad3,4", "iPad3,5", "iPad3,6":           return "iPad 4"
