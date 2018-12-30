@@ -116,9 +116,9 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         //  일급:0 / 시급:1  따른  공수입력 / 시간입력  버튼 출력
         switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
         case 0:
-            inputUnitOfWorkButton.setTitle("공수입력", for: .normal)
+            inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
         default:
-            inputUnitOfWorkButton.setTitle("시간입력", for: .normal)
+            inputUnitOfWorkButton.setTitle("시간 입력", for: .normal)
         }
         
         // 해당 월 공수 , 급여 , 단가 출력
@@ -266,7 +266,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         for item in itemArray {
             monthlyUnitOfWork += item.numUnitOfWork
         }
-        strMonthlyUnitOfWrk = String(monthlyUnitOfWork)
+        strMonthlyUnitOfWrk = String(format: "%.2f", monthlyUnitOfWork)
         if strMonthlyUnitOfWrk.contains(".") {
             while (strMonthlyUnitOfWrk.hasSuffix("0")) {
                 strMonthlyUnitOfWrk.removeLast() }
@@ -495,9 +495,9 @@ extension MainViewController: PopupDelegate {
         //  일급:0 / 시급:1
         switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
         case 0:
-            inputUnitOfWorkButton.setTitle("공수입력", for: .normal)
+            inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
         default:
-            inputUnitOfWorkButton.setTitle("시간입력", for: .normal)
+            inputUnitOfWorkButton.setTitle("시간 입력", for: .normal)
         }
         dashBoardCollectionView.reloadData()
     }
@@ -522,8 +522,8 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         let flowLayout = UPCarouselFlowLayout()
         flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.size.width - 40.0, height: dashBoardCollectionView.frame.size.height - 4)
         flowLayout.scrollDirection = .horizontal
-        flowLayout.sideItemScale = 0.9
-        flowLayout.sideItemAlpha = 0.5
+        flowLayout.sideItemScale = 0.8
+        flowLayout.sideItemAlpha = 0.4
         flowLayout.spacingMode = .fixed(spacing: 10)
         dashBoardCollectionView.collectionViewLayout = flowLayout
     }
