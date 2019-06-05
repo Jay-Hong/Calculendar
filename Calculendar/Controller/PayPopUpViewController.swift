@@ -26,6 +26,7 @@ class PayPopUpViewController: UIViewController {
     
     //  넘겨받는 인자들
     var selectedMonth = Int()
+    var selectedDay = Int()
     var strNumber = String()
     
     override func viewDidLoad() {
@@ -58,7 +59,13 @@ class PayPopUpViewController: UIViewController {
         case 0:
             descriptionLabel.text = "기본 단가 설정"
         case 1...12:
-            descriptionLabel.text = "\(selectedMonth)월 단가 설정"
+            if UserDefaults.standard.integer(forKey: "unitOfWorkSettingPeriodIndex") == 0 {
+                //  한달단위 단가설정
+                descriptionLabel.text = "\(selectedMonth)월 전체단가 설정"
+            } else {
+                //  일단위 단가설정
+                descriptionLabel.text = "\(selectedMonth)월 \(selectedDay)일 단가 설정"
+            }
         default:
             break
         }

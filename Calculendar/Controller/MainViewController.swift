@@ -247,6 +247,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             popup.delegate = self
             popup.strNumber = payTemp
             popup.selectedMonth = selectedMonth
+            popup.selectedDay = selectedDay
         } else if segue.identifier == "toBasePayPopUpViewControllerSegue" {
             //  월별단가 PayPopUpViewController 를 같이 사용하지만 selectedMonth를 0 으로 설정
             let popup = segue.destination as! PayPopUpViewController
@@ -408,8 +409,14 @@ extension MainViewController: PopupDelegate {
         //loadItems()
         if itemArray.isEmpty {makeItemArray()}
         payTemp = pay == "" ? "0" : pay
-        for item in itemArray {
-            item.pay = Float(payTemp)!
+        
+        switch UserDefaults.standard.integer(forKey: "unitOfWorkSettingPeriodIndex") {
+        case 0: //  한달단위 저장
+            for item in itemArray {
+                item.pay = Float(payTemp)!
+            }
+        default:    //  하루단위 저장
+            itemArray[selectedDay-1].pay = Float(payTemp)!
         }
         saveItems()
         displayDaylyPay()
@@ -510,6 +517,9 @@ extension MainViewController: CalendarDelegate {
         selectedDay = day
         print("선택된날짜 : \(year)년 \(month)월 \(day)일")
     }
+    func callDisplayDaylyPay() {
+        displayDaylyPay()
+    }
 }
 
 //MARK:  - DashBoard Controller
@@ -562,7 +572,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             
         case 2:
             cell.contentLabel.text = strDaylyPay
-            cell.descriptionLabel.text = "\(selectedMonth)월 단가"
+            cell.descriptionLabel.text = "\(selectedMonth)월 \(selectedDay)일 단가"
             cell.unitLabel.text = "만원"
             cell.backView.backgroundColor = #colorLiteral(red: 0.4588235294, green: 0.8039215686, blue: 0.2745098039, alpha: 1)
             cell.imgBackView.backgroundColor = #colorLiteral(red: 0.4039215686, green: 0.7019607843, blue: 0.2431372549, alpha: 1)

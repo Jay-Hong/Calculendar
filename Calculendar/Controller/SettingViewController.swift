@@ -4,6 +4,8 @@ class SettingViewController: UIViewController {
 
     @IBOutlet weak var topBarHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var paySystemSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var unitOfWorkSettingPeriodSegmentedControl: UISegmentedControl!
+    
     
     var delegate: PopupDelegate?
     
@@ -18,11 +20,18 @@ class SettingViewController: UIViewController {
     func initialSetting() {
         //  일급:0 / 시급:1  초기화  (기본값: 0 - 일급)
         paySystemSegmentedControl.selectedSegmentIndex = UserDefaults.standard.integer(forKey: "paySystemIndex")
+        
+        //  한달:0 / 하루:1 (기본값: 0 - 한달)
+        unitOfWorkSettingPeriodSegmentedControl.selectedSegmentIndex = UserDefaults.standard.integer(forKey: "unitOfWorkSettingPeriodIndex")
     }
     
     @IBAction func paySystemSegmentedControlAction(_ sender: UISegmentedControl) {
         UserDefaults.standard.set(paySystemSegmentedControl.selectedSegmentIndex, forKey: "paySystemIndex")
         delegate?.applySetting()
+    }
+    
+    @IBAction func unitOfWorkSettingPeriodSegmenteControlAction(_ sender: Any) {
+        UserDefaults.standard.set(unitOfWorkSettingPeriodSegmentedControl.selectedSegmentIndex, forKey: "unitOfWorkSettingPeriodIndex")
     }
     
     func setTopBar() {

@@ -166,6 +166,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         let dayCounter = indexPath.row + 1 - firstDayPosition
 //        print("\(year)년 \(month)월 \(dayCounter)일 이 선택 됨")
         delegate?.selectYearMonthDay(year: year, month: month, day: dayCounter)
+        delegate?.callDisplayDaylyPay()
         collectionView.cellForItem(at: preIndexPath)?.backgroundColor = UIColor.clear
         collectionView.cellForItem(at: firstDayIndexPath)?.backgroundColor = UIColor.clear
         collectionView.cellForItem(at: indexPath)?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
