@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,7 @@
 		6908F08B20D78DD60046F806 /* UPCarouselFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6908F08820D78DD60046F806 /* UPCarouselFlowLayout.swift */; };
 		6908F08C20D78DD60046F806 /* PopupDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6908F08920D78DD60046F806 /* PopupDelegate.swift */; };
 		6908F08D20D78DD60046F806 /* CalendarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6908F08A20D78DD60046F806 /* CalendarDelegate.swift */; };
+		69225F4D22D5FB9600A6109A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69225F4C22D5FB9600A6109A /* Assets.xcassets */; };
 		6930FC8A20DEDCD200EE5D74 /* DescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6930FC8920DEDCD200EE5D74 /* DescriptionViewController.swift */; };
 		697A5E9520D6FD4800951321 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A5E9420D6FD4800951321 /* AppDelegate.swift */; };
 		697A5E9720D6FD4800951321 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A5E9620D6FD4800951321 /* MainViewController.swift */; };
@@ -20,7 +21,6 @@
 		69A8DF2520D78F9800158864 /* Vars.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A8DF2420D78F9800158864 /* Vars.swift */; };
 		69A8DF2720D78FEB00158864 /* CalendarLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A8DF2620D78FEB00158864 /* CalendarLineView.swift */; };
 		69A8DF2920D7918E00158864 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A8DF2820D7918E00158864 /* CalendarCollectionViewCell.swift */; };
-		69A8DF2B20D79CF400158864 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69A8DF2A20D79CF300158864 /* Assets.xcassets */; };
 		69A8DF3320D7B9A900158864 /* PayPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A8DF2E20D7B9A900158864 /* PayPopUpViewController.swift */; };
 		69A8DF3420D7B9A900158864 /* MemoPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A8DF2F20D7B9A900158864 /* MemoPopUpViewController.swift */; };
 		69A8DF3520D7B9A900158864 /* UnitOfWorkPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A8DF3020D7B9A900158864 /* UnitOfWorkPopUpViewController.swift */; };
@@ -39,6 +39,7 @@
 		6908F08820D78DD60046F806 /* UPCarouselFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UPCarouselFlowLayout.swift; sourceTree = "<group>"; };
 		6908F08920D78DD60046F806 /* PopupDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupDelegate.swift; sourceTree = "<group>"; };
 		6908F08A20D78DD60046F806 /* CalendarDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarDelegate.swift; sourceTree = "<group>"; };
+		69225F4C22D5FB9600A6109A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6930FC8920DEDCD200EE5D74 /* DescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionViewController.swift; sourceTree = "<group>"; };
 		697A5E9120D6FD4800951321 /* Calculendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		697A5E9420D6FD4800951321 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -50,7 +51,6 @@
 		69A8DF2420D78F9800158864 /* Vars.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vars.swift; sourceTree = "<group>"; };
 		69A8DF2620D78FEB00158864 /* CalendarLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarLineView.swift; sourceTree = "<group>"; };
 		69A8DF2820D7918E00158864 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
-		69A8DF2A20D79CF300158864 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../Swfit4Ex/CalendarTest/CalendarTest/Supporting Files/Assets.xcassets"; sourceTree = "<group>"; };
 		69A8DF2E20D7B9A900158864 /* PayPopUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayPopUpViewController.swift; sourceTree = "<group>"; };
 		69A8DF2F20D7B9A900158864 /* MemoPopUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoPopUpViewController.swift; sourceTree = "<group>"; };
 		69A8DF3020D7B9A900158864 /* UnitOfWorkPopUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitOfWorkPopUpViewController.swift; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 				6908F08920D78DD60046F806 /* PopupDelegate.swift */,
 				6908F08820D78DD60046F806 /* UPCarouselFlowLayout.swift */,
 				697A5E9420D6FD4800951321 /* AppDelegate.swift */,
-				69A8DF2A20D79CF300158864 /* Assets.xcassets */,
+				69225F4C22D5FB9600A6109A /* Assets.xcassets */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -179,6 +179,7 @@
 				697A5E8D20D6FD4800951321 /* Sources */,
 				697A5E8E20D6FD4800951321 /* Frameworks */,
 				697A5E8F20D6FD4800951321 /* Resources */,
+				FB2D02A125736EA810E22C04 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -195,6 +196,9 @@
 		697A5E8920D6FD4800951321 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					New,
+				);
 				LastSwiftUpdateCheck = 0940;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = Jay;
@@ -235,9 +239,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				697A5E9F20D6FD4F00951321 /* LaunchScreen.storyboard in Resources */,
-				69A8DF2B20D79CF400158864 /* Assets.xcassets in Resources */,
 				69D3746520E33FDC00B1C8B5 /* Main.storyboard in Resources */,
 				69AC250120E38692009E28E2 /* InfoPlist.strings in Resources */,
+				69225F4D22D5FB9600A6109A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +264,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FB2D02A125736EA810E22C04 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Calculendar/Pods-Calculendar-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Calculendar/Pods-Calculendar-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Calculendar/Pods-Calculendar-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
