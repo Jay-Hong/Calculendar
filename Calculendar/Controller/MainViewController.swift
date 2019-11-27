@@ -228,34 +228,40 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     //MARK:  - Prepare for Segues
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toYearMonthPopUpViewControllerSegue" {
-            let popup = segue.destination as! YearMonthPopUpViewController
-            popup.delegate = self
+            if let popup = segue.destination as? YearMonthPopUpViewController {
+                popup.delegate = self
+            }
         } else if segue.identifier == "toUnitOfWorkPopUpViewControllerSegue" {
-            let popup = segue.destination as! UnitOfWorkPopUpViewController
-            popup.delegate = self
-            popup.strNumber = unitOfWorkTemp
-            popup.selectedMonth = selectedMonth
-            popup.selectedDay = selectedDay
+            if let popup = segue.destination as? UnitOfWorkPopUpViewController {
+                popup.delegate = self
+                popup.strNumber = unitOfWorkTemp
+                popup.selectedMonth = selectedMonth
+                popup.selectedDay = selectedDay
+            }
         } else if segue.identifier == "toMemoPopUpViewControllerSegue" {
-            let popup = segue.destination as! MemoPopUpViewController
-            popup.delegate = self
-            popup.memo = memoTemp
-            popup.selectedMonth = selectedMonth
-            popup.selectedDay = selectedDay
+            if let popup = segue.destination as? MemoPopUpViewController {
+                popup.delegate = self
+                popup.memo = memoTemp
+                popup.selectedMonth = selectedMonth
+                popup.selectedDay = selectedDay
+            }
         } else if segue.identifier == "toPayPopUpViewControllerSegue" {
-            let popup = segue.destination as! PayPopUpViewController
-            popup.delegate = self
-            popup.strNumber = payTemp
-            popup.selectedMonth = selectedMonth
-            popup.selectedDay = selectedDay
+            if let popup = segue.destination as? PayPopUpViewController {
+                popup.delegate = self
+                popup.strNumber = payTemp
+                popup.selectedMonth = selectedMonth
+                popup.selectedDay = selectedDay
+            }
         } else if segue.identifier == "toBasePayPopUpViewControllerSegue" {
             //  월별단가 PayPopUpViewController 를 같이 사용하지만 selectedMonth를 0 으로 설정
-            let popup = segue.destination as! PayPopUpViewController
-            popup.delegate = self
-            popup.selectedMonth = 0
+            if let popup = segue.destination as? PayPopUpViewController {
+                popup.delegate = self
+                popup.selectedMonth = 0
+            }
         } else if segue.identifier == "toSettingViewControllerSegue" {
-            let popup = segue.destination as! SettingViewController
-            popup.delegate = self
+            if let popup = segue.destination as? SettingViewController {
+                popup.delegate = self
+            }
         }
         
     }
@@ -510,6 +516,7 @@ extension MainViewController: PopupDelegate {
     }
 }
 
+//MARK:  - Calendar Delegate
 extension MainViewController: CalendarDelegate {
     func selectYearMonthDay(year: Int, month: Int, day: Int) {
         selectedYear = year

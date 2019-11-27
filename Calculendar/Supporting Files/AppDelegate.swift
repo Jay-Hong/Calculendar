@@ -14,7 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // GADMobileAds.configure(withApplicationID: "ca-app-pub-3940256099942544~1458002511")
         
         // Real AdMob ID
-        GADMobileAds.configure(withApplicationID: "ca-app-pub-5095960781666456~9348527200")
+        // GADMobileAds.configure(withApplicationID: "ca-app-pub-5095960781666456~9348527200")
+        // 'configure(withApplicationID:)' is deprecated
         
         return true
     }
