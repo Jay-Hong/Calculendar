@@ -40,13 +40,13 @@
 		6908F08920D78DD60046F806 /* PopupDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupDelegate.swift; sourceTree = "<group>"; };
 		6908F08A20D78DD60046F806 /* CalendarDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarDelegate.swift; sourceTree = "<group>"; };
 		69225F4C22D5FB9600A6109A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		692313DE238EAB9A00684D43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		692313DF238EAB9B00684D43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6930FC8920DEDCD200EE5D74 /* DescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionViewController.swift; sourceTree = "<group>"; };
 		697A5E9120D6FD4800951321 /* Calculendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		697A5E9420D6FD4800951321 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		697A5E9620D6FD4800951321 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		697A5EA020D6FD4F00951321 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		69A0A72420F19DEA00422D7B /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ko; path = ko.lproj/Main.storyboard; sourceTree = "<group>"; };
-		69A0A72620F19E1000422D7B /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ko; path = ko.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		69A0A72720F2D9C400422D7B /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		69A8DF2420D78F9800158864 /* Vars.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vars.swift; sourceTree = "<group>"; };
 		69A8DF2620D78FEB00158864 /* CalendarLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarLineView.swift; sourceTree = "<group>"; };
@@ -220,8 +220,8 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 				ko,
+				Base,
 			);
 			mainGroup = 697A5E8820D6FD4800951321;
 			productRefGroup = 697A5E9220D6FD4800951321 /* Products */;
@@ -316,7 +316,7 @@
 		697A5E9820D6FD4800951321 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				69A0A72420F19DEA00422D7B /* ko */,
+				692313DE238EAB9A00684D43 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -324,7 +324,7 @@
 		697A5E9D20D6FD4F00951321 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				69A0A72620F19E1000422D7B /* ko */,
+				692313DF238EAB9B00684D43 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
