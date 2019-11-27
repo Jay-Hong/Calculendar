@@ -64,6 +64,9 @@ public extension UIDevice {
         case "iPhone11,4":                              return "iPhone XS Max"
         case "iPhone11,6":                              return "iPhone XS Max China"
         case "iPhone11,8":                              return "iPhone XR"
+        case "iPhone12,1":                              return "iPhone 11"
+        case "iPhone12,3":                              return "iPhone 11 Pro"
+        case "iPhone12,5":                              return "iPhone 11 Pro Max"
             
         case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":return "iPad 2"
         case "iPad3,1", "iPad3,2", "iPad3,3":           return "iPad 3"
