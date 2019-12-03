@@ -92,8 +92,10 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.1841003787, green: 0.7484605911, blue: 0.06411089568, alpha: 1)
                     case 1.5 ..< 2:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.977601601, green: 0.7735045688, blue: 0.1866027329, alpha: 1)
-                    case 2 ..< 3:
+                    case 2 ..< 2.5:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 1, green: 0.4626982859, blue: 0.3224007863, alpha: 1)
+                    case 2.5 ..< 3:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
                     case 3 ..< 4:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.8951854988, green: 0.4097951526, blue: 0.834882776, alpha: 1)
                     case 4 ..< 5:
