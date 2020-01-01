@@ -2,14 +2,14 @@
 import Foundation
 import MessageUI
 
-var daysInMonths = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]   //  0월은 존재X daysInMonths[0]은 값은 사용
+var daysInMonths = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]   //  0월은 존재X daysInMonths[0]은 값은 기본단가설정시 사용
 let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-let today = Date()
+var today = Date()  // 오늘
 let calendar = Calendar.current
-let toDay = calendar.component(.day , from: today)
-let toWeekday = calendar.component(.weekday , from: today)    // 한 주의시작을 월요일로 하려면 이 값에 -1 해준다
-let toMonth = calendar.component(.month , from: today)
-let toYear = calendar.component(.year, from: today)
+var toDay = Int()   // 오늘 날짜
+var toMonth = Int() // 오늘 달
+var toYear = Int()  // 오늘 년도
+//let toWeekday = calendar.component(.weekday , from: today)    // 한 주의시작을 월요일로 하려면 이 값에 -1 해준다
 
 let iPhoneXS = CGSize(width: 375, height: 812)
 let iPhoneXSMAX = CGSize(width: 414, height: 896)
@@ -21,6 +21,13 @@ let iPhoneSE = CGSize(width: 320, height: 568)
 let iOSVersion = UIDevice.current.systemVersion
 let iPhoneDevice = UIDevice.current.modelName
 let appVersion : Any! = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
+
+func setToday() {
+    today = Date()                                      // 오늘
+    toDay = calendar.component(.day , from: today)      // 오늘 날짜
+    toMonth = calendar.component(.month , from: today)  // 오늘 달
+    toYear = calendar.component(.year, from: today)     // 오늘 년도
+}
 
 func makeTwoDigitString(_ number : Int) -> String {
     switch number {

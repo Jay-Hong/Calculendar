@@ -27,6 +27,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     @IBOutlet weak var versionLabel: UILabel!
     
     var pageVC = UIPageViewController()
+    var nextCalendarVC = CalendarViewController()
     
     //  선택된 해단 년/월/일
     var selectedYear = Int()
@@ -55,15 +56,15 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setToday()
         setTopBar()
-        makeCalendarMainScreen()
+        makeCalendarScreen()
+        makeCalendar()
         setDashBoard()
         setAdMob()
         setInitialSideMenuPosition()
-        
-//        print("\n\n\(dataFilePath)\n\n")
     }
-
+    
     func setAdMob() {
 //        let adSize = GADAdSizeFromCGSize(CGSize(width: 320, height: 50))
 //        let adSize2 = GADAdSizeFromCGSize(CGSize(width: bannerView.frame.width, height: bannerView.frame.height))
@@ -95,8 +96,8 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         }
     }
     
-    func makeCalendarMainScreen() {
-
+    func makeCalendarScreen() {
+        // 달력화면 붙이기
         pageVC = self.storyboard?.instantiateViewController(withIdentifier: "pageViewController") as! UIPageViewController
         pageVC.view.frame = pageCalendarView.bounds
         addChild(pageVC)
@@ -104,31 +105,32 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         pageVC.didMove(toParent: self)
         pageVC.dataSource = self
         pageVC.delegate = self
+    }
+    
+    func makeCalendar() {
+            let firstViewController = self.createCalendarViewController(today)
+            self.pageVC.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         
-        // 첫 pageViewController 화면 출력하기
-        let firstViewController = createCalendarViewController(today)
-        pageVC.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
+            self.mainYearMonthButton.setTitle("\(toYear)년 \(toMonth)월", for: .normal)
+            self.selectYearMonthDay(year: toYear, month: toMonth, day: toDay)
+            self.strYearMonth = "\(toYear)\(makeTwoDigitString(toMonth))"
         
-        mainYearMonthButton.setTitle("\(toYear)년 \(toMonth)월", for: .normal)
-        selectYearMonthDay(year: toYear, month: toMonth, day: toDay)
-        strYearMonth = "\(toYear)\(makeTwoDigitString(toMonth))"
+            //  일급:0 / 시급:1  따른  공수입력 / 시간입력  버튼 출력
+            switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
+            case 0:
+                self.inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
+            default:
+                self.inputUnitOfWorkButton.setTitle("시간 입력", for: .normal)
+            }
         
-        //  일급:0 / 시급:1  따른  공수입력 / 시간입력  버튼 출력
-        switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
-        case 0:
-            inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
-        default:
-            inputUnitOfWorkButton.setTitle("시간 입력", for: .normal)
-        }
+            // 해당 월 공수 , 급여 , 단가 출력
+            self.loadItems()
+            self.displayMonthlyUnitOfWork()
+            self.displayDaylyPay()
+            self.displayMonthlySalaly()
         
-        // 해당 월 공수 , 급여 , 단가 출력
-        loadItems()
-        displayMonthlyUnitOfWork()
-        displayDaylyPay()
-        displayMonthlySalaly()
-        
-        //  SideMenu 하단 Version 출력
-        versionLabel.text = "v\(appVersion!)"
+            //  SideMenu 하단 Version 출력
+            self.versionLabel.text = "v\(appVersion!)"
     }
     
     func setInitialSideMenuPosition() {
@@ -151,7 +153,6 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         return userCalendar.date(from: dateComponents) ?? Date()
     }
     
-    //MARK:  - Page View Controllers
     func createCalendarViewController(_ date: Date) -> CalendarViewController {
         let calendarVC = self.storyboard?.instantiateViewController(withIdentifier: "CanlendarViewController") as! CalendarViewController
         calendarVC.date = date
@@ -159,17 +160,21 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         return calendarVC
     }
     
+    // MARK:  - Page View Controllers
+    // viewControllerAfter / viewControllerBefore 의 일관성 없음!!
+    // 같은 페이징 상환인데도 다음번 나와야할 ViewController를 준비할때가 있고 가끔 준비하지 않을때가 있음
+    // willTransitionTo / didFinishAnimating 을 사용하여 해결
+    
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-        let calendarVC = pendingViewControllers[0] as! CalendarViewController
-        let currentDate = calendarVC.date
+        nextCalendarVC = pendingViewControllers[0] as! CalendarViewController   // 앞으로 가려고하는 달력 월
+        let currentDate = nextCalendarVC.date
         nextYear = calendar.component(.year, from: currentDate)
         nextMonth = calendar.component(.month, from: currentDate)
         nextDay = (nextYear == toYear && nextMonth == toMonth) ? toDay : 1
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        
-        let calendarVC = previousViewControllers[0] as! CalendarViewController
+        let calendarVC = previousViewControllers[0] as! CalendarViewController  // 현재 달력 월
         let currentDate = calendarVC.date
 //        let year = calendar.component(.year, from: currentDate)
         let month = calendar.component(.month, from: currentDate)
@@ -182,16 +187,18 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             displayMonthlyUnitOfWork()
             displayDaylyPay()
             displayMonthlySalaly()
+            
+            // 기본 날짜선택 세팅을 변경 해당월일시 당일 표시 / 해당월 아닐시 1일 선택 (다른날짜를 선택했었더라도)
+            nextCalendarVC.calendarCollectionView.cellForItem(at: nextCalendarVC.preIndexPath)?.backgroundColor = UIColor.clear
+            nextCalendarVC.calendarCollectionView.cellForItem(at: nextCalendarVC.firstDayIndexPath)?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
         }
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        let calendarVC = viewController as! CalendarViewController
+        let calendarVC = viewController as! CalendarViewController  // 현재 달력 월
         let currentDate = calendarVC.date
         var year = calendar.component(.year, from: currentDate)
         var month = calendar.component(.month, from: currentDate)
-        calendarVC.calendarCollectionView.cellForItem(at: calendarVC.preIndexPath)?.backgroundColor = UIColor.clear
-        calendarVC.calendarCollectionView.cellForItem(at: calendarVC.firstDayIndexPath)?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
         
         switch month {
         case 12:
@@ -206,12 +213,10 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        let calendarVC = viewController as! CalendarViewController
+        let calendarVC = viewController as! CalendarViewController  // 현재 달력 월
         let currentDate = calendarVC.date
         var year = calendar.component(.year, from: currentDate)
         var month = calendar.component(.month, from: currentDate)
-        calendarVC.calendarCollectionView.cellForItem(at: calendarVC.preIndexPath)?.backgroundColor = UIColor.clear
-        calendarVC.calendarCollectionView.cellForItem(at: calendarVC.firstDayIndexPath)?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
         
         switch month {
         case 1:

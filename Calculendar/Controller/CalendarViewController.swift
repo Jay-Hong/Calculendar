@@ -14,7 +14,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     var day = Int()
     var firstDayPosition = Int()
     var numberOfCells = Int()
-    var firstDayIndexPath = IndexPath()
+    var firstDayIndexPath = IndexPath() // 캘린더 화면 전환시 원래 날짜 셋팅값 찾아갈 수 있도록 Main에서 쓰임
     var preIndexPath = IndexPath()
     var strYearMonth = String()
     
@@ -22,9 +22,16 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setPosition(date)
+        
+        NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object:nil, queue: .main) { [weak self] _ in
+            setToday()
+            self?.calendarCollectionView.reloadData()
+        
+        }
     }
-
+    
     func setPosition(_ date: Date) {
         year = calendar.component(.year, from: date)
         month = calendar.component(.month, from: date)
@@ -60,6 +67,8 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         
         if dayCounter < 1 {
             cell.isHidden = true
+        } else {
+            cell.isHidden = false
         }
         
         if dayCounter == 1 {
@@ -92,8 +101,10 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.1841003787, green: 0.7484605911, blue: 0.06411089568, alpha: 1)
                     case 1.5 ..< 2:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.977601601, green: 0.7735045688, blue: 0.1866027329, alpha: 1)
-                    case 2 ..< 3:
+                    case 2 ..< 2.5:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 1, green: 0.4626982859, blue: 0.3224007863, alpha: 1)
+                    case 2.5 ..< 3:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.5514207035, green: 0.3453891092, blue: 0.9958749898, alpha: 1)
                     case 3 ..< 4:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.8951854988, green: 0.4097951526, blue: 0.834882776, alpha: 1)
                     case 4 ..< 5:
@@ -137,34 +148,47 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                 }
             }
             
-            switch indexPath.row {  // 주말 날짜색 설정
-            case 0,7,14,21,28,35,42:
-                if dayCounter > 0 {
-                    cell.dayLabel.textColor = UIColor.red }
-            case 6,13,20,27,34,41:
-                if dayCounter > 0 {
-                    cell.dayLabel.textColor = UIColor.blue }
-            default: break
-            }   
-            
             if (year == toYear && month == toMonth && dayCounter == toDay) {
                 firstDayIndexPath = indexPath
                 cell.dayLabel.backgroundColor = #colorLiteral(red: 1, green: 0.08361979167, blue: 0, alpha: 0.6451994243)
+                cell.dayLabel.font = UIFont.boldSystemFont(ofSize: cell.dayLabel.font.pointSize)
                 cell.dayLabel.textColor = UIColor.white
+            } else {
+                cell.dayLabel.backgroundColor = UIColor.clear
+                cell.dayLabel.font = UIFont.systemFont(ofSize: cell.dayLabel.font.pointSize)
+                
+                switch indexPath.row {  // 주말 날짜색 설정
+                case 0,7,14,21,28,35,42:
+                    if dayCounter > 0 {
+                        cell.dayLabel.textColor = UIColor.red }
+                case 6,13,20,27,34,41:
+                    if dayCounter > 0 {
+                        cell.dayLabel.textColor = UIColor.blue }
+                default:
+                    cell.dayLabel.textColor = UIColor.black
+                }
             }
             
-            if dayCounter == day {
-                cell.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
-                preIndexPath = indexPath
+            if preIndexPath.isEmpty {   // 새로만들어진 캘린더일 경우
+                if dayCounter == day {
+                    cell.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
+                    preIndexPath = indexPath
+                } else {
+                    cell.backgroundColor = UIColor.clear
+                }
+            } else {    // 날짜바뀌었을 때
+                if indexPath == preIndexPath {
+                    cell.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
+                } else {
+                    cell.backgroundColor = UIColor.clear
+                }
             }
-
         }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let dayCounter = indexPath.row + 1 - firstDayPosition
-//        print("\(year)년 \(month)월 \(dayCounter)일 이 선택 됨")
         delegate?.selectYearMonthDay(year: year, month: month, day: dayCounter)
         delegate?.callDisplayDaylyPay()
         collectionView.cellForItem(at: preIndexPath)?.backgroundColor = UIColor.clear
