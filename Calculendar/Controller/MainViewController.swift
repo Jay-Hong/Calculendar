@@ -63,6 +63,21 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         setDashBoard()
         setAdMob()
         setInitialSideMenuPosition()
+        addNotification()
+    }
+    
+    func addNotification() {
+        // 기본단가(BasePay)가 새로 저장될 경우
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidSaveBasePay(_:)), name: .didSaveBasePay, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidTogglePaySystem(_:)), name: .didTogglePaySystem, object: nil)
+    }
+    
+    @objc func onDidSaveBasePay(_ notification: Notification) {
+        callDisplayDaylyPay()
+    }
+    
+    @objc func onDidTogglePaySystem(_ notification: Notification) {
+        applySetting()
     }
     
     func setAdMob() {
@@ -108,7 +123,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     }
     
     func makeCalendar() {
-        let firstViewController = self.createCalendarViewController(today)
+        let firstViewController = createCalendarViewController(today)
         pageVC.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         
         mainYearMonthButton.setTitle("\(toYear)년 \(toMonth)월", for: .normal)
@@ -118,9 +133,9 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         //  일급:0 / 시급:1  따른  공수입력 / 시간입력  버튼 출력
         switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
         case 0:
-            self.inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
+            inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
         default:
-            self.inputUnitOfWorkButton.setTitle("시간 입력", for: .normal)
+            inputUnitOfWorkButton.setTitle("시간 입력", for: .normal)
         }
     
         // 해당 월 공수 , 급여 , 단가 출력
@@ -234,42 +249,41 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     //MARK:  - Prepare for Segues
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toYearMonthPopUpViewControllerSegue" {
-            if let popup = segue.destination as? YearMonthPopUpViewController {
-                popup.delegate = self
+            if let popupVC = segue.destination as? YearMonthPopUpViewController {
+                popupVC.delegate = self
             }
         } else if segue.identifier == "toUnitOfWorkPopUpViewControllerSegue" {
-            if let popup = segue.destination as? UnitOfWorkPopUpViewController {
-                popup.delegate = self
-                popup.strNumber = unitOfWorkTemp
-                popup.selectedMonth = selectedMonth
-                popup.selectedDay = selectedDay
+            if let popupVC = segue.destination as? UnitOfWorkPopUpViewController {
+                popupVC.delegate = self
+                popupVC.strNumber = unitOfWorkTemp
+                popupVC.selectedMonth = selectedMonth
+                popupVC.selectedDay = selectedDay
             }
         } else if segue.identifier == "toMemoPopUpViewControllerSegue" {
-            if let popup = segue.destination as? MemoPopUpViewController {
-                popup.delegate = self
-                popup.memo = memoTemp
-                popup.selectedMonth = selectedMonth
-                popup.selectedDay = selectedDay
+            if let popupVC = segue.destination as? MemoPopUpViewController {
+                popupVC.delegate = self
+                popupVC.memo = memoTemp
+                popupVC.selectedMonth = selectedMonth
+                popupVC.selectedDay = selectedDay
             }
         } else if segue.identifier == "toPayPopUpViewControllerSegue" {
-            if let popup = segue.destination as? PayPopUpViewController {
-                popup.delegate = self
-                popup.strNumber = payTemp
-                popup.selectedMonth = selectedMonth
-                popup.selectedDay = selectedDay
+            if let popupVC = segue.destination as? PayPopUpViewController {
+                popupVC.delegate = self
+                popupVC.strNumber = payTemp
+                popupVC.selectedMonth = selectedMonth
+                popupVC.selectedDay = selectedDay
             }
         } else if segue.identifier == "toBasePayPopUpViewControllerSegue" {
             //  월별단가 PayPopUpViewController 를 같이 사용하지만 selectedMonth를 0 으로 설정
-            if let popup = segue.destination as? PayPopUpViewController {
-                popup.delegate = self
-                popup.selectedMonth = 0
+            if let popupVC = segue.destination as? PayPopUpViewController {
+                popupVC.delegate = self
+                popupVC.selectedMonth = 0
             }
         } else if segue.identifier == "toSettingViewControllerSegue" {
-            if let popup = segue.destination as? SettingViewController {
-                popup.delegate = self
+            if let popupVC = segue.destination as? SettingViewController {
+                popupVC.delegate = self
             }
         }
-        
     }
     
     //MARK:  - DashBoard 출력

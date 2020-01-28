@@ -38,6 +38,13 @@ func makeTwoDigitString(_ number : Int) -> String {
     }
 }
 
+extension Notification.Name {
+    static let didSaveBasePay = Notification.Name("didSaveBasePay")
+    static let didTogglePaySystem = Notification.Name("didTogglePaySystem")
+    static let didSaveTax = Notification.Name("didSaveTax")
+    static let didSaveStartDay = Notification.Name("didSaveStartDay")
+}
+
 public extension UIDevice {
     
     var modelName: String {
