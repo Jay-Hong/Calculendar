@@ -1,8 +1,7 @@
-
 import Foundation
 import MessageUI
 
-var daysInMonths = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]   //  0월은 존재X daysInMonths[0]은 값은 기본단가설정시 사용
+var daysInMonths = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]   //  0월은 존재X
 let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
 var today = Date()  // 오늘
 let calendar = Calendar.current
@@ -10,6 +9,11 @@ var toDay = Int()   // 오늘 날짜
 var toMonth = Int() // 오늘 달
 var toYear = Int()  // 오늘 년도
 //let toWeekday = calendar.component(.weekday , from: today)    // 한 주의시작을 월요일로 하려면 이 값에 -1 해준다
+
+// 화페단위
+let moneyUnitsDataSource = ["만원" ,"천원" ,"원"]
+//  화폐 셋자리마다 , 찍어주기위한 formatter
+let formatter = NumberFormatter()
 
 let iPhoneXS = CGSize(width: 375, height: 812)
 let iPhoneXSMAX = CGSize(width: 414, height: 896)
@@ -38,11 +42,23 @@ func makeTwoDigitString(_ number : Int) -> String {
     }
 }
 
+struct SettingsKeys {
+    
+    static let basePay = "basePay"                  // 기본단가
+    static let moneyUnit = "moneyUnit"              // 화페단위
+    static let taxRateFront = "taxRateFront"        // 세율
+    static let taxRateBack = "taxRateBack"          // 세율
+    static let paySystemIndex = "paySystemIndex"    // 급여형태
+    static let unitOfWorkSettingPeriodIndex = "unitOfWorkSettingPeriodIndex"    // 단가변경 기간(한달 or 하루)
+
+}
+
 extension Notification.Name {
     static let didSaveBasePay = Notification.Name("didSaveBasePay")
+    static let didChangeMoneyUnit = Notification.Name("didChangeMoneyUnit")
+    static let didSaveTaxRate = Notification.Name("didSaveTaxRate")
     static let didTogglePaySystem = Notification.Name("didTogglePaySystem")
-    static let didSaveTax = Notification.Name("didSaveTax")
-    static let didSaveStartDay = Notification.Name("didSaveStartDay")
+//    static let didSaveStartDay = Notification.Name("didSaveStartDay")
 }
 
 public extension UIDevice {

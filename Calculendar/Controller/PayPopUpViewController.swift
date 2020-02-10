@@ -8,6 +8,7 @@ class PayPopUpViewController: UIViewController {
     @IBOutlet weak var saveButton: UIButton!
 //    @IBOutlet weak var topIcon: UIView!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var moneyUnitLabel: UILabel!
     
     @IBOutlet weak var n1Button: UIButton!
     @IBOutlet weak var n2Button: UIButton!
@@ -24,6 +25,12 @@ class PayPopUpViewController: UIViewController {
     
     var delegate: PopupDelegate?
     
+    var moneyUnit = Int() {
+        didSet{
+            moneyUnitLabel.text = moneyUnitsDataSource[moneyUnit]
+        }
+    }
+    
     //  넘겨받는 인자들
     var selectedMonth = Int()
     var selectedDay = Int()
@@ -33,16 +40,19 @@ class PayPopUpViewController: UIViewController {
         super.viewDidLoad()
         
         refineStrNumber()
-
         setShadow()
         
+        moneyUnit = UserDefaults.standard.integer(forKey: SettingsKeys.moneyUnit)
+        
+        //  화폐단위(MoneyUnit)가 변경 되었을 경우
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeMoneyUnitOnPayVC(_:)), name: .didChangeMoneyUnit, object: nil)
+    }
+    
+    @objc func onDidChangeMoneyUnitOnPayVC(_ notification: Notification) {
+        moneyUnit = UserDefaults.standard.integer(forKey: SettingsKeys.moneyUnit)
     }
     
     func refineStrNumber() {
-        //  기본단가 설정 페이지일 경우 plist에서 기본단가 가져오기
-        if selectedMonth == 0 {
-            strNumber = UserDefaults.standard.object(forKey: "basePay") as? String ?? "0"
-        }
         
         //  출력될 단가 다듬기
         if strNumber.contains(".") {
@@ -55,25 +65,17 @@ class PayPopUpViewController: UIViewController {
         numberDisplay()
         
         //  상단 설명 출력
-        switch selectedMonth {
-        case 0:
-            descriptionLabel.text = "기본 단가 설정"
-        case 1...12:
-            if UserDefaults.standard.integer(forKey: "unitOfWorkSettingPeriodIndex") == 0 {
-                //  한달단위 단가설정
-                descriptionLabel.text = "\(selectedMonth)월 전체단가 설정"
-            } else {
-                //  일단위 단가설정
-                descriptionLabel.text = "\(selectedMonth)월 \(selectedDay)일 단가 설정"
-            }
-        default:
-            break
+        if UserDefaults.standard.integer(forKey: SettingsKeys.unitOfWorkSettingPeriodIndex) == 0 {
+            //  한달단위 단가설정
+            descriptionLabel.text = "\(selectedMonth)월 전체단가 설정"
+        } else {
+            //  일단위 단가설정
+            descriptionLabel.text = "\(selectedMonth)월 \(selectedDay)일 단가 설정"
         }
-        
     }
     
     func numberDisplay() {
-        displayNumberLabel.text = strNumber
+        displayNumberLabel.text = formatter.string(from: NSNumber(value: Double(strNumber) ?? 0))!
     }
     
     func accumulator(digit: String) {
@@ -108,15 +110,7 @@ class PayPopUpViewController: UIViewController {
     }
 
     @IBAction func savePayButtonAction(_ sender: Any) {
-        
-        switch selectedMonth {
-        case 0:
-            delegate?.saveBasePay(basePay: displayNumberLabel.text!)
-        case 1...12:
-            delegate?.savePay(pay: displayNumberLabel.text!)
-        default:
-            break
-        }
+        delegate?.savePay(pay: strNumber)
         dismiss(animated: true, completion: nil)
     }
     

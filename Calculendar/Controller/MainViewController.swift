@@ -64,16 +64,38 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         setAdMob()
         setInitialSideMenuPosition()
         addNotification()
+        setFormatter()
+    }
+    
+    func setFormatter() {
+        //  세자리 숫자마다 , 표시위함
+        formatter.numberStyle = .decimal
+        formatter.locale = Locale.current
+        formatter.maximumFractionDigits = 4
     }
     
     func addNotification() {
-        // 기본단가(BasePay)가 새로 저장될 경우
+        //  기본단가(BasePay)가 새로 저장될 경우
         NotificationCenter.default.addObserver(self, selector: #selector(onDidSaveBasePay(_:)), name: .didSaveBasePay, object: nil)
+        //  화폐단위(MoneyUnit)가 변경 되었을 경우
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeMoneyUnitOnMain(_:)), name: .didChangeMoneyUnit, object: nil)
+        //  세금세팅 변경되었을 경우
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidSaveTaxRate), name: .didSaveTaxRate, object: nil)
+        //  급여형태 Toggle
         NotificationCenter.default.addObserver(self, selector: #selector(onDidTogglePaySystem(_:)), name: .didTogglePaySystem, object: nil)
     }
     
     @objc func onDidSaveBasePay(_ notification: Notification) {
         callDisplayDaylyPay()
+    }
+    
+    @objc func onDidChangeMoneyUnitOnMain(_ notification: Notification) {
+        dashBoardCollectionView.reloadData()
+    }
+    
+    @objc func onDidSaveTaxRate(_ notification: Notification) {
+        setMonthlySalalyOnDashboard()
+        dashBoardCollectionView.reloadData()
     }
     
     @objc func onDidTogglePaySystem(_ notification: Notification) {
@@ -131,7 +153,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         strYearMonth = "\(toYear)\(makeTwoDigitString(toMonth))"
         
         //  일급:0 / 시급:1  따른  공수입력 / 시간입력  버튼 출력
-        switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
+        switch UserDefaults.standard.integer(forKey: SettingsKeys.paySystemIndex) {
         case 0:
             inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
         default:
@@ -286,7 +308,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         }
     }
     
-    //MARK:  - DashBoard 출력
+    //MARK:  - DashBoard Setting
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
     func setMonthlyUnitOfWorkOnDashboard() {
         var monthlyUnitOfWork = Float()
@@ -304,11 +326,19 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
     func setMonthlySalalyOnDashboard() {
+        
+        let taxRateFront = UserDefaults.standard.integer(forKey: SettingsKeys.taxRateFront)
+        let taxRateBack = UserDefaults.standard.integer(forKey: SettingsKeys.taxRateBack)
+        let taxRateTotal = Double(taxRateFront) + (Double(taxRateBack) * 0.01)
+        let taxRatePercentage = (100 - taxRateTotal) * 0.01
+
         var monthlySalaly = Double()
         for item in itemArray {
             monthlySalaly += Double(item.numUnitOfWork * item.pay)
         }
-        strMonthlySalaly = String(format: "%.4f", monthlySalaly)
+        monthlySalaly *= taxRatePercentage
+        
+        strMonthlySalaly = formatter.string(from: NSNumber(value: monthlySalaly))!
         if strMonthlySalaly.contains(".") {
             while (strMonthlySalaly.hasSuffix("0")) {
                 strMonthlySalaly.removeLast() }
@@ -319,15 +349,16 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
     func setDaylyPayOnDashboard() {
+        
         var daylyPay = Float()
         
         if itemArray.isEmpty {
-            daylyPay = Float(UserDefaults.standard.object(forKey: "basePay") as? String ?? "0")!
+            daylyPay = Float(UserDefaults.standard.object(forKey: SettingsKeys.basePay) as? String ?? "0")!
         } else {
             daylyPay = itemArray[selectedDay-1].pay
         }
-        
-        strDaylyPay = String(daylyPay)
+
+        strDaylyPay = formatter.string(from: NSNumber(value: daylyPay))!
         if strDaylyPay.contains(".") {
             while (strDaylyPay.hasSuffix("0")) {
                 strDaylyPay.removeLast() }
@@ -383,7 +414,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     @IBAction func inputPayButtonAction(_ sender: UIButton) {
         loadItems()
         //  선택된 달(날짜)의 단가를 입력화면에 출력
-        payTemp = !itemArray.isEmpty ? String(itemArray[selectedDay-1].pay) : UserDefaults.standard.object(forKey: "basePay") as? String ?? "0"
+        payTemp = !itemArray.isEmpty ? String(itemArray[selectedDay-1].pay) : UserDefaults.standard.object(forKey: SettingsKeys.basePay) as? String ?? "0"
     }
     
     @IBAction func sideMenuButtonAction(_ sender: UIButton) {
@@ -433,7 +464,7 @@ extension MainViewController: PopupDelegate {
         if itemArray.isEmpty {makeItemArray()}
         payTemp = pay == "" ? "0" : pay
         
-        switch UserDefaults.standard.integer(forKey: "unitOfWorkSettingPeriodIndex") {
+        switch UserDefaults.standard.integer(forKey: SettingsKeys.unitOfWorkSettingPeriodIndex) {
         case 0: //  한달단위 저장
             for item in itemArray {
                 item.pay = Float(payTemp)!
@@ -449,7 +480,7 @@ extension MainViewController: PopupDelegate {
     
     func saveBasePay(basePay: String) {
         let basePayTemp = basePay == "" ? "0" : basePay
-        UserDefaults.standard.set(basePayTemp, forKey: "basePay")
+        UserDefaults.standard.set(basePayTemp, forKey: SettingsKeys.basePay)
         sideMenuLeadingConstraint.constant = -250
         UIView.animate(withDuration: 0.3, animations: {self.view.layoutIfNeeded()})
         sideMenuBackButton.isHidden = true
@@ -527,7 +558,7 @@ extension MainViewController: PopupDelegate {
     
     func applySetting() {
         //  일급:0 / 시급:1
-        switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
+        switch UserDefaults.standard.integer(forKey: SettingsKeys.paySystemIndex) {
         case 0:
             inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
         default:
@@ -556,8 +587,6 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func setDashBoard() {
         
-//        dashBoardCollectionView.register(UINib.init(nibName: "DashBoardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "dashIdentififer")
-        
         let flowLayout = UPCarouselFlowLayout()
         flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.size.width - 40.0, height: dashBoardCollectionView.frame.size.height - 4)
         flowLayout.scrollDirection = .horizontal
@@ -573,14 +602,16 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dashBoardCollectionView.dequeueReusableCell(withReuseIdentifier: "dashboardcell", for: indexPath) as! DashBoardCell
-        
+        let moneyUnitData = UserDefaults.standard.integer(forKey: SettingsKeys.moneyUnit)
+        let paySystemIndex = UserDefaults.standard.integer(forKey: SettingsKeys.paySystemIndex)
+
         switch indexPath.row {
             
         case 0:
             cell.contentLabel.text = strMonthlyUnitOfWrk
             cell.descriptionLabel.text = "\(selectedMonth)월 근무"
             //  일급:0 / 시급:1
-            switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
+            switch paySystemIndex {
             case 0:
                 cell.unitLabel.text = "공수"
             default:
@@ -594,7 +625,8 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         case 1:
             cell.contentLabel.text = strMonthlySalaly
             cell.descriptionLabel.text = "\(selectedMonth)월 예상 급여"
-            cell.unitLabel.text = "만원"
+            cell.unitLabel.text = moneyUnitsDataSource[moneyUnitData]   // 만원 or 천원 or 원
+            
             cell.backView.backgroundColor = #colorLiteral(red: 0.9882352941, green: 0, blue: 0.3490196078, alpha: 1)
             cell.imgBackView.backgroundColor = #colorLiteral(red: 0.8705882353, green: 0, blue: 0.3098039216, alpha: 1)
             cell.iconImgView.image = #imageLiteral(resourceName: "ic_wallet")
@@ -602,7 +634,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         case 2:
             cell.contentLabel.text = strDaylyPay
             cell.descriptionLabel.text = "\(selectedMonth)월 \(selectedDay)일 단가"
-            cell.unitLabel.text = "만원"
+            cell.unitLabel.text = moneyUnitsDataSource[moneyUnitData]   // 만원 or 천원 or 원
             cell.backView.backgroundColor = #colorLiteral(red: 0.4588235294, green: 0.8039215686, blue: 0.2745098039, alpha: 1)
             cell.imgBackView.backgroundColor = #colorLiteral(red: 0.4039215686, green: 0.7019607843, blue: 0.2431372549, alpha: 1)
             cell.iconImgView.image = #imageLiteral(resourceName: "ic_money")

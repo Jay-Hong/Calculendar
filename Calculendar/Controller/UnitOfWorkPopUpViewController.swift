@@ -4,6 +4,7 @@ import GoogleMobileAds
 
 class UnitOfWorkPopUpViewController: UIViewController, GADBannerViewDelegate {
 
+    @IBOutlet weak var topDescriptionView: UIView!
     @IBOutlet weak var displayBackView: UIView!
     @IBOutlet weak var displayNumberLabel: UILabel!
     @IBOutlet weak var saveButton: UIButton!
@@ -39,6 +40,19 @@ class UnitOfWorkPopUpViewController: UIViewController, GADBannerViewDelegate {
         setShadow()
         
         setAdMob()
+        
+        // '0'저장 = 휴무 / 모두지우면 공수삭제 View
+        topDescriptionView.alpha = 0
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if strNumber != "0" {
+            UIView.animate(withDuration: 2.5, delay: 0.2, animations: {self.topDescriptionView.alpha = 0.8;}, completion: {
+                (value: Bool) in
+                UIView.animate(withDuration: 2.8, delay: 4, animations: {self.topDescriptionView.alpha = 0;})
+            })
+        }
     }
     
     func setAdMob() {
@@ -110,6 +124,10 @@ class UnitOfWorkPopUpViewController: UIViewController, GADBannerViewDelegate {
     }
     
     func setShadow() {
+        
+        topDescriptionView.layer.cornerRadius = 10
+        topDescriptionView.layer.masksToBounds = true
+        
         displayBackView.layer.cornerRadius = 10
         displayBackView.layer.masksToBounds = true
         

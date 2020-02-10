@@ -6,6 +6,7 @@ class BasePayPopUpViewController: UIViewController {
     @IBOutlet weak var displayNumberLabel: UILabel!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var moneyUnitLabel: UILabel!
     
     @IBOutlet weak var n1Button: UIButton!
     @IBOutlet weak var n2Button: UIButton!
@@ -21,6 +22,11 @@ class BasePayPopUpViewController: UIViewController {
     @IBOutlet weak var backSpaceButton: UIButton!
     
     var strNumber = String()
+    var moneyUnit = Int() {
+        didSet{
+            moneyUnitLabel.text = moneyUnitsDataSource[moneyUnit]
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,13 +34,20 @@ class BasePayPopUpViewController: UIViewController {
         setBasePayScene()
         setShadow()
         
+        moneyUnit = UserDefaults.standard.integer(forKey: SettingsKeys.moneyUnit)
+        
+        //  화폐단위(MoneyUnit)가 변경 되었을 경우
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeMoneyUnitOnBasePayVC(_:)), name: .didChangeMoneyUnit, object: nil)
     }
     
     func setBasePayScene() {
-        descriptionLabel.text = "기본 단가 설정"
-        strNumber = UserDefaults.standard.object(forKey: "basePay") as? String ?? "0"
+//        descriptionLabel.text = "기본 단가 설정"
         trimStrNumber()
         numberDisplay()
+    }
+    
+    @objc func onDidChangeMoneyUnitOnBasePayVC(_ notification: Notification) {
+        moneyUnit = UserDefaults.standard.integer(forKey: SettingsKeys.moneyUnit)
     }
     
     func trimStrNumber() {
@@ -48,23 +61,23 @@ class BasePayPopUpViewController: UIViewController {
     }
     
     func numberDisplay() {
-        displayNumberLabel.text = strNumber
+        displayNumberLabel.text = formatter.string(from: NSNumber(value: Double(strNumber) ?? 0))!
+    }
+    
+    // 저장 버튼을 누르면 Unwind Segue 로 SettingVC로 이동 (기본단가 세팅화면에 뿌려주고 저장)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "unwindFromBasePayVC" {
+            if let setting2VC = segue.destination as? Setting2ViewController {
+                trimStrNumber()
+                setting2VC.basePay = strNumber
+            }
+        }
     }
     
     func accumulator(digit: String) {
         strNumber += (strNumber.count < 6) ? digit : ""
     }
     
-    @IBAction func saveBasePayButtonAction(_ sender: Any) {
-        
-        trimStrNumber()
-        UserDefaults.standard.set(strNumber, forKey: "basePay")
-        
-        // 기본단가(BasePay)가 새로 저장되면 메인화면의 DashBoard 기본단가표기 저장된 값으로 변경 시킴
-        NotificationCenter.default.post(name: .didSaveBasePay, object: nil)
-        
-        performSegue(withIdentifier: "unwind", sender: sender)
-    }
     
     @IBAction func numberButtonAction(_ sender: UIButton) {
         if strNumber.hasPrefix("0") {
