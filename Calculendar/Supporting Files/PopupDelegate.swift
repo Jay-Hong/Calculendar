@@ -6,6 +6,4 @@ protocol PopupDelegate {
     func saveUnitOfWork(unitOfWork: String)
     func saveMemo(memo: String)
     func savePay(pay: String)
-    func saveBasePay(basePay: String)
-    func applySetting()
 }

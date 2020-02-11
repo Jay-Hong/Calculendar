@@ -13,13 +13,11 @@
 		6908F08C20D78DD60046F806 /* PopupDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6908F08920D78DD60046F806 /* PopupDelegate.swift */; };
 		6908F08D20D78DD60046F806 /* CalendarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6908F08A20D78DD60046F806 /* CalendarDelegate.swift */; };
 		69225F4D22D5FB9600A6109A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69225F4C22D5FB9600A6109A /* Assets.xcassets */; };
-		6930FC8A20DEDCD200EE5D74 /* DescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6930FC8920DEDCD200EE5D74 /* DescriptionViewController.swift */; };
 		694CE8C423D9714F0058E3B1 /* BasePayPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 694CE8C323D9714F0058E3B1 /* BasePayPopUpViewController.swift */; };
 		695C4E5523D6E857008A606B /* Setting2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695C4E5423D6E856008A606B /* Setting2ViewController.swift */; };
 		697A5E9520D6FD4800951321 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A5E9420D6FD4800951321 /* AppDelegate.swift */; };
 		697A5E9720D6FD4800951321 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A5E9620D6FD4800951321 /* MainViewController.swift */; };
 		697A5E9F20D6FD4F00951321 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 697A5E9D20D6FD4F00951321 /* LaunchScreen.storyboard */; };
-		69A0A72820F2D9C400422D7B /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0A72720F2D9C400422D7B /* SettingViewController.swift */; };
 		69A8DF2520D78F9800158864 /* Vars.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A8DF2420D78F9800158864 /* Vars.swift */; };
 		69A8DF2720D78FEB00158864 /* CalendarLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A8DF2620D78FEB00158864 /* CalendarLineView.swift */; };
 		69A8DF2920D7918E00158864 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A8DF2820D7918E00158864 /* CalendarCollectionViewCell.swift */; };
@@ -45,14 +43,12 @@
 		69225F4C22D5FB9600A6109A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		692313DE238EAB9A00684D43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		692313DF238EAB9B00684D43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		6930FC8920DEDCD200EE5D74 /* DescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionViewController.swift; sourceTree = "<group>"; };
 		694CE8C323D9714F0058E3B1 /* BasePayPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePayPopUpViewController.swift; sourceTree = "<group>"; };
 		695C4E5423D6E856008A606B /* Setting2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting2ViewController.swift; sourceTree = "<group>"; };
 		697A5E9120D6FD4800951321 /* Calculendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		697A5E9420D6FD4800951321 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		697A5E9620D6FD4800951321 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		697A5EA020D6FD4F00951321 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		69A0A72720F2D9C400422D7B /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		69A8DF2420D78F9800158864 /* Vars.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vars.swift; sourceTree = "<group>"; };
 		69A8DF2620D78FEB00158864 /* CalendarLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarLineView.swift; sourceTree = "<group>"; };
 		69A8DF2820D7918E00158864 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -158,8 +154,6 @@
 				69A8DF2E20D7B9A900158864 /* PayPopUpViewController.swift */,
 				69A8DF2F20D7B9A900158864 /* MemoPopUpViewController.swift */,
 				69A8DF3020D7B9A900158864 /* UnitOfWorkPopUpViewController.swift */,
-				6930FC8920DEDCD200EE5D74 /* DescriptionViewController.swift */,
-				69A0A72720F2D9C400422D7B /* SettingViewController.swift */,
 				695C4E5423D6E856008A606B /* Setting2ViewController.swift */,
 				694CE8C323D9714F0058E3B1 /* BasePayPopUpViewController.swift */,
 				69C3D53623E3580900082BC6 /* MoneyUnitViewController.swift */,
@@ -305,7 +299,6 @@
 				69C3D53723E3580900082BC6 /* MoneyUnitViewController.swift in Sources */,
 				6908F08520D78D850046F806 /* CalendarViewController.swift in Sources */,
 				697A5E9720D6FD4800951321 /* MainViewController.swift in Sources */,
-				69A0A72820F2D9C400422D7B /* SettingViewController.swift in Sources */,
 				69A8DF3520D7B9A900158864 /* UnitOfWorkPopUpViewController.swift in Sources */,
 				69A8DF2920D7918E00158864 /* CalendarCollectionViewCell.swift in Sources */,
 				69A8DF3320D7B9A900158864 /* PayPopUpViewController.swift in Sources */,
@@ -315,7 +308,6 @@
 				69A8DF3420D7B9A900158864 /* MemoPopUpViewController.swift in Sources */,
 				69F4507A21B03E7600152812 /* DashBoardCell.swift in Sources */,
 				695C4E5523D6E857008A606B /* Setting2ViewController.swift in Sources */,
-				6930FC8A20DEDCD200EE5D74 /* DescriptionViewController.swift in Sources */,
 				6908F08C20D78DD60046F806 /* PopupDelegate.swift in Sources */,
 				694CE8C423D9714F0058E3B1 /* BasePayPopUpViewController.swift in Sources */,
 				69A8DF2720D78FEB00158864 /* CalendarLineView.swift in Sources */,

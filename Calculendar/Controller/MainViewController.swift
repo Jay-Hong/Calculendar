@@ -19,13 +19,6 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     //  년월 나오는 상단 바 높이 설정
     @IBOutlet weak var topBarViewHeightConstraint: NSLayoutConstraint!
     
-    //  Side Menu
-    @IBOutlet weak var sideMenuBackButton: UIButton!
-    @IBOutlet weak var sideMenuBackView: UIView!
-    @IBOutlet weak var sideMenuIcon: UIImageView!
-    @IBOutlet weak var sideMenuLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var versionLabel: UILabel!
-    
     var pageVC = UIPageViewController()
     var nextCalendarVC = CalendarViewController()
     
@@ -60,9 +53,9 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         setTopBar()
         makeCalendarScreen()
         makeCalendar()
+        printPaySystemOnInputUnitOfWorkButton()
         setDashBoard()
         setAdMob()
-        setInitialSideMenuPosition()
         addNotification()
         setFormatter()
     }
@@ -99,12 +92,11 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     }
     
     @objc func onDidTogglePaySystem(_ notification: Notification) {
-        applySetting()
+        printPaySystemOnInputUnitOfWorkButton()
+        dashBoardCollectionView.reloadData()    //  공수 / 시간
     }
     
     func setAdMob() {
-//        let adSize = GADAdSizeFromCGSize(CGSize(width: 320, height: 50))
-//        let adSize2 = GADAdSizeFromCGSize(CGSize(width: bannerView.frame.width, height: bannerView.frame.height))
         bannerView.adSize = kGADAdSizeSmartBannerPortrait
         bannerView.adUnitID = "ca-app-pub-5095960781666456/5274670381"
         bannerView.rootViewController = self
@@ -152,6 +144,14 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         selectYearMonthDay(year: toYear, month: toMonth, day: toDay)
         strYearMonth = "\(toYear)\(makeTwoDigitString(toMonth))"
         
+        // 해당 월 공수 , 급여 , 단가 출력
+        loadItems()
+        setMonthlyUnitOfWorkOnDashboard()
+        setMonthlySalalyOnDashboard()
+        setDaylyPayOnDashboard()
+    }
+    
+    func printPaySystemOnInputUnitOfWorkButton() {
         //  일급:0 / 시급:1  따른  공수입력 / 시간입력  버튼 출력
         switch UserDefaults.standard.integer(forKey: SettingsKeys.paySystemIndex) {
         case 0:
@@ -159,23 +159,6 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         default:
             inputUnitOfWorkButton.setTitle("시간 입력", for: .normal)
         }
-    
-        // 해당 월 공수 , 급여 , 단가 출력
-        loadItems()
-        setMonthlyUnitOfWorkOnDashboard()
-        setMonthlySalalyOnDashboard()
-        setDaylyPayOnDashboard()
-        
-        //  SideMenu 하단 Version 출력
-        versionLabel.text = "v\(appVersion!)"
-    }
-    
-    func setInitialSideMenuPosition() {
-        sideMenuLeadingConstraint.constant = -250
-        sideMenuBackButton.isHidden = true
-        sideMenuIcon.layer.cornerRadius = 35
-        sideMenuIcon.layer.masksToBounds = true
-        sideMenuBackView.layer.shadowOpacity = 1
     }
     
     func createDate (_ year: Int, _ month: Int, _ day: Int) -> Date {
@@ -295,16 +278,6 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
                 popupVC.selectedMonth = selectedMonth
                 popupVC.selectedDay = selectedDay
             }
-        } else if segue.identifier == "toBasePayPopUpViewControllerSegue" {
-            //  월별단가 PayPopUpViewController 를 같이 사용하지만 selectedMonth를 0 으로 설정
-            if let popupVC = segue.destination as? PayPopUpViewController {
-                popupVC.delegate = self
-                popupVC.selectedMonth = 0
-            }
-        } else if segue.identifier == "toSettingViewControllerSegue" {
-            if let popupVC = segue.destination as? SettingViewController {
-                popupVC.delegate = self
-            }
         }
     }
     
@@ -417,22 +390,6 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         payTemp = !itemArray.isEmpty ? String(itemArray[selectedDay-1].pay) : UserDefaults.standard.object(forKey: SettingsKeys.basePay) as? String ?? "0"
     }
     
-    @IBAction func sideMenuButtonAction(_ sender: UIButton) {
-        sideMenuLeadingConstraint.constant = 0
-        UIView.animate(withDuration: 0.3, animations: {self.view.layoutIfNeeded()})
-        sideMenuBackButton.isHidden = false
-        bannerView.isHidden = true
-    }
-    
-    @IBAction func sideMenuBackButtonAction(_ sender: UIButton) {
-        sideMenuLeadingConstraint.constant = -250
-        UIView.animate(withDuration: 0.3, animations: {self.view.layoutIfNeeded()})
-        sideMenuBackButton.isHidden = true
-        bannerView.isHidden = false
-    }
-    
-    
-    
 }
 
 //MARK:  - Popup Delegate
@@ -474,17 +431,6 @@ extension MainViewController: PopupDelegate {
         }
         saveItems()
         setMonthlySalalyOnDashboard()
-        setDaylyPayOnDashboard()
-        dashBoardCollectionView.reloadData()
-    }
-    
-    func saveBasePay(basePay: String) {
-        let basePayTemp = basePay == "" ? "0" : basePay
-        UserDefaults.standard.set(basePayTemp, forKey: SettingsKeys.basePay)
-        sideMenuLeadingConstraint.constant = -250
-        UIView.animate(withDuration: 0.3, animations: {self.view.layoutIfNeeded()})
-        sideMenuBackButton.isHidden = true
-        bannerView.isHidden = false
         setDaylyPayOnDashboard()
         dashBoardCollectionView.reloadData()
     }
@@ -553,17 +499,6 @@ extension MainViewController: PopupDelegate {
         setMonthlyUnitOfWorkOnDashboard()
         setMonthlySalalyOnDashboard()
         setDaylyPayOnDashboard()
-        dashBoardCollectionView.reloadData()
-    }
-    
-    func applySetting() {
-        //  일급:0 / 시급:1
-        switch UserDefaults.standard.integer(forKey: SettingsKeys.paySystemIndex) {
-        case 0:
-            inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
-        default:
-            inputUnitOfWorkButton.setTitle("시간 입력", for: .normal)
-        }
         dashBoardCollectionView.reloadData()
     }
 }
@@ -647,50 +582,3 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
 }
 
-//MARK:  - Mail Controller Delegate
-extension MainViewController: MFMailComposeViewControllerDelegate {
-    
-    @IBAction func setBasePayButtonAction(_ sender: UIButton) {
-//        print("\nsetBasePayButtonAction\n")
-    }
-    
-    @IBAction func openDescriptionPage(_ sender: UIButton) {
-//        print("\nopenDescriptionPage\n")
-    }
-    
-    @IBAction func sendMailButtonAction(_ sender: UIButton) {
-        let mailComposeViewController = configureMailController()
-        if MFMailComposeViewController.canSendMail() {
-            self.present(mailComposeViewController, animated: true, completion: nil)
-        } else {
-            showMailError()
-        }
-        sideMenuLeadingConstraint.constant = -250
-        sideMenuBackButton.isHidden = true
-        bannerView.isHidden = false
-    }
-    
-    func configureMailController() -> MFMailComposeViewController {
-        let messageBody = "\n\n\n\n\n\n\n\n\n\niOS version: \(iOSVersion)"
-            + "\nApp version : \(appVersion!)\nDevice type: \(iPhoneDevice)"
-        let mailComposerVC = MFMailComposeViewController()
-        mailComposerVC.mailComposeDelegate = self
-        mailComposerVC.setToRecipients(["hjpyooo@gmail.com"])
-        mailComposerVC.setSubject("공수계산기 버그/불만 접수")
-        mailComposerVC.setMessageBody(messageBody, isHTML: false)
-        
-        return mailComposerVC
-    }
-    
-    func showMailError() {
-        let sendMailErrorAlert = UIAlertController(title: "hjpyooo@gmailcom", message: "현 기기에서 메일을 보낼수 없습니다\r\n위 메일주소로 연락주세요", preferredStyle: .alert)
-        let dismiss = UIAlertAction(title: "OK", style: .default, handler: nil)
-        sendMailErrorAlert.addAction(dismiss)
-        self.present(sendMailErrorAlert, animated: true, completion: nil)
-    }
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true, completion: nil)
-    }
-    
-}
