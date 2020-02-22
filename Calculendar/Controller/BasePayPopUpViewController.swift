@@ -1,7 +1,9 @@
 import UIKit
+import GoogleMobileAds
 
-class BasePayPopUpViewController: UIViewController {
+class BasePayPopUpViewController: UIViewController, GADBannerViewDelegate {
 
+    @IBOutlet weak var bannerView: GADBannerView!
     @IBOutlet weak var displayBackView: UIView!
     @IBOutlet weak var displayNumberLabel: UILabel!
     @IBOutlet weak var saveButton: UIButton!
@@ -30,6 +32,15 @@ class BasePayPopUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //  Google AdMob
+        bannerView.adSize = kGADAdSizeSmartBannerPortrait
+        bannerView.adUnitID = "ca-app-pub-5095960781666456/8022994244"
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        bannerView.layer.cornerRadius = 3
+        bannerView.layer.masksToBounds = true
+        bannerView.delegate = self
         
         setBasePayScene()
         setShadow()
@@ -61,7 +72,7 @@ class BasePayPopUpViewController: UIViewController {
     }
     
     func numberDisplay() {
-        displayNumberLabel.text = formatter.string(from: NSNumber(value: Double(strNumber) ?? 0))!
+        displayNumberLabel.text = strNumber
     }
     
     // 저장 버튼을 누르면 Unwind Segue 로 SettingVC로 이동 (기본단가 세팅화면에 뿌려주고 저장)
@@ -106,6 +117,7 @@ class BasePayPopUpViewController: UIViewController {
         numberDisplay()
     }
     
+    //  사용하지 않는 백뷰 버튼
     @IBAction func backgroundButtonAction(_ sender: Any) {
 //        dismiss(animated: true, completion: nil)
         self.navigationController?.popViewController(animated: true)

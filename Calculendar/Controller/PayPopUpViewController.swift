@@ -75,7 +75,7 @@ class PayPopUpViewController: UIViewController {
     }
     
     func numberDisplay() {
-        displayNumberLabel.text = formatter.string(from: NSNumber(value: Double(strNumber) ?? 0))!
+        displayNumberLabel.text = strNumber
     }
     
     func accumulator(digit: String) {

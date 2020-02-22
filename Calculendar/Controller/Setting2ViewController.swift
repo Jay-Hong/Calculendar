@@ -1,8 +1,10 @@
 import UIKit
 import MessageUI
+import GoogleMobileAds
 
-class Setting2ViewController: UITableViewController {
+class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
     
+    @IBOutlet weak var bannerView: GADBannerView!
     @IBOutlet weak var basePayDetailLabel: UILabel!
     @IBOutlet weak var moneyUnitDetailLabel: UILabel!
     @IBOutlet weak var taxDetailLabel: UILabel!
@@ -46,6 +48,15 @@ class Setting2ViewController: UITableViewController {
     }
     
     func initialSetting() {
+        //  Google AdMob
+        bannerView.adSize = kGADAdSizeSmartBannerPortrait
+        bannerView.adUnitID = "ca-app-pub-5095960781666456/3746861409"
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        bannerView.layer.cornerRadius = 5
+        bannerView.layer.masksToBounds = true
+        bannerView.delegate = self
+        
         //  기본단가 표기
         basePay = UserDefaults.standard.object(forKey: SettingsKeys.basePay) as? String ?? "0"
         
@@ -73,7 +84,7 @@ class Setting2ViewController: UITableViewController {
     
     // Cell 높이 설정
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 && indexPath.row == 3 && !taxPickerViewIsOn {
+        if indexPath.section == 0 && indexPath.row == 4 && !taxPickerViewIsOn {
             return 0
         }
         return UITableView.automaticDimension
@@ -82,7 +93,7 @@ class Setting2ViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         //  세금Cell 누르면 TaxPicker 내리고 올리기 (heightForRowAt 호출)
-        if indexPath.section == 0 && indexPath.row == 2 {
+        if indexPath.section == 0 && indexPath.row == 3 {
             taxPickerViewIsOn = !taxPickerViewIsOn
             tableView.beginUpdates()
             tableView.endUpdates()

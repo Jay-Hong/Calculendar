@@ -51,13 +51,14 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         
         setToday()
         setTopBar()
+        setFormatter()
         makeCalendarScreen()
         makeCalendar()
         printPaySystemOnInputUnitOfWorkButton()
         setDashBoard()
         setAdMob()
         addNotification()
-        setFormatter()
+        
     }
     
     func setFormatter() {
@@ -83,6 +84,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     }
     
     @objc func onDidChangeMoneyUnitOnMain(_ notification: Notification) {
+        setMonthlySalalyOnDashboard()
         dashBoardCollectionView.reloadData()
     }
     
@@ -300,6 +302,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
     func setMonthlySalalyOnDashboard() {
         
+        let moneyUnitData = UserDefaults.standard.integer(forKey: SettingsKeys.moneyUnit)
         let taxRateFront = UserDefaults.standard.integer(forKey: SettingsKeys.taxRateFront)
         let taxRateBack = UserDefaults.standard.integer(forKey: SettingsKeys.taxRateBack)
         let taxRateTotal = Double(taxRateFront) + (Double(taxRateBack) * 0.01)
@@ -311,7 +314,21 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         }
         monthlySalaly *= taxRatePercentage
         
-        strMonthlySalaly = formatter.string(from: NSNumber(value: monthlySalaly))!
+        //  화폐단위 만원:0 / 천원:1 / 원:2  (기본값: 0 - 만원)
+        switch moneyUnitData {
+        case 0:
+            formatter.maximumFractionDigits = 4
+            strMonthlySalaly = formatter.string(from: NSNumber(value: monthlySalaly))!
+        case 1:
+            formatter.maximumFractionDigits = 3
+            strMonthlySalaly = formatter.string(from: NSNumber(value: monthlySalaly))!
+            formatter.maximumFractionDigits = 4
+        default:
+            formatter.maximumFractionDigits = 0
+            strMonthlySalaly = formatter.string(from: NSNumber(value: monthlySalaly))!
+            formatter.maximumFractionDigits = 4
+        }
+        
         if strMonthlySalaly.contains(".") {
             while (strMonthlySalaly.hasSuffix("0")) {
                 strMonthlySalaly.removeLast() }
@@ -572,7 +589,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             cell.unitLabel.text = moneyUnitsDataSource[moneyUnitData]   // 만원 or 천원 or 원
             cell.backView.backgroundColor = #colorLiteral(red: 0.4588235294, green: 0.8039215686, blue: 0.2745098039, alpha: 1)
             cell.imgBackView.backgroundColor = #colorLiteral(red: 0.4039215686, green: 0.7019607843, blue: 0.2431372549, alpha: 1)
-            cell.iconImgView.image = #imageLiteral(resourceName: "ic_money")
+            cell.iconImgView.image = #imageLiteral(resourceName: "ic_won")
             
         default:
             break
