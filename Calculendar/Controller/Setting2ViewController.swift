@@ -22,10 +22,10 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
         didSet{ moneyUnitDetailLabel.text = moneyUnitsDataSource[moneyUnit] }
     }
     var taxRateFront = Int() {
-        didSet { taxDetailLabel.text = "\(taxRateFront).\(taxRateBack) %" }
+        didSet { taxDetailLabel.text = "\(taxRateFront)." + makeTwoDigitString(taxRateBack) + " %" }
     }
     var taxRateBack = Int() {
-        didSet { taxDetailLabel.text = "\(taxRateFront).\(taxRateBack) %" }
+        didSet { taxDetailLabel.text = "\(taxRateFront)." + makeTwoDigitString(taxRateBack) + " %" }
     }
     
     var taxPickerViewIsOn = false   // 첫 세팅화면에 TaxPicker 안보이게
@@ -173,7 +173,12 @@ extension Setting2ViewController: UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
+        if pickerView == frontTaxPicker {
             return String(row)
+        } else {
+            return makeTwoDigitString(row)
+        }
     }
 }
 
