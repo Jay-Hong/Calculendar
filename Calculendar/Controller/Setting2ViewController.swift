@@ -10,10 +10,17 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
     @IBOutlet weak var taxDetailLabel: UILabel!
     @IBOutlet weak var backTaxPicker: UIPickerView!
     @IBOutlet weak var frontTaxPicker: UIPickerView!
+    @IBOutlet weak var startDayDetailLabel: UILabel!
+    @IBOutlet weak var startDayPicker: UIPickerView!
     @IBOutlet weak var paySystemSegmentedControl: UISegmentedControl!
     @IBOutlet weak var unitOfWorkSettingPeriodSegmentedControl: UISegmentedControl!
     
     @IBOutlet weak var versionDetailLabel: UILabel!
+    
+    var taxPickerViewIsOn = false       // 첫 세팅화면에 TaxPicker 안보이게
+    var startDayPickerViewIsOn = false  // 첫 세팅화면에 StartPicker 안보이게
+    
+    let numTaxPickerItem = 100      // 0~99
     
     var basePay = String() {
         didSet{ basePayDetailLabel.text = formatter.string(from: NSNumber(value: Double(basePay) ?? 0))! }
@@ -27,10 +34,15 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
     var taxRateBack = Int() {
         didSet { taxDetailLabel.text = "\(taxRateFront)." + makeTwoDigitString(taxRateBack) + " %" }
     }
-    
-    var taxPickerViewIsOn = false   // 첫 세팅화면에 TaxPicker 안보이게
-    
-    let numTaxPickerItem = 100      // 0~99
+    var startDay = Int() {
+        didSet {
+            if startDay != numStartDayPickerItem {
+                startDayDetailLabel.text =  "\(startDay) 일"
+            } else {
+                startDayDetailLabel.text =  "마지막 날"
+            }
+        }
+    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -73,6 +85,13 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
         frontTaxPicker.selectRow(taxRateFront, inComponent: 0, animated: false)
         backTaxPicker.selectRow(taxRateBack, inComponent: 0, animated: false)
         
+        //  시작일
+        startDayPicker.dataSource = self
+        startDayPicker.delegate = self
+        startDay = UserDefaults.standard.integer(forKey: SettingsKeys.startDay)
+        startDay = startDay == 0 ? 1 : startDay // 초기값 0일경우 1일로 만들어 줌
+        startDayPicker.selectRow(startDay-1, inComponent: 0, animated: false)
+        
         //  일급:0 / 시급:1  (기본값: 0 - 일급)
         paySystemSegmentedControl.selectedSegmentIndex = UserDefaults.standard.integer(forKey: SettingsKeys.paySystemIndex)
         
@@ -87,6 +106,11 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
         if indexPath.section == 0 && indexPath.row == 4 && !taxPickerViewIsOn {
             return 0
         }
+        
+        if indexPath.section == 0 && indexPath.row == 6 && !startDayPickerViewIsOn {
+            return 0
+        }
+        
         return UITableView.automaticDimension
     }
     
@@ -95,6 +119,16 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
         //  세금Cell 누르면 TaxPicker 내리고 올리기 (heightForRowAt 호출)
         if indexPath.section == 0 && indexPath.row == 3 {
             taxPickerViewIsOn = !taxPickerViewIsOn
+            if taxPickerViewIsOn { startDayPickerViewIsOn = false } //  PickerView 하나만 열리도록
+            
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+        
+        if indexPath.section == 0 && indexPath.row == 5 {
+            startDayPickerViewIsOn = !startDayPickerViewIsOn
+            if startDayPickerViewIsOn { taxPickerViewIsOn = false } //  PickerView 하나만 열리도록
+            
             tableView.beginUpdates()
             tableView.endUpdates()
         }
@@ -154,7 +188,11 @@ extension Setting2ViewController: UIPickerViewDataSource {
         }
         
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return numTaxPickerItem
+        if pickerView == frontTaxPicker || pickerView == backTaxPicker {
+            return numTaxPickerItem
+        } else {
+            return numStartDayPickerItem
+        }
     }
 }
 
@@ -164,20 +202,31 @@ extension Setting2ViewController: UIPickerViewDelegate {
         if pickerView == frontTaxPicker {
             taxRateFront = row
             UserDefaults.standard.set(taxRateFront, forKey: SettingsKeys.taxRateFront)
-        } else {
+            NotificationCenter.default.post(name: .didSaveTaxRate, object: nil) //  TaxPicker가 변경되면 세금계산 다시
+        } else if pickerView == backTaxPicker {
             taxRateBack = row
             UserDefaults.standard.set(taxRateBack, forKey: SettingsKeys.taxRateBack)
+            NotificationCenter.default.post(name: .didSaveTaxRate, object: nil) //  TaxPicker가 변경되면 세금계산 다시
+        } else {
+            startDay = row + 1
+            UserDefaults.standard.set(startDay, forKey: SettingsKeys.startDay)
+            NotificationCenter.default.post(name: .didSaveStartDay, object: nil)
         }
-        //  TaxPicker가 변경되면 세금계산 다시
-        NotificationCenter.default.post(name: .didSaveTaxRate, object: nil)
+        
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         
         if pickerView == frontTaxPicker {
             return String(row)
-        } else {
+        } else if pickerView == backTaxPicker {
             return makeTwoDigitString(row)
+        } else {
+            if row != numStartDayPickerItem - 1 {
+                return "\(row + 1)  일"
+            } else {
+                return "마지막 날"
+            }
         }
     }
 }

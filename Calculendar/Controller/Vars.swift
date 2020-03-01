@@ -14,6 +14,8 @@ var toYear = Int()  // 오늘 년도
 let moneyUnitsDataSource = ["만원" ,"천원" ,"원"]
 //  화폐 셋자리마다 , 찍어주기위한 formatter
 let formatter = NumberFormatter()
+//  시작일 Item 갯수
+let numStartDayPickerItem = 28  // 1~27, 마지막날
 
 let iPhoneXS = CGSize(width: 375, height: 812)
 let iPhoneXSMAX = CGSize(width: 414, height: 896)
@@ -33,6 +35,34 @@ func setToday() {
     toYear = calendar.component(.year, from: today)     // 오늘 년도
 }
 
+func makeStrPreYearMonth(year: Int, month: Int) -> String {
+    var newMonth = month
+    var newYear = year
+    
+    switch month {
+    case 1:
+        newMonth = 12
+        newYear -= 1
+    default:
+        newMonth -= 1
+    }
+    return "\(newYear)\(makeTwoDigitString(newMonth))"
+}
+
+func makeStrNextYearMonth(year: Int, month: Int) -> String {
+    var newMonth = month
+    var newYear = year
+    
+    switch month {
+    case 12:
+        newMonth = 1
+        newYear += 1
+    default:
+        newMonth += 1
+    }
+    return "\(newYear)\(makeTwoDigitString(newMonth))"
+}
+
 func makeTwoDigitString(_ number : Int) -> String {
     switch number {
     case 1...9:
@@ -46,8 +76,9 @@ struct SettingsKeys {
     
     static let basePay = "basePay"                  // 기본단가
     static let moneyUnit = "moneyUnit"              // 화페단위
-    static let taxRateFront = "taxRateFront"        // 세율
-    static let taxRateBack = "taxRateBack"          // 세율
+    static let taxRateFront = "taxRateFront"        // 세율 앞자리
+    static let taxRateBack = "taxRateBack"          // 세율 뒷자리
+    static let startDay = "startDay"                // 월 기준일
     static let paySystemIndex = "paySystemIndex"    // 급여형태
     static let unitOfWorkSettingPeriodIndex = "unitOfWorkSettingPeriodIndex"    // 단가변경 기간(한달 or 하루)
 
@@ -57,8 +88,8 @@ extension Notification.Name {
     static let didSaveBasePay = Notification.Name("didSaveBasePay")
     static let didChangeMoneyUnit = Notification.Name("didChangeMoneyUnit")
     static let didSaveTaxRate = Notification.Name("didSaveTaxRate")
+    static let didSaveStartDay = Notification.Name("didSaveStartDay")
     static let didTogglePaySystem = Notification.Name("didTogglePaySystem")
-//    static let didSaveStartDay = Notification.Name("didSaveStartDay")
 }
 
 public extension UIDevice {

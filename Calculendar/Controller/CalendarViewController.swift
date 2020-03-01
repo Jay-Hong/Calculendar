@@ -41,7 +41,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         loadItems(strYearMonth)
         print("\(year)년\(month)월 달력 생성")
         
-        if month == 2 {
+        if month == 2 || month == 1 || month == 3{  //  월 시작일이 마지막 날일경우 2월 마지막날 확인 필요
             daysInMonths[2] = (year%4 == 0 && year%100 != 0 || year%400 == 0) ? 29 : 28
         }
         let weekdayCounter = day % 7

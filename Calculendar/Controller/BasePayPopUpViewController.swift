@@ -33,15 +33,7 @@ class BasePayPopUpViewController: UIViewController, GADBannerViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //  Google AdMob
-        bannerView.adSize = kGADAdSizeSmartBannerPortrait
-        bannerView.adUnitID = "ca-app-pub-5095960781666456/8022994244"
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        bannerView.layer.cornerRadius = 3
-        bannerView.layer.masksToBounds = true
-        bannerView.delegate = self
-        
+        setAdMob()
         setBasePayScene()
         setShadow()
         
@@ -49,6 +41,16 @@ class BasePayPopUpViewController: UIViewController, GADBannerViewDelegate {
         
         //  화폐단위(MoneyUnit)가 변경 되었을 경우
         NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeMoneyUnitOnBasePayVC(_:)), name: .didChangeMoneyUnit, object: nil)
+    }
+    
+    func setAdMob() {
+        bannerView.adSize = kGADAdSizeSmartBannerPortrait
+        bannerView.adUnitID = "ca-app-pub-5095960781666456/8022994244"
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        bannerView.layer.cornerRadius = 3
+        bannerView.layer.masksToBounds = true
+        bannerView.delegate = self
     }
     
     func setBasePayScene() {
