@@ -19,17 +19,10 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     //  년월 나오는 상단 바 높이 설정
     @IBOutlet weak var topBarViewHeightConstraint: NSLayoutConstraint!
     
-    //  Side Menu
-    @IBOutlet weak var sideMenuBackButton: UIButton!
-    @IBOutlet weak var sideMenuBackView: UIView!
-    @IBOutlet weak var sideMenuIcon: UIImageView!
-    @IBOutlet weak var sideMenuLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var versionLabel: UILabel!
-    
     var pageVC = UIPageViewController()
     var nextCalendarVC = CalendarViewController()
     
-    //  선택된 해단 년/월/일
+    //  선택된 해당 년/월/일
     var selectedYear = Int()
     var selectedMonth = Int()
     var selectedDay = Int()
@@ -39,8 +32,14 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     var nextMonth = Int()
     var nextDay = Int()
     
+    var startDay = Int()
+    
     var strYearMonth = String()
+    var strPreYearMonth = String()
+    var strNextYearMonth = String()
     var itemArray = [Item]()
+    var itemPreArray = [Item]()
+    var itemNextArray = [Item]()
     
     //  각자의 팝업컨트롤에 넘겨질 변수
     var memoTemp = ""
@@ -57,17 +56,70 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         super.viewDidLoad()
         
         setToday()
+        setStartDay()
         setTopBar()
+        setFormatter()
         makeCalendarScreen()
         makeCalendar()
+        printPaySystemOnInputUnitOfWorkButton()
         setDashBoard()
         setAdMob()
-        setInitialSideMenuPosition()
+        addNotification()
+        
+    }
+    
+    func setStartDay() {
+        startDay = UserDefaults.standard.integer(forKey: SettingsKeys.startDay)
+    }
+    
+    func setFormatter() {
+        //  세자리 숫자마다 , 표시위함
+        formatter.numberStyle = .decimal
+        formatter.locale = Locale.current
+        formatter.maximumFractionDigits = 4
+    }
+    
+    func addNotification() {
+        //  기본단가(BasePay)가 새로 저장될 경우
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidSaveBasePay(_:)), name: .didSaveBasePay, object: nil)
+        //  화폐단위(MoneyUnit)가 변경 되었을 경우
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeMoneyUnitOnMain(_:)), name: .didChangeMoneyUnit, object: nil)
+        //  세금세팅 변경되었을 경우
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidSaveTaxRate), name: .didSaveTaxRate, object: nil)
+        //  월 시작일 변경되어을 경우
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidSaveStartDay), name: .didSaveStartDay, object: nil)
+        //  급여형태 Toggle
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidTogglePaySystem(_:)), name: .didTogglePaySystem, object: nil)
+    }
+    
+    @objc func onDidSaveBasePay(_ notification: Notification) {
+        callDisplayDaylyPay()
+    }
+    
+    @objc func onDidChangeMoneyUnitOnMain(_ notification: Notification) {
+        setMonthlySalalyOnDashboard()
+        dashBoardCollectionView.reloadData()
+    }
+    
+    @objc func onDidSaveTaxRate(_ notification: Notification) {
+        setMonthlySalalyOnDashboard()
+        dashBoardCollectionView.reloadData()
+    }
+    
+    @objc func onDidSaveStartDay(_ notification: Notification) {
+        setStartDay()
+        setMonthlyUnitOfWorkOnDashboard()
+        setMonthlySalalyOnDashboard()
+        
+        dashBoardCollectionView.reloadData()
+    }
+    
+    @objc func onDidTogglePaySystem(_ notification: Notification) {
+        printPaySystemOnInputUnitOfWorkButton()
+        dashBoardCollectionView.reloadData()    //  공수 / 시간
     }
     
     func setAdMob() {
-//        let adSize = GADAdSizeFromCGSize(CGSize(width: 320, height: 50))
-//        let adSize2 = GADAdSizeFromCGSize(CGSize(width: bannerView.frame.width, height: bannerView.frame.height))
         bannerView.adSize = kGADAdSizeSmartBannerPortrait
         bannerView.adUnitID = "ca-app-pub-5095960781666456/5274670381"
         bannerView.rootViewController = self
@@ -108,37 +160,32 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     }
     
     func makeCalendar() {
-            let firstViewController = self.createCalendarViewController(today)
-            self.pageVC.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
+        let firstViewController = createCalendarViewController(today)
+        pageVC.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         
-            self.mainYearMonthButton.setTitle("\(toYear)년 \(toMonth)월", for: .normal)
-            self.selectYearMonthDay(year: toYear, month: toMonth, day: toDay)
-            self.strYearMonth = "\(toYear)\(makeTwoDigitString(toMonth))"
+        mainYearMonthButton.setTitle("\(toYear)년 \(toMonth)월", for: .normal)
+        selectYearMonthDay(year: toYear, month: toMonth, day: toDay)
+        strYearMonth = "\(toYear)\(makeTwoDigitString(toMonth))"
+        strPreYearMonth = makeStrPreYearMonth(year: toYear, month: toMonth)
+        strNextYearMonth = makeStrNextYearMonth(year: toYear, month: toMonth)
         
-            //  일급:0 / 시급:1  따른  공수입력 / 시간입력  버튼 출력
-            switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
-            case 0:
-                self.inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
-            default:
-                self.inputUnitOfWorkButton.setTitle("시간 입력", for: .normal)
-            }
-        
-            // 해당 월 공수 , 급여 , 단가 출력
-            self.loadItems()
-            self.displayMonthlyUnitOfWork()
-            self.displayDaylyPay()
-            self.displayMonthlySalaly()
-        
-            //  SideMenu 하단 Version 출력
-            self.versionLabel.text = "v\(appVersion!)"
+        // 해당 월 공수 , 급여 , 단가 출력
+        loadItems()
+        loadPreItems()
+        loadNextItems()
+        setMonthlyUnitOfWorkOnDashboard()
+        setMonthlySalalyOnDashboard()
+        setDaylyPayOnDashboard()
     }
     
-    func setInitialSideMenuPosition() {
-        sideMenuLeadingConstraint.constant = -250
-        sideMenuBackButton.isHidden = true
-        sideMenuIcon.layer.cornerRadius = 35
-        sideMenuIcon.layer.masksToBounds = true
-        sideMenuBackView.layer.shadowOpacity = 1
+    func printPaySystemOnInputUnitOfWorkButton() {
+        //  일급:0 / 시급:1  따른  공수입력 / 시간입력  버튼 출력
+        switch UserDefaults.standard.integer(forKey: SettingsKeys.paySystemIndex) {
+        case 0:
+            inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
+        default:
+            inputUnitOfWorkButton.setTitle("시간 입력", for: .normal)
+        }
     }
     
     func createDate (_ year: Int, _ month: Int, _ day: Int) -> Date {
@@ -183,10 +230,15 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             mainYearMonthButton.setTitle("\(nextYear)년 \(nextMonth)월", for: .normal)
             selectYearMonthDay(year: nextYear, month: nextMonth, day: nextDay)
             strYearMonth = "\(selectedYear)\(makeTwoDigitString(selectedMonth))"
+            strPreYearMonth = makeStrPreYearMonth(year: selectedYear, month: selectedMonth)
+            strNextYearMonth = makeStrNextYearMonth(year: selectedYear, month: selectedMonth)
             loadItems()
-            displayMonthlyUnitOfWork()
-            displayDaylyPay()
-            displayMonthlySalaly()
+            loadPreItems()
+            loadNextItems()
+            setMonthlyUnitOfWorkOnDashboard()
+            setMonthlySalalyOnDashboard()
+            setDaylyPayOnDashboard()
+            dashBoardCollectionView.reloadData()
             
             // 기본 날짜선택 세팅을 변경 해당월일시 당일 표시 / 해당월 아닐시 1일 선택 (다른날짜를 선택했었더라도)
             nextCalendarVC.calendarCollectionView.cellForItem(at: nextCalendarVC.preIndexPath)?.backgroundColor = UIColor.clear
@@ -233,103 +285,195 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     //MARK:  - Prepare for Segues
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toYearMonthPopUpViewControllerSegue" {
-            if let popup = segue.destination as? YearMonthPopUpViewController {
-                popup.delegate = self
+            if let popupVC = segue.destination as? YearMonthPopUpViewController {
+                popupVC.delegate = self
             }
         } else if segue.identifier == "toUnitOfWorkPopUpViewControllerSegue" {
-            if let popup = segue.destination as? UnitOfWorkPopUpViewController {
-                popup.delegate = self
-                popup.strNumber = unitOfWorkTemp
-                popup.selectedMonth = selectedMonth
-                popup.selectedDay = selectedDay
+            if let popupVC = segue.destination as? UnitOfWorkPopUpViewController {
+                popupVC.delegate = self
+                popupVC.strNumber = unitOfWorkTemp
+                popupVC.selectedMonth = selectedMonth
+                popupVC.selectedDay = selectedDay
             }
         } else if segue.identifier == "toMemoPopUpViewControllerSegue" {
-            if let popup = segue.destination as? MemoPopUpViewController {
-                popup.delegate = self
-                popup.memo = memoTemp
-                popup.selectedMonth = selectedMonth
-                popup.selectedDay = selectedDay
+            if let popupVC = segue.destination as? MemoPopUpViewController {
+                popupVC.delegate = self
+                popupVC.memo = memoTemp
+                popupVC.selectedMonth = selectedMonth
+                popupVC.selectedDay = selectedDay
             }
         } else if segue.identifier == "toPayPopUpViewControllerSegue" {
-            if let popup = segue.destination as? PayPopUpViewController {
-                popup.delegate = self
-                popup.strNumber = payTemp
-                popup.selectedMonth = selectedMonth
-                popup.selectedDay = selectedDay
+            if let popupVC = segue.destination as? PayPopUpViewController {
+                popupVC.delegate = self
+                popupVC.strNumber = payTemp
+                popupVC.selectedMonth = selectedMonth
+                popupVC.selectedDay = selectedDay
             }
-        } else if segue.identifier == "toBasePayPopUpViewControllerSegue" {
-            //  월별단가 PayPopUpViewController 를 같이 사용하지만 selectedMonth를 0 으로 설정
-            if let popup = segue.destination as? PayPopUpViewController {
-                popup.delegate = self
-                popup.selectedMonth = 0
+        }
+    }
+    
+    //MARK:  - DashBoard Setting
+    // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
+    func setMonthlyUnitOfWorkOnDashboard() {
+        var totalMonthlyUnitOfWork = Float()
+        
+        switch startDay {
+        case 1: //  시작일이 1일 일경우 해당월만 계산
+            if !itemArray.isEmpty {
+                for item in itemArray
+                {totalMonthlyUnitOfWork += item.numUnitOfWork}
             }
-        } else if segue.identifier == "toSettingViewControllerSegue" {
-            if let popup = segue.destination as? SettingViewController {
-                popup.delegate = self
+            
+        case 2...15:    //  2일 ~ 15일.    해당월 시작일 부터 다음달 시작일 전날까지 계산
+            if !itemArray.isEmpty {
+                for i in startDay - 1 ... itemArray.count - 1
+                {totalMonthlyUnitOfWork += itemArray[i].numUnitOfWork}
+            }
+            if !itemNextArray.isEmpty {
+                for i in 0 ..< startDay - 1
+                {totalMonthlyUnitOfWork += itemNextArray[i].numUnitOfWork}
+            }
+            
+        case 16..<numStartDayPickerItem:   //  16일 ~ 27일.     전달 시작일부터 해당월 시작일 전일까지 계산
+            if !itemArray.isEmpty {
+                for i in 0 ..< startDay - 1
+                {totalMonthlyUnitOfWork += itemArray[i].numUnitOfWork}
+            }
+            if !itemPreArray.isEmpty {
+                for i in startDay - 1 ... itemPreArray.count - 1
+                {totalMonthlyUnitOfWork += itemPreArray[i].numUnitOfWork}
+            }
+            
+        case numStartDayPickerItem:   //  마직막 날일 경우.    전달 마지막과 이번달 마지막을 뺀 날까지 계산
+            if !itemArray.isEmpty {
+                for i in 0 ..< itemArray.count - 1
+                {totalMonthlyUnitOfWork += itemArray[i].numUnitOfWork}
+            }
+            if !itemPreArray.isEmpty
+            {totalMonthlyUnitOfWork += itemPreArray.last!.numUnitOfWork}
+            
+        default:
+            if !itemArray.isEmpty {
+                for item in itemArray
+                {totalMonthlyUnitOfWork += item.numUnitOfWork}
             }
         }
         
-    }
-    
-    //MARK:  - DashBoard 출력
-    // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
-    func displayMonthlyUnitOfWork() {
-        var monthlyUnitOfWork = Float()
-        for item in itemArray {
-            monthlyUnitOfWork += item.numUnitOfWork
-        }
-        strMonthlyUnitOfWrk = String(format: "%.2f", monthlyUnitOfWork)
+        strMonthlyUnitOfWrk = String(format: "%.2f", totalMonthlyUnitOfWork)
         if strMonthlyUnitOfWrk.contains(".") {
             while (strMonthlyUnitOfWrk.hasSuffix("0")) {
                 strMonthlyUnitOfWrk.removeLast() }
             if strMonthlyUnitOfWrk.hasSuffix(".") {
                 strMonthlyUnitOfWrk.removeLast() }
         }
-        dashBoardCollectionView.reloadData()
     }
     
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
-    func displayMonthlySalaly() {
+    func setMonthlySalalyOnDashboard() {
+        
+        let moneyUnitData = UserDefaults.standard.integer(forKey: SettingsKeys.moneyUnit)
+        let taxRateFront = UserDefaults.standard.integer(forKey: SettingsKeys.taxRateFront)
+        let taxRateBack = UserDefaults.standard.integer(forKey: SettingsKeys.taxRateBack)
+        let taxRateTotal = Double(taxRateFront) + (Double(taxRateBack) * 0.01)
+        let taxRatePercentage = (100 - taxRateTotal) * 0.01
+
         var monthlySalaly = Double()
-        for item in itemArray {
-            monthlySalaly += Double(item.numUnitOfWork * item.pay)
+        
+        switch startDay {
+        case 1: //  시작일이 1일 일경우 해당월만 계산
+            if !itemArray.isEmpty {
+                for item in itemArray
+                {monthlySalaly += Double(item.numUnitOfWork * item.pay)}
+            }
+            
+        case 2...15:    //  2일 ~ 15일.    해당월 시작일 부터 다음달 시작일 전날까지 계산
+            if !itemArray.isEmpty {
+                for i in startDay - 1 ... itemArray.count - 1
+                {monthlySalaly += Double(itemArray[i].numUnitOfWork * itemArray[i].pay)}
+            }
+            if !itemNextArray.isEmpty {
+                for i in 0 ..< startDay - 1
+                {monthlySalaly += Double(itemNextArray[i].numUnitOfWork * itemNextArray[i].pay)}
+            }
+            
+        case 16..<numStartDayPickerItem:   //  16일 ~ 27일.     전달 시작일부터 해당월 시작일 전일까지 계산
+            if !itemArray.isEmpty {
+                for i in 0 ..< startDay - 1
+                {monthlySalaly += Double(itemArray[i].numUnitOfWork * itemArray[i].pay)}
+            }
+            if !itemPreArray.isEmpty {
+                for i in startDay - 1 ... itemPreArray.count - 1
+                {monthlySalaly += Double(itemPreArray[i].numUnitOfWork * itemPreArray[i].pay)}
+            }
+            
+        case numStartDayPickerItem:   //  마지막 날일 경우.    전달 마지막과 이번달 마지막을 뺀 날까지 계산
+            if !itemArray.isEmpty {
+                for i in 0 ..< itemArray.count - 1
+                {monthlySalaly += Double(itemArray[i].numUnitOfWork * itemArray[i].pay)}
+            }
+            if !itemPreArray.isEmpty
+            {monthlySalaly += Double(itemPreArray.last!.numUnitOfWork * itemPreArray.last!.pay)}
+            
+        default:
+            if !itemArray.isEmpty {
+                for item in itemArray
+                {monthlySalaly += Double(item.numUnitOfWork * item.pay)}
+            }
         }
-        strMonthlySalaly = String(format: "%.4f", monthlySalaly)
+        
+        monthlySalaly *= taxRatePercentage
+        
+        //  화폐단위 만원:0 / 천원:1 / 원:2  (기본값: 0 - 만원)
+        switch moneyUnitData {
+        case 0:
+            formatter.maximumFractionDigits = 4
+            strMonthlySalaly = formatter.string(from: NSNumber(value: monthlySalaly))!
+        case 1:
+            formatter.maximumFractionDigits = 3
+            strMonthlySalaly = formatter.string(from: NSNumber(value: monthlySalaly))!
+            formatter.maximumFractionDigits = 4
+        default:
+            formatter.maximumFractionDigits = 0
+            strMonthlySalaly = formatter.string(from: NSNumber(value: monthlySalaly))!
+            formatter.maximumFractionDigits = 4
+        }
+        
         if strMonthlySalaly.contains(".") {
             while (strMonthlySalaly.hasSuffix("0")) {
                 strMonthlySalaly.removeLast() }
             if strMonthlySalaly.hasSuffix(".") {
                 strMonthlySalaly.removeLast() }
         }
-        dashBoardCollectionView.reloadData()
     }
     
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
-    func displayDaylyPay() {
+    func setDaylyPayOnDashboard() {
+        
         var daylyPay = Float()
         
         if itemArray.isEmpty {
-            daylyPay = Float(UserDefaults.standard.object(forKey: "basePay") as? String ?? "0")!
+            daylyPay = Float(UserDefaults.standard.object(forKey: SettingsKeys.basePay) as? String ?? "0")!
         } else {
             daylyPay = itemArray[selectedDay-1].pay
         }
-        
-        strDaylyPay = String(daylyPay)
+
+        strDaylyPay = formatter.string(from: NSNumber(value: daylyPay))!
         if strDaylyPay.contains(".") {
             while (strDaylyPay.hasSuffix("0")) {
                 strDaylyPay.removeLast() }
             if strDaylyPay.hasSuffix(".") {
                 strDaylyPay.removeLast() }
         }
-        dashBoardCollectionView.reloadData()
     }
     
     //MARK:  - PList 입출력
     func saveItems() {
         let encoder = PropertyListEncoder()
-        do {let data = try encoder.encode(itemArray)
+        do {
+            let data = try encoder.encode(itemArray)
             try data.write(to: (dataFilePath?.appendingPathComponent("\(strYearMonth).plist"))!)
-        } catch {print("Error encoding item array, \(error)")
+        } catch {
+            print("Error encoding item array, \(error)")
         }
     }
     
@@ -337,8 +481,34 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         itemArray.removeAll()
         if let data = try? Data(contentsOf: (dataFilePath?.appendingPathComponent("\(strYearMonth).plist"))!) {
             let decoder = PropertyListDecoder()
-            do {itemArray = try decoder.decode([Item].self, from: data)
-            } catch {print("Error decoding item array, \(error)")
+            do {
+                itemArray = try decoder.decode([Item].self, from: data)
+            } catch {
+                print("Error decoding item array, \(error)")
+            }
+        }
+    }
+    
+    func loadPreItems() {
+        itemPreArray.removeAll()
+        if let data = try? Data(contentsOf: (dataFilePath?.appendingPathComponent("\(strPreYearMonth).plist"))!) {
+            let decoder = PropertyListDecoder()
+            do {
+                itemPreArray = try decoder.decode([Item].self, from: data)
+            } catch {
+                print("Error decoding item array, \(error)")
+            }
+        }
+    }
+    
+    func loadNextItems() {
+        itemNextArray.removeAll()
+        if let data = try? Data(contentsOf: (dataFilePath?.appendingPathComponent("\(strNextYearMonth).plist"))!) {
+            let decoder = PropertyListDecoder()
+            do {
+                itemNextArray = try decoder.decode([Item].self, from: data)
+            } catch {
+                print("Error decoding item array, \(error)")
             }
         }
     }
@@ -371,24 +541,8 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     @IBAction func inputPayButtonAction(_ sender: UIButton) {
         loadItems()
         //  선택된 달(날짜)의 단가를 입력화면에 출력
-        payTemp = !itemArray.isEmpty ? String(itemArray[selectedDay-1].pay) : UserDefaults.standard.object(forKey: "basePay") as? String ?? "0"
+        payTemp = !itemArray.isEmpty ? String(itemArray[selectedDay-1].pay) : UserDefaults.standard.object(forKey: SettingsKeys.basePay) as? String ?? "0"
     }
-    
-    @IBAction func sideMenuButtonAction(_ sender: UIButton) {
-        sideMenuLeadingConstraint.constant = 0
-        UIView.animate(withDuration: 0.3, animations: {self.view.layoutIfNeeded()})
-        sideMenuBackButton.isHidden = false
-        bannerView.isHidden = true
-    }
-    
-    @IBAction func sideMenuBackButtonAction(_ sender: UIButton) {
-        sideMenuLeadingConstraint.constant = -250
-        UIView.animate(withDuration: 0.3, animations: {self.view.layoutIfNeeded()})
-        sideMenuBackButton.isHidden = true
-        bannerView.isHidden = false
-    }
-    
-    
     
 }
 
@@ -421,7 +575,7 @@ extension MainViewController: PopupDelegate {
         if itemArray.isEmpty {makeItemArray()}
         payTemp = pay == "" ? "0" : pay
         
-        switch UserDefaults.standard.integer(forKey: "unitOfWorkSettingPeriodIndex") {
+        switch UserDefaults.standard.integer(forKey: SettingsKeys.unitOfWorkSettingPeriodIndex) {
         case 0: //  한달단위 저장
             for item in itemArray {
                 item.pay = Float(payTemp)!
@@ -430,18 +584,9 @@ extension MainViewController: PopupDelegate {
             itemArray[selectedDay-1].pay = Float(payTemp)!
         }
         saveItems()
-        displayDaylyPay()
-        displayMonthlySalaly()
-    }
-    
-    func saveBasePay(basePay: String) {
-        let basePayTemp = basePay == "" ? "0" : basePay
-        UserDefaults.standard.set(basePayTemp, forKey: "basePay")
-        sideMenuLeadingConstraint.constant = -250
-        UIView.animate(withDuration: 0.3, animations: {self.view.layoutIfNeeded()})
-        sideMenuBackButton.isHidden = true
-        bannerView.isHidden = false
-        displayDaylyPay()
+        setMonthlySalalyOnDashboard()
+        setDaylyPayOnDashboard()
+        dashBoardCollectionView.reloadData()
     }
     
     func saveUnitOfWork(unitOfWork: String) {
@@ -482,9 +627,10 @@ extension MainViewController: PopupDelegate {
         }
         moveYearMonth(year: selectedYear, month: selectedMonth, day: selectedDay)
         
-        displayMonthlyUnitOfWork()
-        displayMonthlySalaly()
-        displayDaylyPay()
+        setMonthlyUnitOfWorkOnDashboard()
+        setMonthlySalalyOnDashboard()
+        setDaylyPayOnDashboard()
+        dashBoardCollectionView.reloadData()
         
     }
     
@@ -503,20 +649,14 @@ extension MainViewController: PopupDelegate {
         mainYearMonthButton.setTitle("\(year)년 \(month)월", for: .normal)
         selectYearMonthDay(year: year, month: month, day: day)
         strYearMonth = "\(year)\(makeTwoDigitString(month))"
+        strPreYearMonth = makeStrPreYearMonth(year: year, month: month)
+        strNextYearMonth = makeStrNextYearMonth(year: year, month: month)
         loadItems()
-        displayMonthlyUnitOfWork()
-        displayDaylyPay()
-        displayMonthlySalaly()
-    }
-    
-    func applySetting() {
-        //  일급:0 / 시급:1
-        switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
-        case 0:
-            inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
-        default:
-            inputUnitOfWorkButton.setTitle("시간 입력", for: .normal)
-        }
+        loadPreItems()
+        loadNextItems()
+        setMonthlyUnitOfWorkOnDashboard()
+        setMonthlySalalyOnDashboard()
+        setDaylyPayOnDashboard()
         dashBoardCollectionView.reloadData()
     }
 }
@@ -530,7 +670,8 @@ extension MainViewController: CalendarDelegate {
         print("선택된날짜 : \(year)년 \(month)월 \(day)일")
     }
     func callDisplayDaylyPay() {
-        displayDaylyPay()
+        setDaylyPayOnDashboard()
+        dashBoardCollectionView.reloadData()
     }
 }
 
@@ -538,8 +679,6 @@ extension MainViewController: CalendarDelegate {
 extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func setDashBoard() {
-        
-//        dashBoardCollectionView.register(UINib.init(nibName: "DashBoardCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "dashIdentififer")
         
         let flowLayout = UPCarouselFlowLayout()
         flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.size.width - 40.0, height: dashBoardCollectionView.frame.size.height - 4)
@@ -556,14 +695,34 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dashBoardCollectionView.dequeueReusableCell(withReuseIdentifier: "dashboardcell", for: indexPath) as! DashBoardCell
+        let moneyUnitData = UserDefaults.standard.integer(forKey: SettingsKeys.moneyUnit)
+        let paySystemIndex = UserDefaults.standard.integer(forKey: SettingsKeys.paySystemIndex)
+        let beforeEndIndex = strYearMonth.index(strYearMonth.endIndex, offsetBy: -2)    //  뒤에서 두번째 문자열 (월의 앞자리 숫자)
+        var previousMonth = strPreYearMonth
+        var followingMonth = strNextYearMonth
+        //  년도 4자리 제거 후 월 앞자리가 0 이면 지우고 아니면 월 앞자리 놔둔다.  ex) 202109 -> 년도 2021 과 월 앞자리 0 지움
+        previousMonth[beforeEndIndex] == "0" ? previousMonth.removeFirst(5) : previousMonth.removeFirst(4)
+        followingMonth[beforeEndIndex] == "0" ? followingMonth.removeFirst(5) : followingMonth.removeFirst(4)
         
         switch indexPath.row {
-            
         case 0:
+            switch startDay {
+            case 1: //  시작일이 1일 인경우
+                cell.descriptionLabel.text = "\(selectedMonth)월 근무"
+            case 2...15:    //  2일 ~ 15일.    해당월 시작일 부터 다음달 시작일 전날까지 계산
+                cell.descriptionLabel.text = "\(selectedMonth)/\(startDay) ~ \(followingMonth)/\(startDay-1) 근무"
+            case 16..<numStartDayPickerItem:   //  16일 ~ 마지막날.     전달 시작일부터 해당월 시작일 전일까지 계산
+                cell.descriptionLabel.text = "\(previousMonth)/\(startDay) ~ \(selectedMonth)/\(startDay-1) 근무"
+            case numStartDayPickerItem: //  마직막 날일 경우.
+                cell.descriptionLabel.text = "\(previousMonth)/\(daysInMonths[Int(previousMonth)!]) ~ \(selectedMonth)/\(daysInMonths[selectedMonth]-1) 근무"
+            default:    //  시작일이 1일 일경우 해당월만 계산
+                cell.descriptionLabel.text = "\(selectedMonth)월 근무"
+            }
+
             cell.contentLabel.text = strMonthlyUnitOfWrk
-            cell.descriptionLabel.text = "\(selectedMonth)월 근무"
+
             //  일급:0 / 시급:1
-            switch UserDefaults.standard.integer(forKey: "paySystemIndex") {
+            switch paySystemIndex {
             case 0:
                 cell.unitLabel.text = "공수"
             default:
@@ -575,9 +734,22 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             cell.iconImgView.image = #imageLiteral(resourceName: "ic_schedule")
             
         case 1:
+            switch startDay {
+            case 1: //  시작일이 1일 인경우
+                cell.descriptionLabel.text = "\(selectedMonth)월 예상 급여"
+            case 2...15:    //  2일 ~ 15일.    해당월 시작일 부터 다음달 시작일 전날까지 계산
+                cell.descriptionLabel.text = "\(selectedMonth)/\(startDay) ~ \(followingMonth)/\(startDay-1) 예상 급여"
+            case 16..<numStartDayPickerItem:   //  16일 ~ 마지막날.     전달 시작일부터 해당월 시작일 전일까지 계산
+                cell.descriptionLabel.text = "\(previousMonth)/\(startDay) ~ \(selectedMonth)/\(startDay-1) 예상 급여"
+            case numStartDayPickerItem: //  마직막 날일 경우.
+                cell.descriptionLabel.text = "\(previousMonth)/\(daysInMonths[Int(previousMonth)!]) ~ \(selectedMonth)/\(daysInMonths[selectedMonth]-1) 예상 급여"
+            default:    //  시작일이 1일 일경우 해당월만 계산
+                cell.descriptionLabel.text = "\(selectedMonth)월 예상 급여"
+            }
+                       
             cell.contentLabel.text = strMonthlySalaly
-            cell.descriptionLabel.text = "\(selectedMonth)월 예상 급여"
-            cell.unitLabel.text = "만원"
+            cell.unitLabel.text = moneyUnitsDataSource[moneyUnitData]   // 만원 or 천원 or 원
+            
             cell.backView.backgroundColor = #colorLiteral(red: 0.9882352941, green: 0, blue: 0.3490196078, alpha: 1)
             cell.imgBackView.backgroundColor = #colorLiteral(red: 0.8705882353, green: 0, blue: 0.3098039216, alpha: 1)
             cell.iconImgView.image = #imageLiteral(resourceName: "ic_wallet")
@@ -585,10 +757,10 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         case 2:
             cell.contentLabel.text = strDaylyPay
             cell.descriptionLabel.text = "\(selectedMonth)월 \(selectedDay)일 단가"
-            cell.unitLabel.text = "만원"
+            cell.unitLabel.text = moneyUnitsDataSource[moneyUnitData]   // 만원 or 천원 or 원
             cell.backView.backgroundColor = #colorLiteral(red: 0.4588235294, green: 0.8039215686, blue: 0.2745098039, alpha: 1)
             cell.imgBackView.backgroundColor = #colorLiteral(red: 0.4039215686, green: 0.7019607843, blue: 0.2431372549, alpha: 1)
-            cell.iconImgView.image = #imageLiteral(resourceName: "ic_money")
+            cell.iconImgView.image = #imageLiteral(resourceName: "ic_won")
             
         default:
             break
@@ -598,50 +770,3 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
 }
 
-//MARK:  - Mail Controller Delegate
-extension MainViewController: MFMailComposeViewControllerDelegate {
-    
-    @IBAction func setBasePayButtonAction(_ sender: UIButton) {
-//        print("\nsetBasePayButtonAction\n")
-    }
-    
-    @IBAction func openDescriptionPage(_ sender: UIButton) {
-//        print("\nopenDescriptionPage\n")
-    }
-    
-    @IBAction func sendMailButtonAction(_ sender: UIButton) {
-        let mailComposeViewController = configureMailController()
-        if MFMailComposeViewController.canSendMail() {
-            self.present(mailComposeViewController, animated: true, completion: nil)
-        } else {
-            showMailError()
-        }
-        sideMenuLeadingConstraint.constant = -250
-        sideMenuBackButton.isHidden = true
-        bannerView.isHidden = false
-    }
-    
-    func configureMailController() -> MFMailComposeViewController {
-        let messageBody = "\n\n\n\n\n\n\n\n\n\niOS version: \(iOSVersion)"
-            + "\nApp version : \(appVersion!)\nDevice type: \(iPhoneDevice)"
-        let mailComposerVC = MFMailComposeViewController()
-        mailComposerVC.mailComposeDelegate = self
-        mailComposerVC.setToRecipients(["hjpyooo@gmail.com"])
-        mailComposerVC.setSubject("공수계산기 버그/불만 접수")
-        mailComposerVC.setMessageBody(messageBody, isHTML: false)
-        
-        return mailComposerVC
-    }
-    
-    func showMailError() {
-        let sendMailErrorAlert = UIAlertController(title: "hjpyooo@gmailcom", message: "현 기기에서 메일을 보낼수 없습니다\r\n위 메일주소로 연락주세요", preferredStyle: .alert)
-        let dismiss = UIAlertAction(title: "OK", style: .default, handler: nil)
-        sendMailErrorAlert.addAction(dismiss)
-        self.present(sendMailErrorAlert, animated: true, completion: nil)
-    }
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true, completion: nil)
-    }
-    
-}
