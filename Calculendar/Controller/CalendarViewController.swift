@@ -24,11 +24,10 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         super.viewDidLoad()
         
         setPosition(date)
-        
+        //  날짜 바뀌면 오늘표시 바꿔주기
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object:nil, queue: .main) { [weak self] _ in
             setToday()
             self?.calendarCollectionView.reloadData()
-        
         }
     }
     
