@@ -44,7 +44,7 @@ class BasePayPopUpViewController: UIViewController, GADBannerViewDelegate {
     }
     
     func setAdMob() {
-        bannerView.adSize = kGADAdSizeSmartBannerPortrait
+        bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
         bannerView.adUnitID = "ca-app-pub-5095960781666456/8022994244"
         bannerView.rootViewController = self
         bannerView.load(GADRequest())

@@ -125,7 +125,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     }
     
     func setAdMob() {
-        bannerView.adSize = kGADAdSizeSmartBannerPortrait
+        bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
         bannerView.adUnitID = "ca-app-pub-5095960781666456/5274670381"
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
