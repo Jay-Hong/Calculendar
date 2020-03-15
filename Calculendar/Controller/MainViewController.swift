@@ -42,14 +42,17 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     var itemNextArray = [Item]()
     
     //  각자의 팝업컨트롤에 넘겨질 변수
-    var memoTemp = ""
-    var payTemp = ""
-    var unitOfWorkTemp = ""
+    var memoTemp = String()
+    var payTemp = String()
+    var unitOfWorkTemp = String()
     
     //  메인화면 하단 출력용 변수
-    var strMonthlyUnitOfWrk = ""
-    var strDaylyPay = ""
-    var strMonthlySalaly = ""
+    var strMonthlyUnitOfWrk = String()
+    var strDaylyPay = String()
+    var strMonthlySalaly = String()
+    var strMonthlySalalyAfterTax = String()
+    var strTax = String()
+    var salaryDescription = String()
     
     //MARK:  - Methods
     override func viewDidLoad() {
@@ -187,9 +190,9 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         //  일급:0 / 시급:1  따른  공수입력 / 시간입력  버튼 출력
         switch UserDefaults.standard.integer(forKey: SettingsKeys.paySystemIndex) {
         case 0:
-            inputUnitOfWorkButton.setTitle("공수 입력", for: .normal)
+            inputUnitOfWorkButton.setTitle("공수", for: .normal)
         default:
-            inputUnitOfWorkButton.setTitle("시간 입력", for: .normal)
+            inputUnitOfWorkButton.setTitle("시간", for: .normal)
         }
     }
     
@@ -314,14 +317,21 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
                 popupVC.selectedMonth = selectedMonth
                 popupVC.selectedDay = selectedDay
             }
+        } else if segue.identifier == "toTaxBeforeAfterViewControllerSegue" {
+            if let popupVC = segue.destination as? TaxBeforeAfterViewController {
+                popupVC.titleDescription = salaryDescription
+                popupVC.salaryBeforeTax = strMonthlySalaly
+                popupVC.tax = strTax
+                popupVC.salaryAfterTax = strMonthlySalalyAfterTax
+            }
         }
     }
     
     //MARK:  - DashBoard Setting
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
     func setMonthlyUnitOfWorkOnDashboard() {
-        var totalMonthlyUnitOfWork = Float()
         
+        var totalMonthlyUnitOfWork = Float()    //  해당월 총 공수(시간)
         //  현재 날짜에 따른 DashBoard 맞춤 출력
         if toDay >= startDay {
             switch startDay {
@@ -395,9 +405,11 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         let taxRateFront = UserDefaults.standard.integer(forKey: SettingsKeys.taxRateFront)
         let taxRateBack = UserDefaults.standard.integer(forKey: SettingsKeys.taxRateBack)
         let taxRateTotal = Double(taxRateFront) + (Double(taxRateBack) * 0.01)
-        let taxRatePercentage = (100 - taxRateTotal) * 0.01
-
-        var monthlySalaly = Double()
+        let taxRatePercentage = taxRateTotal * 0.01                 //  세율
+        let afterTaxRatePercentage = (100 - taxRateTotal) * 0.01    //  세금공제 후 세율
+        var monthlySalaly = Double()            //  세전 해당월 총 예상급여
+        var monthlySalalyAfterTax = Double()    //  세후 해당월 총 예상급여
+        var tax = Double()                      //  세금
         
         //  현재 날짜에 따른 DashBoard 맞춤 출력
         if toDay >= startDay {
@@ -456,29 +468,36 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             }
         }
         
-        monthlySalaly *= taxRatePercentage
+        monthlySalalyAfterTax = monthlySalaly * afterTaxRatePercentage
+        tax = monthlySalaly * taxRatePercentage
         
         //  화폐단위 만원:0 / 천원:1 / 원:2  (기본값: 0 - 만원)
         switch moneyUnitData {
         case 0:
             formatter.maximumFractionDigits = 4
             strMonthlySalaly = formatter.string(from: NSNumber(value: monthlySalaly))!
+            strTax = formatter.string(from: NSNumber(value: tax))!
+            strMonthlySalalyAfterTax = formatter.string(from: NSNumber(value: monthlySalalyAfterTax))!
         case 1:
             formatter.maximumFractionDigits = 3
             strMonthlySalaly = formatter.string(from: NSNumber(value: monthlySalaly))!
+            strTax = formatter.string(from: NSNumber(value: tax))!
+            strMonthlySalalyAfterTax = formatter.string(from: NSNumber(value: monthlySalalyAfterTax))!
             formatter.maximumFractionDigits = 4
         default:
             formatter.maximumFractionDigits = 0
             strMonthlySalaly = formatter.string(from: NSNumber(value: monthlySalaly))!
+            strTax = formatter.string(from: NSNumber(value: tax))!
+            strMonthlySalalyAfterTax = formatter.string(from: NSNumber(value: monthlySalalyAfterTax))!
             formatter.maximumFractionDigits = 4
         }
         
-        if strMonthlySalaly.contains(".") {
-            while (strMonthlySalaly.hasSuffix("0")) {
-                strMonthlySalaly.removeLast() }
-            if strMonthlySalaly.hasSuffix(".") {
-                strMonthlySalaly.removeLast() }
-        }
+//        if strMonthlySalaly.contains(".") {
+//            while (strMonthlySalaly.hasSuffix("0")) {
+//                strMonthlySalaly.removeLast() }
+//            if strMonthlySalaly.hasSuffix(".") {
+//                strMonthlySalaly.removeLast() }
+//        }
     }
     
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
@@ -781,26 +800,28 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             if toDay >= startDay {
                 switch startDay {
                 case 1: //  시작일이 1일 일경우 해당월만 계산
-                    cell.descriptionLabel.text = "\(selectedMonth)월 근무"
+                    salaryDescription = "\(selectedMonth)월"
                 case 2..<numStartDayPickerItem: //  시작일이 1일이 아니고 마지막날도 아닐경우
-                    cell.descriptionLabel.text = "\(selectedMonth)/\(startDay) ~ \(followingMonth)/\(startDay-1) 근무"
+                    salaryDescription = "\(selectedMonth)/\(startDay) ~ \(followingMonth)/\(startDay-1)"
                 case numStartDayPickerItem: //  시작일이 마지막 날일 경우
-                    cell.descriptionLabel.text = "\(selectedMonth)/\(daysInMonths[selectedMonth]) ~ \(followingMonth)/\(daysInMonths[Int(followingMonth)!]-1) 근무"
+                    salaryDescription = "\(selectedMonth)/\(daysInMonths[selectedMonth]) ~ \(followingMonth)/\(daysInMonths[Int(followingMonth)!]-1)"
                 default:
-                    cell.descriptionLabel.text = "\(selectedMonth)월 근무"
+                    salaryDescription = "\(selectedMonth)월"
                 }
             } else {    //  toDay < startDay
                 switch startDay {
                 case 2..<numStartDayPickerItem:
-                   cell.descriptionLabel.text = "\(previousMonth)/\(startDay) ~ \(selectedMonth)/\(startDay-1) 근무"
+                   salaryDescription = "\(previousMonth)/\(startDay) ~ \(selectedMonth)/\(startDay-1)"
                 case numStartDayPickerItem:
-                    cell.descriptionLabel.text = "\(previousMonth)/\(daysInMonths[Int(previousMonth)!]) ~ \(selectedMonth)/\(daysInMonths[selectedMonth]-1) 근무"
+                    salaryDescription = "\(previousMonth)/\(daysInMonths[Int(previousMonth)!]) ~ \(selectedMonth)/\(daysInMonths[selectedMonth]-1)"
                 default:
-                    cell.descriptionLabel.text = "\(selectedMonth)월 근무"
+                    salaryDescription = "\(selectedMonth)월"
                 }
             }
-                       
-            cell.contentLabel.text = strMonthlySalaly
+            
+            cell.descriptionLabel.text = salaryDescription + " 예상급여"
+            
+            cell.contentLabel.text = strMonthlySalalyAfterTax
             cell.unitLabel.text = moneyUnitsDataSource[moneyUnitData]   // 만원 or 천원 or 원
             
             cell.backView.backgroundColor = #colorLiteral(red: 0.9882352941, green: 0, blue: 0.3490196078, alpha: 1)
