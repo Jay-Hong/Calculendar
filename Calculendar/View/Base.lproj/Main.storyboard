@@ -1226,6 +1226,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="33" id="DEX-3n-kUO"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <state key="normal" title="저장">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -1491,6 +1492,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="33" id="4uj-6Y-zBl"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <state key="normal" title="저장">
                                                     <color key="titleColor" red="0.17150303050182056" green="0.18923786113140839" blue="0.20951354679802958" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
@@ -1521,7 +1523,7 @@
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="만원" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJb-ej-Cbm">
                                                         <rect key="frame" x="182" y="0.0" width="42" height="48"/>
                                                         <color key="backgroundColor" red="0.48755019826769841" green="0.54962788133698315" blue="0.60791256157635476" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <fontDescription key="fontDescription" name=".SFNSDisplay" family=".SF NS Display" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" name=".SFNSDisplay" family=".SF NS Display" pointSize="19"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -1546,7 +1548,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="22" id="PtK-3X-Ml5"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -1755,7 +1757,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="t1b-oO-qmN"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1772,6 +1774,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="33" id="g6K-yf-L91"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <state key="normal" title="저장">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
