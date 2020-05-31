@@ -17,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // GADMobileAds.configure(withApplicationID: "ca-app-pub-5095960781666456~9348527200")
         // 'configure(withApplicationID:)' is deprecated
         
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        
         return true
     }
 
