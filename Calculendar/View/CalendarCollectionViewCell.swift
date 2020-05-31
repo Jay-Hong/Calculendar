@@ -12,16 +12,19 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         //  Device Type 에 따라 공수(시간)출력 레이블 높이 조정
         switch UIScreen.main.bounds.size {
         case iPhoneSE:
-            calendarCellUnitOfWorkLabelHeightConstrint.constant = 23
+            calendarCellUnitOfWorkLabelHeightConstrint.constant = 22
             
         case iPhone8:
-            calendarCellUnitOfWorkLabelHeightConstrint.constant = 25
+            calendarCellUnitOfWorkLabelHeightConstrint.constant = 22
             
-        case iPhone8Plus:
+        case iPhone8Plus, iPhoneXS:
+            calendarCellUnitOfWorkLabelHeightConstrint.constant = 24
+            
+        case iPhoneXR:
+            calendarCellUnitOfWorkLabelHeightConstrint.constant = 26
+            
+        case iPhoneXSMAX:
             calendarCellUnitOfWorkLabelHeightConstrint.constant = 28
-            
-        case iPhoneXS, iPhoneXSMAX, iPhoneXR:
-            calendarCellUnitOfWorkLabelHeightConstrint.constant = 30
             
         default: break
         }

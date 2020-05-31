@@ -40,11 +40,11 @@ class BasePayPopUpViewController: UIViewController, GADBannerViewDelegate {
         moneyUnit = UserDefaults.standard.integer(forKey: SettingsKeys.moneyUnit)
         
         //  화폐단위(MoneyUnit)가 변경 되었을 경우
-        NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeMoneyUnitOnBasePayVC(_:)), name: .didChangeMoneyUnit, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeMoneyUnitOnBasePayVC), name: .didChangeMoneyUnit, object: nil)
     }
     
     func setAdMob() {
-        bannerView.adSize = kGADAdSizeSmartBannerPortrait
+        bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
         bannerView.adUnitID = "ca-app-pub-5095960781666456/8022994244"
         bannerView.rootViewController = self
         bannerView.load(GADRequest())

@@ -61,7 +61,7 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
     
     func initialSetting() {
         //  Google AdMob
-        bannerView.adSize = kGADAdSizeSmartBannerPortrait
+        bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
         bannerView.adUnitID = "ca-app-pub-5095960781666456/3746861409"
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
