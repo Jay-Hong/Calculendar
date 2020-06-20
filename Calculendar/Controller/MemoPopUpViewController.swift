@@ -7,7 +7,8 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
     @IBOutlet weak var memoBackView: UIView!
     @IBOutlet weak var memoTextView: UITextView!
     @IBOutlet weak var saveMemoButton: UIButton!
-
+    @IBOutlet weak var cancelButton: UIButton!
+    
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var bannerView: GADBannerView!
     
@@ -36,35 +37,35 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
         //  Device Type 에 따라 메모화면 조정
         switch UIScreen.main.bounds.size {
         case iPhoneXS:
-            fromTopToMemoBackViewHeightConstraint.constant = 58
+            fromTopToMemoBackViewHeightConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = 360
-            fromRightToMemoBackViewWidthConstraint.constant = 10
-            fromLeftToMemoBackViewWidthConstraint.constant = 10
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
         case iPhoneXSMAX:
-            fromTopToMemoBackViewHeightConstraint.constant = 58
+            fromTopToMemoBackViewHeightConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = 370
-            fromRightToMemoBackViewWidthConstraint.constant = 10
-            fromLeftToMemoBackViewWidthConstraint.constant = 10
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
         case iPhoneXR:
-            fromTopToMemoBackViewHeightConstraint.constant = 58
+            fromTopToMemoBackViewHeightConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = 365
-            fromRightToMemoBackViewWidthConstraint.constant = 10
-            fromLeftToMemoBackViewWidthConstraint.constant = 10
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
         case iPhone8:
-            fromTopToMemoBackViewHeightConstraint.constant = 57
+            fromTopToMemoBackViewHeightConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = 320
-            fromRightToMemoBackViewWidthConstraint.constant = 10
-            fromLeftToMemoBackViewWidthConstraint.constant = 10
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
         case iPhone8Plus:
-            fromTopToMemoBackViewHeightConstraint.constant = 54
+            fromTopToMemoBackViewHeightConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = 330
-            fromRightToMemoBackViewWidthConstraint.constant = 10
-            fromLeftToMemoBackViewWidthConstraint.constant = 10
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
         case iPhoneSE:
-            fromTopToMemoBackViewHeightConstraint.constant = 44
+            fromTopToMemoBackViewHeightConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = 303
-            fromRightToMemoBackViewWidthConstraint.constant = 10
-            fromLeftToMemoBackViewWidthConstraint.constant = 10
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
         default:
             break
         }
@@ -88,6 +89,10 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func cancelButtonAction(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     func readyToMemo() {
         memoTextView.text = memo
         memoTextView.becomeFirstResponder()
@@ -106,6 +111,12 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
         saveMemoButton.layer.shadowOffset = CGSize(width: 0, height: 2)
         saveMemoButton.layer.shadowOpacity = 1.0
         saveMemoButton.layer.shadowRadius = 1.0
+        
+        cancelButton.layer.cornerRadius = 5
+        cancelButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7).cgColor
+        cancelButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+        cancelButton.layer.shadowOpacity = 1.0
+        cancelButton.layer.shadowRadius = 1.0
     }
 }
 

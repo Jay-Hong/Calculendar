@@ -168,6 +168,7 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
         NotificationCenter.default.post(name: .didChangeMoneyUnit, object: nil)
     }
     
+    //MARK:  - SegmentdControl
     @IBAction func paySystemSegmentedControlAction(_ sender: UISegmentedControl) {
         UserDefaults.standard.set(paySystemSegmentedControl.selectedSegmentIndex, forKey: SettingsKeys.paySystemIndex)
         NotificationCenter.default.post(name: .didTogglePaySystem, object: nil)
