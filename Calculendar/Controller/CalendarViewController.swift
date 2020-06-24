@@ -1,4 +1,3 @@
-
 import UIKit
 
 class CalendarViewController: UIViewController, UICollectionViewDataSource {
@@ -20,14 +19,36 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     
     var monthlyItemArray = [Item]()
     
+    var beginningAdRemoval = Bool()     //  초기 AdRemoval  UserDefaults 값 저장
+    var cellHeight = CGFloat()
+    var cellWidth = CGFloat()
+    
+    //  Paging 시 두번씩 그려지는 현상으로 당월_5줄 라인이 전월_6줄 것으로 표기되는 현상 해결위해
+    //  [e.g. 당월_5줄 -> 전월_6줄 (살짝 당겼다 놓음) -> 당월_5줄] => 당월_5줄 라인이 6줄로 표시되는 오류
+    //  Line 은 한번만 그려줘도 bounds 변하면 알아서 따라 변한다 / Collectionview Cell 들은 다시 reload() 해줘야 함
+    var didDrawLines = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setPosition(date)
+        
+        //  초기 AdRemoval
+        beginningAdRemoval = UserDefaults.standard.bool(forKey: "AdRemoval")
+        
         //  날짜 바뀌면 오늘표시 바꿔주기
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object:nil, queue: .main) { [weak self] _ in
             setToday()
             self?.calendarCollectionView.reloadData()
+        }
+    }
+    
+    //  viewWillLayoutSubviews() | viewDidLayoutSubviews()
+    //  will be called whenever the bounds change in the view controller
+    override func viewDidLayoutSubviews(){
+        //  광고제거 구매 / 복원 직후 시에만 reloadData()
+        if UserDefaults.standard.bool(forKey: "AdRemoval") && !beginningAdRemoval {
+            calendarCollectionView.reloadData()
         }
     }
     
@@ -49,11 +70,18 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         firstDayPosition += firstDayPosition < 0 ? 7 : 0
         
         numberOfCells = firstDayPosition + daysInMonths[month]
-        
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        cellWidth = collectionView.bounds.width /   7
+        cellHeight = numberOfCells > 35 ? (collectionView.bounds.height / 6) : (collectionView.bounds.height / 5)
+        
+        //  Paging 시 라인이 두번씩 겹쳐그려지는 현상 해결위해 didDrawLines 사용
+        if !didDrawLines {
+            calendarLineView.setHeight(cellHeight)
+            calendarLineView.setNeedsDisplay()
+            didDrawLines = true
+        }
         return numberOfCells
     }
     
@@ -208,32 +236,18 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
 }
 
 extension CalendarViewController: UICollectionViewDelegateFlowLayout {
-    
+    //  collectionview 크기에 맞추어 Cell 크기 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width / 7
-        
-        var height = CGFloat()
-        height = numberOfCells > 35 ? (collectionView.frame.height / 6) : (collectionView.frame.height / 5)
-        
-        //  셀 높이와 선높이 맞춰 그려주기
-        calendarLineView.setHeight(height)
-        calendarLineView.setNeedsDisplay()
-        
-        return CGSize(width: width, height: height)
+        return CGSize(width: cellWidth, height: cellHeight)
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 1.0
-//    }
-    
+
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 1.0
+//        print("\nminimumInteritemSpacingForSectionAt")
+//        return 0
 //    }
-    
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        print("\nminimumLineSpacingForSectionAt"\n)
+//        return 0
+//    }
 }
-
-
-
-
-
-

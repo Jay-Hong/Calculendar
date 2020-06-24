@@ -2,7 +2,7 @@ import UIKit
 import MessageUI
 import GoogleMobileAds
 
-class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, GADBannerViewDelegate {
+class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, GADBannerViewDelegate, GADInterstitialDelegate {
 
     //MARK:  - Valuables
     @IBOutlet weak var mainYearMonthButton: UIButton!
@@ -13,11 +13,15 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     //  광고 , 광고 백뷰
     @IBOutlet weak var bannerBackView: UIView!
     @IBOutlet weak var bannerView: GADBannerView!
+    
     //  메인화면 광고 back View 높이 설정
     @IBOutlet weak var bannerBackViewHeightConstraint: NSLayoutConstraint!
     
     //  년월 나오는 상단 바 높이 설정
     @IBOutlet weak var topBarViewHeightConstraint: NSLayoutConstraint!
+    
+    
+     var interstitial: GADInterstitial!  //  전면광고용 변수
     
     var pageVC = UIPageViewController()
     var nextCalendarVC = CalendarViewController()
@@ -98,7 +102,10 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             self?.setMonthlyUnitOfWorkOnDashboard()
             self?.setMonthlySalalyOnDashboard()
             self?.dashBoardCollectionView.reloadData()
+            UserDefaults.standard.set(0, forKey: SettingsKeys.saveCount)
         }
+        //  광고제거 구매/복원 시
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidPurchaseAdRemoval), name: .didPurchaseAdRemoval, object: nil)
     }
     
     @objc func onDidSaveBasePay(_ notification: Notification) {
@@ -127,12 +134,39 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         dashBoardCollectionView.reloadData()    //  공수 / 시간
     }
     
+    @objc func onDidPurchaseAdRemoval(_ notification: Notification) {
+        bannerView.isHidden = true
+        bannerBackView.isHidden = true
+        bannerBackViewHeightConstraint.constant = 0
+        interstitial = nil
+    }
+    
     func setAdMob() {
-        bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
-        bannerView.adUnitID = "ca-app-pub-5095960781666456/5274670381"
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        bannerView.delegate = self
+        if UserDefaults.standard.bool(forKey: "AdRemoval") {
+            bannerView.isHidden = true
+            bannerBackView.isHidden = true
+            bannerBackViewHeightConstraint.constant = 0
+        } else {
+            bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
+            bannerView.adUnitID = "ca-app-pub-5095960781666456/5274670381"
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            bannerView.delegate = self
+            //  Google AdMob 전면광고 준비
+            interstitial = createAndLoadInterstitial()
+        }
+    }
+    
+    func createAndLoadInterstitial() -> GADInterstitial {
+      interstitial = GADInterstitial(adUnitID: "ca-app-pub-5095960781666456/3058749006")
+      interstitial.delegate = self
+      interstitial.load(GADRequest())
+      return interstitial
+    }
+
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+      interstitial = createAndLoadInterstitial()
+        UserDefaults.standard.set(-5, forKey: SettingsKeys.saveCount)
     }
     
     func setTopBar() {
@@ -226,6 +260,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         nextYear = calendar.component(.year, from: currentDate)
         nextMonth = calendar.component(.month, from: currentDate)
         nextDay = (nextYear == toYear && nextMonth == toMonth) ? toDay : 1
+        print("\nwillTransitionTo \(nextYear)년 \(nextMonth)월\n")
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
@@ -233,8 +268,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         let currentDate = calendarVC.date
 //        let year = calendar.component(.year, from: currentDate)
         let month = calendar.component(.month, from: currentDate)
-        
-        if month != nextMonth && completed {
+        if month != nextMonth && completed {    //  completed 가 True ? => 페이지가 넘어갔다
             mainYearMonthButton.setTitle("\(nextYear)년 \(nextMonth)월", for: .normal)
             selectYearMonthDay(year: nextYear, month: nextMonth, day: nextDay)
             strYearMonth = "\(selectedYear)\(makeTwoDigitString(selectedMonth))"
@@ -685,7 +719,25 @@ extension MainViewController: PopupDelegate {
         setMonthlySalalyOnDashboard()
         setDaylyPayOnDashboard()
         dashBoardCollectionView.reloadData()
-        
+    }
+    
+    func saveCount() {
+        if !UserDefaults.standard.bool(forKey: "AdRemoval") {   //  광고제거 구매 안했을시만 실행
+            let saveCount = UserDefaults.standard.integer(forKey: SettingsKeys.saveCount) + 1
+            if saveCount >= 5 {
+                UserDefaults.standard.set(0, forKey: SettingsKeys.saveCount)
+                //  전면광고
+                print("\n 전 면 광 고")
+                if interstitial.isReady {
+                  interstitial.present(fromRootViewController: self)
+                } else {
+                  print("광고 준비 완됨")
+                }
+            } else {
+                UserDefaults.standard.set(saveCount, forKey: SettingsKeys.saveCount)
+            }
+            print("\nsaveCount = \(saveCount)")
+        }
     }
     
     func moveYearMonth(year: Int, month: Int, day: Int) {

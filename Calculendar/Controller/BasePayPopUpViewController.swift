@@ -44,13 +44,18 @@ class BasePayPopUpViewController: UIViewController, GADBannerViewDelegate {
     }
     
     func setAdMob() {
-        bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
-        bannerView.adUnitID = "ca-app-pub-5095960781666456/8022994244"
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        bannerView.layer.cornerRadius = 3
-        bannerView.layer.masksToBounds = true
-        bannerView.delegate = self
+        if UserDefaults.standard.bool(forKey: "AdRemoval") {
+            print("Hide Ad")
+            bannerView.isHidden = true
+        } else {
+            bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
+            bannerView.adUnitID = "ca-app-pub-5095960781666456/8022994244"
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            bannerView.layer.cornerRadius = 3
+            bannerView.layer.masksToBounds = true
+            bannerView.delegate = self
+        }
     }
     
     func setBasePayScene() {

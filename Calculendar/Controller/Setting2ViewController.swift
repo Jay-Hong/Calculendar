@@ -2,7 +2,7 @@ import UIKit
 import MessageUI
 import GoogleMobileAds
 
-class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
+class Setting2ViewController: UITableViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver, GADBannerViewDelegate, GADInterstitialDelegate {
     
     @IBOutlet weak var bannerView: GADBannerView!
     @IBOutlet weak var basePayDetailLabel: UILabel!
@@ -17,10 +17,14 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
     
     @IBOutlet weak var versionDetailLabel: UILabel!
     
+    var interstitial: GADInterstitial!  //  전면광고용 변수
+    
     var taxPickerViewIsOn = false       // 첫 세팅화면에 TaxPicker 안보이게
     var startDayPickerViewIsOn = false  // 첫 세팅화면에 StartPicker 안보이게
     
     let numTaxPickerItem = 100      // 0~99
+    
+    var myProduct: SKProduct?       // IAP
     
     var basePay = String() {
         didSet{ basePayDetailLabel.text = formatter.string(from: NSNumber(value: Double(basePay) ?? 0))! }
@@ -55,19 +59,12 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
     
     override func viewDidLoad() {
 
+        setSettingAdMob()
         initialSetting()
         
     }
     
     func initialSetting() {
-        //  Google AdMob
-        bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
-        bannerView.adUnitID = "ca-app-pub-5095960781666456/3746861409"
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        bannerView.layer.cornerRadius = 5
-        bannerView.layer.masksToBounds = true
-        bannerView.delegate = self
         
         //  기본단가 표기
         basePay = UserDefaults.standard.object(forKey: SettingsKeys.basePay) as? String ?? "0"
@@ -111,6 +108,23 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
             return 0
         }
         
+        //  광고제거 구매/복원 시
+        if indexPath.section == 0 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: "AdRemoval") {
+            return 0
+        }
+        
+        if indexPath.section == 1 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: "AdRemoval") {
+            return 0
+        }
+
+        if indexPath.section == 1 && indexPath.row == 1 && UserDefaults.standard.bool(forKey: "AdRemoval") {
+            return 0
+        }
+        
+        if indexPath.section == 1 && indexPath.row == 4 && UserDefaults.standard.bool(forKey: "AdRemoval") {
+            return 0
+        }
+        
         return UITableView.automaticDimension
     }
     
@@ -133,14 +147,147 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
             tableView.endUpdates()
         }
         
-        //  2nd section 1st row (Sending E-Mail)
         if indexPath.section == 1 && indexPath.row == 0 {
+            print("광고제거 Cell selected")
+            guard let myProduct = myProduct else {
+                return
+            }
+            if SKPaymentQueue.canMakePayments() {
+                let payment = SKPayment(product: myProduct)
+                SKPaymentQueue.default().add(self)
+                SKPaymentQueue.default().add(payment)
+            }
+        }
+        
+        if indexPath.section == 1 && indexPath.row == 1 {
+            print("구매복원 Cell selected")
+            SKPaymentQueue.default().add(self)
+            SKPaymentQueue.default().restoreCompletedTransactions()
+        }
+        
+        //  E-Mail
+        if indexPath.section == 1 && indexPath.row == 2 {
             sendMailButtonAction()
+        }
+        
+        if indexPath.section == 1 && indexPath.row == 4 {
+            if interstitial.isReady {
+              interstitial.present(fromRootViewController: self)
+            } else {
+              print("광고 준비 완됨")
+            }
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    //MARK:  - IAP
+    func fetchProducts() {
+        let request = SKProductsRequest(productIdentifiers: ["com.Jay.Calculendar.AdRemoval"])
+        request.delegate = self
+        request.start()
+    }
+    
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        if let product = response.products.first {
+            myProduct = product
+            print(product.productIdentifier)
+            print(product.priceLocale)
+            print(product.price)
+            print(product.localizedTitle)
+            print(product.localizedDescription)
+        }
+    }
+    
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+          switch transaction.transactionState {
+          case .purchased:
+            print("Purchase Transaction Successful")
+            UserDefaults.standard.set(true, forKey: "AdRemoval")
+            SKPaymentQueue.default().finishTransaction(transaction)
+            SKPaymentQueue.default().remove(self)
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            NotificationCenter.default.post(name: .didPurchaseAdRemoval, object: nil)
+            break
+            case .restored:
+            print("Restored")
+            UserDefaults.standard.set(true, forKey: "AdRemoval")
+            SKPaymentQueue.default().finishTransaction(transaction)
+            SKPaymentQueue.default().remove(self)
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            NotificationCenter.default.post(name: .didPurchaseAdRemoval, object: nil)
+            break
+          case .failed:
+            print("Transaction Failed")
+            SKPaymentQueue.default().finishTransaction(transaction)
+            SKPaymentQueue.default().remove(self)
+            break
+          case .deferred:
+            print("Deferred")
+            SKPaymentQueue.default().finishTransaction(transaction)
+            SKPaymentQueue.default().remove(self)
+            break
+          case .purchasing:
+            print("Purchasing")
+            // No OP
+            break
+          default:
+            print("Unknown Default")
+            SKPaymentQueue.default().finishTransaction(transaction)
+            SKPaymentQueue.default().remove(self)
+            break
+            }
+        }
+    }
+    
+    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
+        //  광고가 Restored 되지 않았다면 (구매한적이 없다면..)
+        if !UserDefaults.standard.bool(forKey: "AdRemoval") {
+            let alert = UIAlertController(title: "구매 내역이 없습니다", message: "", preferredStyle: UIAlertController.Style.alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                //  OK 버튼 누를시 실행될 내용
+            }
+            alert.addAction(okAction)
+            present(alert, animated: false, completion: nil)
+            print("구매 내역이 없습니다")
+        }
+    }
+    
+    //MARK:  - AdMob 전면광고용 함수
+    func setSettingAdMob() {
+        if UserDefaults.standard.bool(forKey: "AdRemoval") {
+            //  광고 제거 됨
+        } else {
+            fetchProducts()
+            //  Google AdMob 배너광고 준비
+            bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
+            bannerView.adUnitID = "ca-app-pub-5095960781666456/3746861409"
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            bannerView.layer.cornerRadius = 5
+            bannerView.layer.masksToBounds = true
+            bannerView.delegate = self
+            //  Google AdMob 전면광고 준비
+            interstitial = createAndLoadInterstitial()
+        }
+    }
+    
+    func createAndLoadInterstitial() -> GADInterstitial {
+      interstitial = GADInterstitial(adUnitID: "ca-app-pub-5095960781666456/7571982734")
+      interstitial.delegate = self
+      interstitial.load(GADRequest())
+      return interstitial
+    }
+
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+      interstitial = createAndLoadInterstitial()
+        UserDefaults.standard.set(-30, forKey: SettingsKeys.saveCount)
+    }
+    
+    //MARK:  - Prepare
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toBasePayPopUpVCSegue" {
             if let basePayVC = segue.destination as? BasePayPopUpViewController {

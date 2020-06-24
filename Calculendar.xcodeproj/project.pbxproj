@@ -29,6 +29,7 @@
 		69AC250120E38692009E28E2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69AC250320E38692009E28E2 /* InfoPlist.strings */; };
 		69C3D53723E3580900082BC6 /* MoneyUnitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C3D53623E3580900082BC6 /* MoneyUnitViewController.swift */; };
 		69D3746520E33FDC00B1C8B5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 697A5E9820D6FD4800951321 /* Main.storyboard */; };
+		69EF859D249DEFF700E643FE /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69EF859C249DEFF700E643FE /* StoreKit.framework */; };
 		69F4507A21B03E7600152812 /* DashBoardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F4507921B03E7600152812 /* DashBoardCell.swift */; };
 		C8118B88382021E80C9E697F /* Pods_Calculendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FE9EA5B3F98CD5BE6D6FC98 /* Pods_Calculendar.framework */; };
 /* End PBXBuildFile section */
@@ -60,6 +61,7 @@
 		69A8DF3120D7B9A900158864 /* YearMonthPopUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YearMonthPopUpViewController.swift; sourceTree = "<group>"; };
 		69AC250420E38693009E28E2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		69C3D53623E3580900082BC6 /* MoneyUnitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyUnitViewController.swift; sourceTree = "<group>"; };
+		69EF859C249DEFF700E643FE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		69F4507921B03E7600152812 /* DashBoardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashBoardCell.swift; sourceTree = "<group>"; };
 		FAA6F47435CE8B0270500156 /* Pods-Calculendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculendar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Calculendar/Pods-Calculendar.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,6 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8118B88382021E80C9E697F /* Pods_Calculendar.framework in Frameworks */,
+				69EF859D249DEFF700E643FE /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +82,7 @@
 		1D80CD26B4B3D4AD25FAB30A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				69EF859C249DEFF700E643FE /* StoreKit.framework */,
 				2FE9EA5B3F98CD5BE6D6FC98 /* Pods_Calculendar.framework */,
 			);
 			name = Frameworks;
@@ -479,7 +483,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.3;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Jay.Calculendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -501,7 +505,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.3;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Jay.Calculendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

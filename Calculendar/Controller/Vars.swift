@@ -81,6 +81,7 @@ struct SettingsKeys {
     static let startDay = "startDay"                // 월 기준일
     static let paySystemIndex = "paySystemIndex"    // 급여형태
     static let unitOfWorkSettingPeriodIndex = "unitOfWorkSettingPeriodIndex"    // 단가변경 기간(한달 or 하루)
+    static let saveCount = "saveCount"              // 저장 클릭 횟수 (하루)
 
 }
 
@@ -90,6 +91,7 @@ extension Notification.Name {
     static let didSaveTaxRate = Notification.Name("didSaveTaxRate")
     static let didSaveStartDay = Notification.Name("didSaveStartDay")
     static let didTogglePaySystem = Notification.Name("didTogglePaySystem")
+    static let didPurchaseAdRemoval = Notification.Name("didPurchaseAdRemoval")
 }
 
 public extension UIDevice {
