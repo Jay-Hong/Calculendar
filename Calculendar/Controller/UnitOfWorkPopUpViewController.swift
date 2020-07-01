@@ -120,7 +120,8 @@ class UnitOfWorkPopUpViewController: UIViewController, GADBannerViewDelegate {
     
     @IBAction func saveUnitOfWorkButtonAction(_ sender: UIButton) {
         delegate?.saveUnitOfWork(unitOfWork: displayNumberLabel.text!)
-        dismiss(animated: true, completion: {self.delegate?.saveCount();})
+//        dismiss(animated: true, completion: {self.delegate?.saveCount();})
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func backgroundButtonAction(_ sender: UIButton) {

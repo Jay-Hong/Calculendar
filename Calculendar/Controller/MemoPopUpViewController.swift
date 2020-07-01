@@ -92,9 +92,11 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
     @IBAction func backgroundButtonAction(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
+    
     @IBAction func saveMemoButtonAction(_ sender: Any) {
         delegate?.saveMemo(memo: memoTextView.text)
-        dismiss(animated: true, completion: {self.delegate?.saveCount();})
+//        dismiss(animated: true, completion: {self.delegate?.saveCount();})
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func cancelButtonAction(_ sender: Any) {

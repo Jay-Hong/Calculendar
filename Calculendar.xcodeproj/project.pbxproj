@@ -26,6 +26,7 @@
 		69A8DF3420D7B9A900158864 /* MemoPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A8DF2F20D7B9A900158864 /* MemoPopUpViewController.swift */; };
 		69A8DF3520D7B9A900158864 /* UnitOfWorkPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A8DF3020D7B9A900158864 /* UnitOfWorkPopUpViewController.swift */; };
 		69A8DF3620D7B9A900158864 /* YearMonthPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A8DF3120D7B9A900158864 /* YearMonthPopUpViewController.swift */; };
+		69ABC33024AB86EB0032FB06 /* AdRemovalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69ABC32F24AB86EB0032FB06 /* AdRemovalViewController.swift */; };
 		69AC250120E38692009E28E2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69AC250320E38692009E28E2 /* InfoPlist.strings */; };
 		69C3D53723E3580900082BC6 /* MoneyUnitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C3D53623E3580900082BC6 /* MoneyUnitViewController.swift */; };
 		69D3746520E33FDC00B1C8B5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 697A5E9820D6FD4800951321 /* Main.storyboard */; };
@@ -59,6 +60,7 @@
 		69A8DF2F20D7B9A900158864 /* MemoPopUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoPopUpViewController.swift; sourceTree = "<group>"; };
 		69A8DF3020D7B9A900158864 /* UnitOfWorkPopUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitOfWorkPopUpViewController.swift; sourceTree = "<group>"; };
 		69A8DF3120D7B9A900158864 /* YearMonthPopUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YearMonthPopUpViewController.swift; sourceTree = "<group>"; };
+		69ABC32F24AB86EB0032FB06 /* AdRemovalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdRemovalViewController.swift; sourceTree = "<group>"; };
 		69AC250420E38693009E28E2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		69C3D53623E3580900082BC6 /* MoneyUnitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyUnitViewController.swift; sourceTree = "<group>"; };
 		69EF859C249DEFF700E643FE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -164,6 +166,7 @@
 				695C4E5423D6E856008A606B /* Setting2ViewController.swift */,
 				694CE8C323D9714F0058E3B1 /* BasePayPopUpViewController.swift */,
 				69C3D53623E3580900082BC6 /* MoneyUnitViewController.swift */,
+				69ABC32F24AB86EB0032FB06 /* AdRemovalViewController.swift */,
 				69A8DF2420D78F9800158864 /* Vars.swift */,
 			);
 			path = Controller;
@@ -318,6 +321,7 @@
 				695C4E5523D6E857008A606B /* Setting2ViewController.swift in Sources */,
 				6908F08C20D78DD60046F806 /* PopupDelegate.swift in Sources */,
 				694CE8C423D9714F0058E3B1 /* BasePayPopUpViewController.swift in Sources */,
+				69ABC33024AB86EB0032FB06 /* AdRemovalViewController.swift in Sources */,
 				69A8DF2720D78FEB00158864 /* CalendarLineView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -475,7 +479,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = G5C8AQ6V38;
 				INFOPLIST_FILE = Calculendar/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -497,7 +501,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = G5C8AQ6V38;
 				INFOPLIST_FILE = Calculendar/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;

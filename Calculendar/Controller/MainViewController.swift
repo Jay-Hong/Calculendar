@@ -153,7 +153,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             bannerView.load(GADRequest())
             bannerView.delegate = self
             //  Google AdMob 전면광고 준비
-            interstitial = createAndLoadInterstitial()
+//            interstitial = createAndLoadInterstitial()
         }
     }
     
@@ -728,11 +728,11 @@ extension MainViewController: PopupDelegate {
                 UserDefaults.standard.set(0, forKey: SettingsKeys.saveCount)
                 //  전면광고
                 print("\n 전 면 광 고")
-                if interstitial.isReady {
-                  interstitial.present(fromRootViewController: self)
-                } else {
-                  print("광고 준비 완됨")
-                }
+//                if interstitial.isReady {
+//                  interstitial.present(fromRootViewController: self)
+//                } else {
+//                  print("광고 준비 완됨")
+//                }
             } else {
                 UserDefaults.standard.set(saveCount, forKey: SettingsKeys.saveCount)
             }
