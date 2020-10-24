@@ -41,44 +41,44 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
 //            fromBottomToMemoBackViewHeightConstraint.constant = 360
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: "AdRemoval") ? 305 : 360
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 360
         case iPhoneXSMAX:
             fromTopToMemoBackViewHeightConstraint.constant = 4
 //            fromBottomToMemoBackViewHeightConstraint.constant = 370
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: "AdRemoval") ? 315 : 370
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 370
         case iPhoneXR:
             fromTopToMemoBackViewHeightConstraint.constant = 4
 //            fromBottomToMemoBackViewHeightConstraint.constant = 365
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: "AdRemoval") ? 310 : 365
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 310 : 365
         case iPhone8:
             fromTopToMemoBackViewHeightConstraint.constant = 4
 //            fromBottomToMemoBackViewHeightConstraint.constant = 320
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: "AdRemoval") ? 265 : 320
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 265 : 320
         case iPhone8Plus:
             fromTopToMemoBackViewHeightConstraint.constant = 4
 //            fromBottomToMemoBackViewHeightConstraint.constant = 330
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: "AdRemoval") ? 275 : 330
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 275 : 330
         case iPhoneSE:
             fromTopToMemoBackViewHeightConstraint.constant = 4
 //            fromBottomToMemoBackViewHeightConstraint.constant = 303
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: "AdRemoval") ? 248 : 303
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 248 : 303
         default:
             break
         }
     }
     
     func setAdMob() {
-        if UserDefaults.standard.bool(forKey: "AdRemoval") {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             bannerView.isHidden = true
         } else {
             bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(bannerView.frame.width)
@@ -95,7 +95,6 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
     
     @IBAction func saveMemoButtonAction(_ sender: Any) {
         delegate?.saveMemo(memo: memoTextView.text)
-//        dismiss(animated: true, completion: {self.delegate?.saveCount();})
         dismiss(animated: true, completion: nil)
     }
     

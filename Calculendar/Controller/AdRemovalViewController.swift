@@ -69,7 +69,7 @@ class AdRemovalViewController: UIViewController, SKProductsRequestDelegate, SKPa
           switch transaction.transactionState {
           case .purchased:
             print("Purchase Transaction Successful")
-            UserDefaults.standard.set(true, forKey: "AdRemoval")
+            UserDefaults.standard.set(true, forKey: SettingsKeys.AdRemoval)
             NotificationCenter.default.post(name: .didPurchaseAdRemoval, object: nil)
             SKPaymentQueue.default().finishTransaction(transaction)
             SKPaymentQueue.default().remove(self)
@@ -78,7 +78,7 @@ class AdRemovalViewController: UIViewController, SKProductsRequestDelegate, SKPa
             break
             case .restored:
             print("Restored")
-            UserDefaults.standard.set(true, forKey: "AdRemoval")
+            UserDefaults.standard.set(true, forKey: SettingsKeys.AdRemoval)
             NotificationCenter.default.post(name: .didPurchaseAdRemoval, object: nil)
             SKPaymentQueue.default().finishTransaction(transaction)
             SKPaymentQueue.default().remove(self)
@@ -113,7 +113,7 @@ class AdRemovalViewController: UIViewController, SKProductsRequestDelegate, SKPa
         
         print("paymentQueueRestoreCompletedTransactionsFinished")
         restoreActivityIndicatorView.stopAnimating()
-        if !UserDefaults.standard.bool(forKey: "AdRemoval") {
+        if !UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             let alert = UIAlertController(title: "구매 내역이 없습니다", message: "", preferredStyle: UIAlertController.Style.alert)
             let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
                 //  OK 버튼 누를시 실행될 내용

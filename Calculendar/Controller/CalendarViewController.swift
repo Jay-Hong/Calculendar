@@ -34,7 +34,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         setPosition(date)
         
         //  초기 AdRemoval
-        beginningAdRemoval = UserDefaults.standard.bool(forKey: "AdRemoval")
+        beginningAdRemoval = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)
         
         //  날짜 바뀌면 오늘표시 바꿔주기
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object:nil, queue: .main) { [weak self] _ in
@@ -47,7 +47,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     //  will be called whenever the bounds change in the view controller
     override func viewDidLayoutSubviews(){
         //  광고제거 구매 / 복원 직후 시에만 reloadData()
-        if UserDefaults.standard.bool(forKey: "AdRemoval") && !beginningAdRemoval {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) && !beginningAdRemoval {
             calendarCollectionView.reloadData()
         }
     }

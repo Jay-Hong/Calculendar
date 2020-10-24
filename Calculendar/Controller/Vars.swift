@@ -81,8 +81,8 @@ struct SettingsKeys {
     static let startDay = "startDay"                // 월 기준일
     static let paySystemIndex = "paySystemIndex"    // 급여형태
     static let unitOfWorkSettingPeriodIndex = "unitOfWorkSettingPeriodIndex"    // 단가변경 기간(한달 or 하루)
-    static let saveCount = "saveCount"              // 저장 클릭 횟수 (하루)
-
+    static let AdRemoval = "AdRemoval"              // 광고제거 구매 여부
+    static let firstScreenAd = "firstScreenAd"
 }
 
 extension Notification.Name {

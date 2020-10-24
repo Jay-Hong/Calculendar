@@ -115,15 +115,15 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADI
         }
         
         //  광고제거 구매/복원 시
-        if indexPath.section == 0 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: "AdRemoval") {
+        if indexPath.section == 0 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             return 0
         }
         
-        if indexPath.section == 2 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: "AdRemoval") {
+        if indexPath.section == 2 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             return 0
         }
         
-        if indexPath.section == 2 && indexPath.row == 1 && UserDefaults.standard.bool(forKey: "AdRemoval") {
+        if indexPath.section == 2 && indexPath.row == 1 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             return 0
         }
         
@@ -172,7 +172,7 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADI
     
     //MARK:  - AdMob 광고용 함수
     func setSettingAdMob() {
-        if UserDefaults.standard.bool(forKey: "AdRemoval") {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             //  광고 제거 됨
         } else {
             //  Google AdMob 배너광고 준비
@@ -197,7 +197,6 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADI
 
     func interstitialDidDismissScreen(_ ad: GADInterstitial) {
       interstitial = createAndLoadInterstitial()
-        UserDefaults.standard.set(-30, forKey: SettingsKeys.saveCount)
     }
     
     //MARK:  - Prepare

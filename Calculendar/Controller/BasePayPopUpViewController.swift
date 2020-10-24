@@ -44,7 +44,7 @@ class BasePayPopUpViewController: UIViewController, GADBannerViewDelegate {
     }
     
     func setAdMob() {
-        if UserDefaults.standard.bool(forKey: "AdRemoval") {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             print("Hide Ad")
             bannerView.isHidden = true
         } else {

@@ -56,7 +56,7 @@ class UnitOfWorkPopUpViewController: UIViewController, GADBannerViewDelegate {
     }
     
     func setAdMob() {
-        if UserDefaults.standard.bool(forKey: "AdRemoval") {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             bannerView.isHidden = true
         } else {
             bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(bannerView.frame.width)
@@ -120,7 +120,6 @@ class UnitOfWorkPopUpViewController: UIViewController, GADBannerViewDelegate {
     
     @IBAction func saveUnitOfWorkButtonAction(_ sender: UIButton) {
         delegate?.saveUnitOfWork(unitOfWork: displayNumberLabel.text!)
-//        dismiss(animated: true, completion: {self.delegate?.saveCount();})
         dismiss(animated: true, completion: nil)
     }
     
