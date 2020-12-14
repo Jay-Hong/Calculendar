@@ -196,6 +196,67 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                 }
             }
             
+            //  휴일 빨간색 표기
+            if month == 1 && dayCounter == 1 {  //  새해
+                cell.dayLabel.textColor = UIColor.red
+            } else if month == 3 && dayCounter == 1 {  //  3.1절
+                cell.dayLabel.textColor = UIColor.red
+            } else if month == 5 && dayCounter == 5 {  //  어린이날
+                cell.dayLabel.textColor = UIColor.red
+            }  else if month == 6 && dayCounter == 6 {  //  현출일
+                cell.dayLabel.textColor = UIColor.red
+            } else if month == 8 && dayCounter == 15 {  //  광복절
+                cell.dayLabel.textColor = UIColor.red
+            } else if month == 10 && dayCounter == 3 {  //  개천절
+                cell.dayLabel.textColor = UIColor.red
+            } else if month == 10 && dayCounter == 9 {  //  한글날
+                cell.dayLabel.textColor = UIColor.red
+            } else if month == 12 && dayCounter == 25 {  //  크리스마스
+                cell.dayLabel.textColor = UIColor.red
+            }
+            
+            if year == 2020 {
+                if month == 1 && (dayCounter == 24 || dayCounter == 25 || dayCounter == 27) {  //  설날
+                   cell.dayLabel.textColor = UIColor.red
+                }  else if month == 4 && dayCounter == 30 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if (month == 9 && dayCounter == 30) || (month == 10 && (dayCounter == 1 || dayCounter == 2 || dayCounter == 3)) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                }
+            } else if year == 2021 {
+                if month == 2 && (dayCounter == 11 || dayCounter == 12 || dayCounter == 13) {  //  설날
+                   cell.dayLabel.textColor = UIColor.red
+                }  else if month == 5 && dayCounter == 19 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 9 && (dayCounter == 20 || dayCounter == 21 || dayCounter == 22) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                }
+            } else if year == 2022 {
+                if month == 2 && (dayCounter == 1 || dayCounter == 2 || dayCounter == 3) {  //  설날
+                   cell.dayLabel.textColor = UIColor.red
+                }  else if month == 5 && dayCounter == 8 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 9 && (dayCounter == 9 || dayCounter == 10 || dayCounter == 12) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                }
+            } else if year == 2023 {
+                if month == 1 && (dayCounter == 21 || dayCounter == 23 || dayCounter == 24) {  //  설날
+                   cell.dayLabel.textColor = UIColor.red
+                }  else if month == 5 && dayCounter == 26 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 9 && (dayCounter == 28 || dayCounter == 29 || dayCounter == 30) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                }
+            } else if year == 2024 {
+                if month == 2 && (dayCounter == 9 || dayCounter == 10 || dayCounter == 12) {  //  설날
+                   cell.dayLabel.textColor = UIColor.red
+                }  else if month == 5 && dayCounter == 15 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 9 && (dayCounter == 16 || dayCounter == 17 || dayCounter == 18) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                }
+            }
+            
             if preIndexPath.isEmpty {   // 새로만들어진 캘린더일 경우
                 if dayCounter == day {
                     cell.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)

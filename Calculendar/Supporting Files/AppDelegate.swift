@@ -7,7 +7,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADInterstitialDelegate {
     var window: UIWindow?
     var interstitial: GADInterstitial!  //  전면광고용 변수
     var launchScreenView: UIView?
-    var adIsOnScreen = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -17,7 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADInterstitialDelegate {
         
         GADMobileAds.sharedInstance().start(completionHandler: nil)
         
-        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) || UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd) {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)
+//            || UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd)
+        {
             //  앱 제거 구매 or 광고 한번 보고 닫았으면  광고 실행 안함
         } else {
             interstitial = createAndLoadInterstitial()
@@ -40,7 +41,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADInterstitialDelegate {
         print("\ninterstitialDidReceiveAd\n")
         guard let viewController = window?.rootViewController else { return }
         interstitial.present(fromRootViewController: viewController)
-        adIsOnScreen = true
     }
 
     //  광고 로드 에러 시
@@ -54,7 +54,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADInterstitialDelegate {
         print("\ninterstitialWillDismissScreen\n")
         launchScreenView?.removeFromSuperview()
         UserDefaults.standard.set(true, forKey: SettingsKeys.firstScreenAd)
-        adIsOnScreen = false
     }
     
     func fakeLaunchScreenView() {   // 가짜 로딩화면 뿌려주기 (로드시간 벌기)
@@ -89,12 +88,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADInterstitialDelegate {
         print("firstScreenAd = \(UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd))")
         print("AdRemoval = \(UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval))\n")
         
-        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) || UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd) || adIsOnScreen {
-            //  앱 제거 구매 or 하루 중 광고 한번 보고 닫음 or 광고 실행중 이면  광고 실행 안함
-        } else {
-            interstitial = createAndLoadInterstitial()
-            fakeLaunchScreenView()
-        }
+//        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)
+//            || UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd)  {
+//            //  앱 제거 구매 or 하루 중 광고 한번 보고 닫음 or 광고 실행중 이면  광고 실행 안함
+//        } else {
+//            interstitial = createAndLoadInterstitial()
+//            fakeLaunchScreenView()
+//        }
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

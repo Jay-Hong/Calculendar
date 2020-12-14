@@ -100,6 +100,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             self?.setMonthlySalalyOnDashboard()
             self?.dashBoardCollectionView.reloadData()
             UserDefaults.standard.set(false, forKey: SettingsKeys.firstScreenAd)
+            print("날짜 바뀜 - firstScreenAd :  \(UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd))")
         }
         //  광고제거 구매/복원 시
         NotificationCenter.default.addObserver(self, selector: #selector(onDidPurchaseAdRemoval), name: .didPurchaseAdRemoval, object: nil)
