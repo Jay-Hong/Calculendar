@@ -18,13 +18,13 @@ class CalendarCollectionViewCell: UICollectionViewCell {
             calendarCellUnitOfWorkLabelHeightConstrint.constant = 22
             
         case iPhone8Plus, iPhoneXS:
-            calendarCellUnitOfWorkLabelHeightConstrint.constant = 24
+            calendarCellUnitOfWorkLabelHeightConstrint.constant = 23
             
         case iPhoneXR:
-            calendarCellUnitOfWorkLabelHeightConstrint.constant = 26
+            calendarCellUnitOfWorkLabelHeightConstrint.constant = 25
             
         case iPhoneXSMAX:
-            calendarCellUnitOfWorkLabelHeightConstrint.constant = 28
+            calendarCellUnitOfWorkLabelHeightConstrint.constant = 26
             
         default: break
         }

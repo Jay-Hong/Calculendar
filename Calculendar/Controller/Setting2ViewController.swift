@@ -2,7 +2,7 @@ import UIKit
 import MessageUI
 import GoogleMobileAds
 
-class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
+class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADInterstitialDelegate {
     
     @IBOutlet weak var bannerView: GADBannerView!
     @IBOutlet weak var basePayDetailLabel: UILabel!
@@ -16,6 +16,8 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
     @IBOutlet weak var unitOfWorkSettingPeriodSegmentedControl: UISegmentedControl!
     
     @IBOutlet weak var versionDetailLabel: UILabel!
+    
+    var interstitial: GADInterstitial!  //  전면광고용 변수
     
     var taxPickerViewIsOn = false       // 첫 세팅화면에 TaxPicker 안보이게
     var startDayPickerViewIsOn = false  // 첫 세팅화면에 StartPicker 안보이게
@@ -55,19 +57,20 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
     
     override func viewDidLoad() {
 
+        setSettingAdMob()
         initialSetting()
+        
+        //  광고제거 구매/복원 시
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidPurchaseAdRemoval), name: .didPurchaseAdRemoval, object: nil)
         
     }
     
+    @objc func onDidPurchaseAdRemoval(_ notification: Notification) {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
     func initialSetting() {
-        //  Google AdMob
-        bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
-        bannerView.adUnitID = "ca-app-pub-5095960781666456/3746861409"
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        bannerView.layer.cornerRadius = 5
-        bannerView.layer.masksToBounds = true
-        bannerView.delegate = self
         
         //  기본단가 표기
         basePay = UserDefaults.standard.object(forKey: SettingsKeys.basePay) as? String ?? "0"
@@ -111,6 +114,19 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
             return 0
         }
         
+        //  광고제거 구매/복원 시
+        if indexPath.section == 0 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+            return 0
+        }
+        
+        if indexPath.section == 2 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+            return 0
+        }
+        
+        if indexPath.section == 2 && indexPath.row == 1 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+            return 0
+        }
+        
         return UITableView.automaticDimension
     }
     
@@ -133,14 +149,57 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
             tableView.endUpdates()
         }
         
-        //  2nd section 1st row (Sending E-Mail)
+        //  E-Mail
         if indexPath.section == 1 && indexPath.row == 0 {
             sendMailButtonAction()
+        }
+        
+        if indexPath.section == 2 && indexPath.row == 0 {
+
+        }
+        
+        if indexPath.section == 2 && indexPath.row == 1 {
+            
+            if interstitial.isReady {
+              interstitial.present(fromRootViewController: self)
+            } else {
+              print("광고 준비 완됨")
+            }
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    //MARK:  - AdMob 광고용 함수
+    func setSettingAdMob() {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+            //  광고 제거 됨
+        } else {
+            //  Google AdMob 배너광고 준비
+            bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
+            bannerView.adUnitID = "ca-app-pub-5095960781666456/3746861409"
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            bannerView.layer.cornerRadius = 5
+            bannerView.layer.masksToBounds = true
+            bannerView.delegate = self
+            //  Google AdMob 전면광고 준비
+            interstitial = createAndLoadInterstitial()
+        }
+    }
+    
+    func createAndLoadInterstitial() -> GADInterstitial {
+      interstitial = GADInterstitial(adUnitID: "ca-app-pub-5095960781666456/7571982734")
+      interstitial.delegate = self
+      interstitial.load(GADRequest())
+      return interstitial
+    }
+
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+      interstitial = createAndLoadInterstitial()
+    }
+    
+    //MARK:  - Prepare
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toBasePayPopUpVCSegue" {
             if let basePayVC = segue.destination as? BasePayPopUpViewController {
@@ -168,6 +227,7 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate {
         NotificationCenter.default.post(name: .didChangeMoneyUnit, object: nil)
     }
     
+    //MARK:  - SegmentdControl
     @IBAction func paySystemSegmentedControlAction(_ sender: UISegmentedControl) {
         UserDefaults.standard.set(paySystemSegmentedControl.selectedSegmentIndex, forKey: SettingsKeys.paySystemIndex)
         NotificationCenter.default.post(name: .didTogglePaySystem, object: nil)

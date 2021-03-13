@@ -56,12 +56,15 @@ class UnitOfWorkPopUpViewController: UIViewController, GADBannerViewDelegate {
     }
     
     func setAdMob() {
-//        bannerView.adSize = GADAdSizeFromCGSize(CGSize(width: bannerView.frame.width, height: bannerView.frame.height))
-        bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(bannerView.frame.width)
-        bannerView.adUnitID = "ca-app-pub-5095960781666456/1535171668"
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        bannerView.delegate = self
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+            bannerView.isHidden = true
+        } else {
+            bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(bannerView.frame.width)
+            bannerView.adUnitID = "ca-app-pub-5095960781666456/1535171668"
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            bannerView.delegate = self
+        }
     }
     
     func refineStrNumber() {

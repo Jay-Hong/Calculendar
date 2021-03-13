@@ -13,6 +13,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     //  광고 , 광고 백뷰
     @IBOutlet weak var bannerBackView: UIView!
     @IBOutlet weak var bannerView: GADBannerView!
+    
     //  메인화면 광고 back View 높이 설정
     @IBOutlet weak var bannerBackViewHeightConstraint: NSLayoutConstraint!
     
@@ -98,7 +99,11 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             self?.setMonthlyUnitOfWorkOnDashboard()
             self?.setMonthlySalalyOnDashboard()
             self?.dashBoardCollectionView.reloadData()
+            UserDefaults.standard.set(false, forKey: SettingsKeys.firstScreenAd)
+            print("날짜 바뀜 - firstScreenAd :  \(UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd))")
         }
+        //  광고제거 구매/복원 시
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidPurchaseAdRemoval), name: .didPurchaseAdRemoval, object: nil)
     }
     
     @objc func onDidSaveBasePay(_ notification: Notification) {
@@ -127,12 +132,24 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         dashBoardCollectionView.reloadData()    //  공수 / 시간
     }
     
+    @objc func onDidPurchaseAdRemoval(_ notification: Notification) {
+        bannerView.isHidden = true
+        bannerBackView.isHidden = true
+        bannerBackViewHeightConstraint.constant = 0
+    }
+    
     func setAdMob() {
-        bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
-        bannerView.adUnitID = "ca-app-pub-5095960781666456/5274670381"
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        bannerView.delegate = self
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+            bannerView.isHidden = true
+            bannerBackView.isHidden = true
+            bannerBackViewHeightConstraint.constant = 0
+        } else {
+            bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
+            bannerView.adUnitID = "ca-app-pub-5095960781666456/5274670381"
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            bannerView.delegate = self
+        }
     }
     
     func setTopBar() {
@@ -226,6 +243,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         nextYear = calendar.component(.year, from: currentDate)
         nextMonth = calendar.component(.month, from: currentDate)
         nextDay = (nextYear == toYear && nextMonth == toMonth) ? toDay : 1
+        print("\nwillTransitionTo \(nextYear)년 \(nextMonth)월\n")
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
@@ -233,8 +251,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         let currentDate = calendarVC.date
 //        let year = calendar.component(.year, from: currentDate)
         let month = calendar.component(.month, from: currentDate)
-        
-        if month != nextMonth && completed {
+        if month != nextMonth && completed {    //  completed 가 True ? => 페이지가 넘어갔다
             mainYearMonthButton.setTitle("\(nextYear)년 \(nextMonth)월", for: .normal)
             selectYearMonthDay(year: nextYear, month: nextMonth, day: nextDay)
             strYearMonth = "\(selectedYear)\(makeTwoDigitString(selectedMonth))"
@@ -685,7 +702,6 @@ extension MainViewController: PopupDelegate {
         setMonthlySalalyOnDashboard()
         setDaylyPayOnDashboard()
         dashBoardCollectionView.reloadData()
-        
     }
     
     func moveYearMonth(year: Int, month: Int, day: Int) {

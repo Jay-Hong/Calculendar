@@ -1,4 +1,3 @@
-
 import UIKit
 
 class CalendarViewController: UIViewController, UICollectionViewDataSource {
@@ -20,14 +19,36 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     
     var monthlyItemArray = [Item]()
     
+    var beginningAdRemoval = Bool()     //  초기 AdRemoval  UserDefaults 값 저장
+    var cellHeight = CGFloat()
+    var cellWidth = CGFloat()
+    
+    //  Paging 시 두번씩 그려지는 현상으로 당월_5줄 라인이 전월_6줄 것으로 표기되는 현상 해결위해
+    //  [e.g. 당월_5줄 -> 전월_6줄 (살짝 당겼다 놓음) -> 당월_5줄] => 당월_5줄 라인이 6줄로 표시되는 오류
+    //  Line 은 한번만 그려줘도 bounds 변하면 알아서 따라 변한다 / Collectionview Cell 들은 다시 reload() 해줘야 함
+    var didDrawLines = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setPosition(date)
+        
+        //  초기 AdRemoval
+        beginningAdRemoval = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)
+        
         //  날짜 바뀌면 오늘표시 바꿔주기
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object:nil, queue: .main) { [weak self] _ in
             setToday()
             self?.calendarCollectionView.reloadData()
+        }
+    }
+    
+    //  viewWillLayoutSubviews() | viewDidLayoutSubviews()
+    //  will be called whenever the bounds change in the view controller
+    override func viewDidLayoutSubviews(){
+        //  광고제거 구매 / 복원 직후 시에만 reloadData()
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) && !beginningAdRemoval {
+            calendarCollectionView.reloadData()
         }
     }
     
@@ -49,11 +70,18 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         firstDayPosition += firstDayPosition < 0 ? 7 : 0
         
         numberOfCells = firstDayPosition + daysInMonths[month]
-        
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        cellWidth = collectionView.bounds.width /   7
+        cellHeight = numberOfCells > 35 ? (collectionView.bounds.height / 6) : (collectionView.bounds.height / 5)
+        
+        //  Paging 시 라인이 두번씩 겹쳐그려지는 현상 해결위해 didDrawLines 사용
+        if !didDrawLines {
+            calendarLineView.setHeight(cellHeight)
+            calendarLineView.setNeedsDisplay()
+            didDrawLines = true
+        }
         return numberOfCells
     }
     
@@ -168,6 +196,67 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                 }
             }
             
+            //  휴일 빨간색 표기
+            if month == 1 && dayCounter == 1 {  //  새해
+                cell.dayLabel.textColor = UIColor.red
+            } else if month == 3 && dayCounter == 1 {  //  3.1절
+                cell.dayLabel.textColor = UIColor.red
+            } else if month == 5 && dayCounter == 5 {  //  어린이날
+                cell.dayLabel.textColor = UIColor.red
+            }  else if month == 6 && dayCounter == 6 {  //  현출일
+                cell.dayLabel.textColor = UIColor.red
+            } else if month == 8 && dayCounter == 15 {  //  광복절
+                cell.dayLabel.textColor = UIColor.red
+            } else if month == 10 && dayCounter == 3 {  //  개천절
+                cell.dayLabel.textColor = UIColor.red
+            } else if month == 10 && dayCounter == 9 {  //  한글날
+                cell.dayLabel.textColor = UIColor.red
+            } else if month == 12 && dayCounter == 25 {  //  크리스마스
+                cell.dayLabel.textColor = UIColor.red
+            }
+            
+            if year == 2020 {
+                if month == 1 && (dayCounter == 24 || dayCounter == 25 || dayCounter == 27) {  //  설날
+                   cell.dayLabel.textColor = UIColor.red
+                }  else if month == 4 && dayCounter == 30 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if (month == 9 && dayCounter == 30) || (month == 10 && (dayCounter == 1 || dayCounter == 2 || dayCounter == 3)) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                }
+            } else if year == 2021 {
+                if month == 2 && (dayCounter == 11 || dayCounter == 12 || dayCounter == 13) {  //  설날
+                   cell.dayLabel.textColor = UIColor.red
+                }  else if month == 5 && dayCounter == 19 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 9 && (dayCounter == 20 || dayCounter == 21 || dayCounter == 22) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                }
+            } else if year == 2022 {
+                if month == 2 && (dayCounter == 1 || dayCounter == 2 || dayCounter == 3) {  //  설날
+                   cell.dayLabel.textColor = UIColor.red
+                }  else if month == 5 && dayCounter == 8 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 9 && (dayCounter == 9 || dayCounter == 10 || dayCounter == 12) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                }
+            } else if year == 2023 {
+                if month == 1 && (dayCounter == 21 || dayCounter == 23 || dayCounter == 24) {  //  설날
+                   cell.dayLabel.textColor = UIColor.red
+                }  else if month == 5 && dayCounter == 26 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 9 && (dayCounter == 28 || dayCounter == 29 || dayCounter == 30) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                }
+            } else if year == 2024 {
+                if month == 2 && (dayCounter == 9 || dayCounter == 10 || dayCounter == 12) {  //  설날
+                   cell.dayLabel.textColor = UIColor.red
+                }  else if month == 5 && dayCounter == 15 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 9 && (dayCounter == 16 || dayCounter == 17 || dayCounter == 18) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                }
+            }
+            
             if preIndexPath.isEmpty {   // 새로만들어진 캘린더일 경우
                 if dayCounter == day {
                     cell.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
@@ -208,32 +297,18 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
 }
 
 extension CalendarViewController: UICollectionViewDelegateFlowLayout {
-    
+    //  collectionview 크기에 맞추어 Cell 크기 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width / 7
-        
-        var height = CGFloat()
-        height = numberOfCells > 35 ? (collectionView.frame.height / 6) : (collectionView.frame.height / 5)
-        
-        //  셀 높이와 선높이 맞춰 그려주기
-        calendarLineView.setHeight(height)
-        calendarLineView.setNeedsDisplay()
-        
-        return CGSize(width: width, height: height)
+        return CGSize(width: cellWidth, height: cellHeight)
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 1.0
-//    }
-    
+
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 1.0
+//        print("\nminimumInteritemSpacingForSectionAt")
+//        return 0
 //    }
-    
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        print("\nminimumLineSpacingForSectionAt"\n)
+//        return 0
+//    }
 }
-
-
-
-
-
-
