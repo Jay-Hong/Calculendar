@@ -155,18 +155,21 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     func setTopBar() {
         //  Device Type 에 따라 화면 조정
         switch UIScreen.main.bounds.size {
-        case iPhoneSE:  //  메인화면 광고 없애기 , Top Bar 60으로 줄이기
-            topBarViewHeightConstraint.constant = 60
-            bannerBackViewHeightConstraint.constant = 0
-            bannerBackView.isHidden = true
-            
-        case iPhone8Plus, iPhone8:  // Top Bar 70 유지
+        //  스토리보드 기본사이즈
+        //  topBarViewHeightConstraint.constant = 70
+        
+        case iPhone12Pro, iPhonemini, iPhone12Max, iPhone11Max: //  Top Bar 80으로 늘려주기
+            topBarViewHeightConstraint.constant = 80
+            bannerBackView.isHidden = false
+        
+        case iPhoneSE2, iPhone8Plus:  // Top Bar 70 유지
             topBarViewHeightConstraint.constant = 70
             bannerBackView.isHidden = false
             
-        case iPhoneXS, iPhoneXSMAX, iPhoneXR:   //  Top Bar 80으로 늘려주기
-            topBarViewHeightConstraint.constant = 80
-            bannerBackView.isHidden = false
+        case iPhoneSE1:  //  메인화면 광고 없애기 , Top Bar 60으로 줄이기
+            topBarViewHeightConstraint.constant = 60
+            bannerBackViewHeightConstraint.constant = 0
+            bannerBackView.isHidden = true
             
         default:
             bannerBackView.isHidden = false

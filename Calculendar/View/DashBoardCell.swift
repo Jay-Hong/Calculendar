@@ -18,26 +18,25 @@ class DashBoardCell: UICollectionViewCell {
     func setDashBoardCollectionViewCellConstraints() {
         
         switch UIScreen.main.bounds.size {
-            
-        case iPhoneXS, iPhone8:
+        //  스토리보드 기본사이즈
+        //  imgBackViewWidthConstraint.constant = 76
+        //  unitLabelBackViewWidth.constant = 50
+        
+        case iPhone12Pro, iPhonemini, iPhoneSE2, iPhone8Plus:
             imgBackViewWidthConstraint.constant = 76
             unitLabelBackViewWidth.constant = 50
-            
-        case iPhone8Plus, iPhoneXSMAX:  //
+        
+        case iPhone12Max, iPhone11Max:
             imgBackViewWidthConstraint.constant = 76
             unitLabelBackViewWidth.constant = 50
-            
-        case iPhoneXR:   //
-            imgBackViewWidthConstraint.constant = 76
-            unitLabelBackViewWidth.constant = 50
-            
-        case iPhoneSE:  //
+        
+        case iPhoneSE1:
             imgBackViewWidthConstraint.constant = 70
             unitLabelBackViewWidth.constant = 40
             
         default:
             imgBackViewWidthConstraint.constant = 80
-            unitLabelBackViewWidth.constant = 100
+            unitLabelBackViewWidth.constant = 80
         }
     }
     

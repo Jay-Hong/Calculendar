@@ -1,4 +1,3 @@
-
 import UIKit
 import GoogleMobileAds
 
@@ -36,42 +35,60 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
     func setMemoBackViewConstraint() {
         //  Device Type 에 따라 메모화면 조정
         switch UIScreen.main.bounds.size {
-        case iPhoneXS:
-            fromTopToMemoBackViewHeightConstraint.constant = 4
-//            fromBottomToMemoBackViewHeightConstraint.constant = 360
-            fromRightToMemoBackViewWidthConstraint.constant = 4
-            fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 360
-        case iPhoneXSMAX:
-            fromTopToMemoBackViewHeightConstraint.constant = 4
-//            fromBottomToMemoBackViewHeightConstraint.constant = 370
+        //  스토리보드 기본사이즈
+        //  fromBottomToMemoBackViewHeightConstraint.constant = 360
+        //  fromTopToMemoBackViewHeightConstraint.constant = 4
+        //  fromRightToMemoBackViewWidthConstraint.constant = 4
+        //  fromLeftToMemoBackViewWidthConstraint.constant = 4
+        
+        case iPhone12Max:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 370
-        case iPhoneXR:
-            fromTopToMemoBackViewHeightConstraint.constant = 4
-//            fromBottomToMemoBackViewHeightConstraint.constant = 365
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 370
+        
+        case iPhone12Pro:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 310 : 365
-        case iPhone8:
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 360
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 360
+        
+        case iPhone11Max:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 370
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 370
+        
+        case iPhonemini:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 360
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 360
+        
+        case iPhoneSE2:
             fromTopToMemoBackViewHeightConstraint.constant = 4
-//            fromBottomToMemoBackViewHeightConstraint.constant = 320
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 265 : 320
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 320
+        
         case iPhone8Plus:
             fromTopToMemoBackViewHeightConstraint.constant = 4
-//            fromBottomToMemoBackViewHeightConstraint.constant = 330
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 275 : 330
-        case iPhoneSE:
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 330
+        
+        case iPhoneSE1:
             fromTopToMemoBackViewHeightConstraint.constant = 4
-//            fromBottomToMemoBackViewHeightConstraint.constant = 303
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 248 : 303
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 303
         default:
             break
         }
