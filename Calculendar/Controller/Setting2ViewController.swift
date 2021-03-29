@@ -2,7 +2,7 @@ import UIKit
 import MessageUI
 import GoogleMobileAds
 
-class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADInterstitialDelegate {
+class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADFullScreenContentDelegate {
     
     @IBOutlet weak var bannerView: GADBannerView!
     @IBOutlet weak var basePayDetailLabel: UILabel!
@@ -17,7 +17,8 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADI
     
     @IBOutlet weak var versionDetailLabel: UILabel!
     
-    var interstitial: GADInterstitial!  //  전면광고용 변수
+//    var interstitial: GADInterstitial!  //  전면광고용 변수(예전)
+    private var interstitial: GADInterstitialAd?    // 전면광고용 변수
     
     var taxPickerViewIsOn = false       // 첫 세팅화면에 TaxPicker 안보이게
     var startDayPickerViewIsOn = false  // 첫 세팅화면에 StartPicker 안보이게
@@ -160,10 +161,10 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADI
         
         if indexPath.section == 2 && indexPath.row == 1 {
             
-            if interstitial.isReady {
-              interstitial.present(fromRootViewController: self)
+            if let ad = interstitial {
+                ad.present(fromRootViewController: self)
             } else {
-              print("광고 준비 완됨")
+                print("Ad wasn't ready")
             }
         }
         
@@ -184,19 +185,28 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADI
             bannerView.layer.masksToBounds = true
             bannerView.delegate = self
             //  Google AdMob 전면광고 준비
-            interstitial = createAndLoadInterstitial()
+            loadGADInterstitialAd()
         }
     }
     
-    func createAndLoadInterstitial() -> GADInterstitial {
-      interstitial = GADInterstitial(adUnitID: "ca-app-pub-5095960781666456/7571982734")
-      interstitial.delegate = self
-      interstitial.load(GADRequest())
-      return interstitial
+    func loadGADInterstitialAd() {
+        let request = GADRequest()
+        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-3940256099942544/4411468910",
+                                    request: request,
+                        completionHandler: { [self] ad, error in
+                            if let error = error {
+                                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                                return
+                            }
+                            interstitial = ad
+                            interstitial?.fullScreenContentDelegate = self
+                        }
+        )
     }
-
-    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
-      interstitial = createAndLoadInterstitial()
+    
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        print("Ad did dismiss full screen content.")
+        loadGADInterstitialAd()
     }
     
     //MARK:  - Prepare

@@ -2,10 +2,10 @@ import UIKit
 import GoogleMobileAds
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GADInterstitialDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDelegate {
 
     var window: UIWindow?
-    var interstitial: GADInterstitial!  //  전면광고용 변수
+    var interstitial: GADInterstitialAd?  //  전면광고용 변수
     var launchScreenView: UIView?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -21,39 +21,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADInterstitialDelegate {
         {
             //  앱 제거 구매 or 광고 한번 보고 닫았으면  광고 실행 안함
         } else {
-            interstitial = createAndLoadInterstitial()
             fakeLaunchScreenView()
+            loadGADInterstitialAd()
         }
         
         return true
     }
     
     // 전면광고 로드
-    func createAndLoadInterstitial() -> GADInterstitial {
-      interstitial = GADInterstitial(adUnitID: "ca-app-pub-5095960781666456/5144120126")
-      interstitial.delegate = self
-      interstitial.load(GADRequest())
-      return interstitial
+    func loadGADInterstitialAd() {
+        let request = GADRequest()
+        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-3940256099942544/4411468910",
+                                    request: request,
+                        completionHandler: { [self] ad, error in
+                            if let error = error {
+                                //  로드 에러 시
+                                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                                launchScreenView?.removeFromSuperview()
+                                return
+                            }
+                            //  로드 완료 시
+                            interstitial = ad
+                            interstitial?.fullScreenContentDelegate = self
+                            print("전면광고 로드 완로~~~!!!!!!")
+                            guard let viewController = window?.rootViewController else { return }
+                            interstitial?.present(fromRootViewController: viewController)
+                        }
+        )
     }
-
-    //  광고로드 완료 시
-    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
-        print("\ninterstitialDidReceiveAd\n")
-        guard let viewController = window?.rootViewController else { return }
-        interstitial.present(fromRootViewController: viewController)
-    }
-
-    //  광고 로드 에러 시
-    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
-        print("\ninterstitial:didFailToReceiveAdWithError: \(error.localizedDescription)\n")
+    
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        print("Ad did dismiss full screen content.")
         launchScreenView?.removeFromSuperview()
-    }
-
-    //  광고 닫을 시
-    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
-        print("\ninterstitialWillDismissScreen\n")
-        launchScreenView?.removeFromSuperview()
-        UserDefaults.standard.set(true, forKey: SettingsKeys.firstScreenAd)
     }
     
     func fakeLaunchScreenView() {   // 가짜 로딩화면 뿌려주기 (로드시간 벌기)
