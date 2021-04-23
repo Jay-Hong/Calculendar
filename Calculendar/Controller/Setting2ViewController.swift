@@ -58,7 +58,7 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADF
     
     override func viewDidLoad() {
 
-        setSettingAdMob()
+        setAdMob()
         initialSetting()
         
         //  광고제거 구매/복원 시
@@ -120,11 +120,12 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADF
             return 0
         }
         
-        if indexPath.section == 2 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+        if indexPath.section == 1 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             return 0
         }
         
-        if indexPath.section == 2 && indexPath.row == 1 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+        //  설정 전면광고 안보이기 (전면광고 테스트용으로 사용)
+        if indexPath.section == 2 && indexPath.row == 0 {
             return 0
         }
         
@@ -150,16 +151,20 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADF
             tableView.endUpdates()
         }
         
+        if indexPath.section == 1 && indexPath.row == 1 {
+            print("iCloud 백원 / 복원")
+        }
+        
         //  E-Mail
-        if indexPath.section == 1 && indexPath.row == 0 {
+        if indexPath.section == 1 && indexPath.row == 2 {
             sendMailButtonAction()
         }
         
-        if indexPath.section == 2 && indexPath.row == 0 {
-
+        if indexPath.section == 1 && indexPath.row == 3 {
+            print("버전정보")
         }
         
-        if indexPath.section == 2 && indexPath.row == 1 {
+        if indexPath.section == 2 && indexPath.row == 0 {
             
             if let ad = interstitial {
                 ad.present(fromRootViewController: self)
@@ -172,7 +177,7 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADF
     }
     
     //MARK:  - AdMob 광고용 함수
-    func setSettingAdMob() {
+    func setAdMob() {
         if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             //  광고 제거 됨
         } else {
@@ -185,13 +190,13 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADF
             bannerView.layer.masksToBounds = true
             bannerView.delegate = self
             //  Google AdMob 전면광고 준비
-            loadGADInterstitialAd()
+//            loadGADInterstitialAd()
         }
     }
     
     func loadGADInterstitialAd() {
         let request = GADRequest()
-        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-3940256099942544/4411468910",
+        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-5095960781666456/7571982734",
                                     request: request,
                         completionHandler: { [self] ad, error in
                             if let error = error {

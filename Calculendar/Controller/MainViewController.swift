@@ -96,14 +96,15 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         NotificationCenter.default.addObserver(self, selector: #selector(onDidTogglePaySystem), name: .didTogglePaySystem, object: nil)
         //  날짜 바뀌면 Dash Board 다시 로드
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object:nil, queue: .main) { [weak self] _ in
+            setToday()
             self?.setMonthlyUnitOfWorkOnDashboard()
             self?.setMonthlySalalyOnDashboard()
             self?.dashBoardCollectionView.reloadData()
-            UserDefaults.standard.set(false, forKey: SettingsKeys.firstScreenAd)
-            print("날짜 바뀜 - firstScreenAd :  \(UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd))")
         }
         //  광고제거 구매/복원 시
         NotificationCenter.default.addObserver(self, selector: #selector(onDidPurchaseAdRemoval), name: .didPurchaseAdRemoval, object: nil)
+        //  iCloud 백업파일 디바이스 복원 시
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidRestoreOperation), name: .didRestoreOperation, object: nil)
     }
     
     @objc func onDidSaveBasePay(_ notification: Notification) {
@@ -136,6 +137,10 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         bannerView.isHidden = true
         bannerBackView.isHidden = true
         bannerBackViewHeightConstraint.constant = 0
+    }
+    
+    @objc func onDidRestoreOperation(_ notification: Notification) {
+        moveYearMonth(year: selectedYear, month: selectedMonth)
     }
     
     func setAdMob() {

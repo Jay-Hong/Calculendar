@@ -9,17 +9,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     var launchScreenView: UIView?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!)
         print("\nwillFinishLaunchingWithOptions")
-        print("firstScreenAd = \(UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd))")
         print("AdRemoval = \(UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval))\n")
         
         GADMobileAds.sharedInstance().start(completionHandler: nil)
         
         if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)
-//            || UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd)
         {
-            //  앱 제거 구매 or 광고 한번 보고 닫았으면  광고 실행 안함
+            //  앱 제거 구매 시 광고 실행 안함
         } else {
             fakeLaunchScreenView()
             loadGADInterstitialAd()
@@ -31,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     // 전면광고 로드
     func loadGADInterstitialAd() {
         let request = GADRequest()
-        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-3940256099942544/4411468910",
+        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-5095960781666456/5144120126",
                                     request: request,
                         completionHandler: { [self] ad, error in
                             if let error = error {
@@ -43,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
                             //  로드 완료 시
                             interstitial = ad
                             interstitial?.fullScreenContentDelegate = self
-                            print("전면광고 로드 완로~~~!!!!!!")
+                            print(" - - - - - - 전면광고 로드 완로 - - - - - - ")
                             guard let viewController = window?.rootViewController else { return }
                             interstitial?.present(fromRootViewController: viewController)
                         }
@@ -84,16 +82,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         
         print("\napplicationWillEnterForeground")
-        print("firstScreenAd = \(UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd))")
         print("AdRemoval = \(UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval))\n")
         
-//        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)
-//            || UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd)  {
-//            //  앱 제거 구매 or 하루 중 광고 한번 보고 닫음 or 광고 실행중 이면  광고 실행 안함
-//        } else {
-//            interstitial = createAndLoadInterstitial()
-//            fakeLaunchScreenView()
-//        }
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

@@ -70,21 +70,21 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
             //  fromBottomToMemoBackViewHeightConstraint.constant = 360
         
         case iPhoneSE2:
-            fromTopToMemoBackViewHeightConstraint.constant = 4
+            fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 265 : 320
             //  fromBottomToMemoBackViewHeightConstraint.constant = 320
         
         case iPhone8Plus:
-            fromTopToMemoBackViewHeightConstraint.constant = 4
+            fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 275 : 330
             //  fromBottomToMemoBackViewHeightConstraint.constant = 330
         
         case iPhoneSE1:
-            fromTopToMemoBackViewHeightConstraint.constant = 4
+            fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
             fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 248 : 303
