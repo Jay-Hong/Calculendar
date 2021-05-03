@@ -1,6 +1,8 @@
 import UIKit
 import MessageUI
 import GoogleMobileAds
+import AppTrackingTransparency
+import AdSupport
 
 class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADFullScreenContentDelegate {
     
@@ -115,11 +117,18 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADF
             return 0
         }
         
-        //  광고제거 구매/복원 시
-        if indexPath.section == 0 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
-            return 0
+        //  광고제거 구매/복원 시 ⌜설정 상단 광고⌟ 안나오게    ||  앱추적요청 허용 시 ⌜설정 상단 광고⌟ 안나오게
+        if indexPath.section == 0 && indexPath.row == 0 {
+            if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) { return 0 }
+            
+            if #available(iOS 14, *) {
+                if ATTrackingManager.trackingAuthorizationStatus == ATTrackingManager.AuthorizationStatus.authorized {
+                    return 0
+                }
+            }
         }
         
+        //  광고제거 구매/복원 시 ⌜모든 광고 제거⌟ 안나오게
         if indexPath.section == 1 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             return 0
         }

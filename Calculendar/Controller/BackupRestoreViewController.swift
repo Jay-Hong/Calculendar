@@ -6,10 +6,12 @@ class BackupRestoreViewController: UITableViewController {
     let backupActivityIndicatorView = UIActivityIndicatorView()
     
     struct DocumentsDirectory {
-        static let localDocumentsURL = dataFilePath!
         //  설정 "iCloud를 사용하는 앱" 에서 공수계산기를 꺼 놓으면  ⌜DocumentsDirectory.iCloudDocumentsURL == nil⌟
+        //  My Mac 으로 테스트 하려면 "Document" 모드로 할 것 (폰과 Mac의 파일구조가 다른 듯)
+        //  My Mac 은 UbiquitousKeyValueStore 역시 가져오지 못한다
 //        static let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
         static let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.Jay.Calculendar")
+        static let localDocumentsURL = dataFilePath!
     }
     
     enum UploadStatus {
@@ -110,7 +112,7 @@ class BackupRestoreViewController: UITableViewController {
                 try fileManager.copyItem(at: DocumentsDirectory.localDocumentsURL.appendingPathComponent(file), to: DocumentsDirectory.iCloudDocumentsURL!.appendingPathComponent(file))
                 print("\(file.description) is Started to Copy to iCloud")
             } catch let error as NSError {
-                print("Failed to move file to Cloud : \(error)")
+                print("Failed to move ⌜\(file)⌟ file to Cloud : \(error)")
                 backupIsNotDone(); return
             }
         }
@@ -156,7 +158,7 @@ class BackupRestoreViewController: UITableViewController {
                     return UploadStatus.nothing
                 }
             } catch let error as NSError {
-                print("Failed to iCloud uploading : \(error.localizedDescription)")
+                print("⌜\(file)⌟ Failed to iCloud uploading : \(error.localizedDescription)")
                 return UploadStatus.error
             }
         }
@@ -212,7 +214,7 @@ class BackupRestoreViewController: UITableViewController {
                 try fileManager.removeItem(at: url!.appendingPathComponent(file))
                 print("\(file.description) Files deleted")
             } catch let error as NSError {
-                print("Failed deleting files : \(error)")
+                print("Failed deleting ⌜\(file)⌟ : \(error)")
                 return false
             }
         }
@@ -243,7 +245,7 @@ class BackupRestoreViewController: UITableViewController {
                 try fileManager.startDownloadingUbiquitousItem(at: (DocumentsDirectory.iCloudDocumentsURL?.appendingPathComponent(file))!)
                 print("\(file.description) is Started to download to Local")
             } catch let error as NSError {
-                print("Failed to download file to local dir : \(error)")
+                print("Failed to download ⌜\(file)⌟ file to local dir : \(error)")
                 restoreIsNotDone(); return
             }
         }
@@ -289,7 +291,7 @@ class BackupRestoreViewController: UITableViewController {
                     return DownloadStatus.notDownloaded
                 }
             } catch let error as NSError {
-                print("Failed to get status: \(error.localizedDescription)")
+                print("Failed to get status : \(error.localizedDescription)")
                 return DownloadStatus.error
             }
         }

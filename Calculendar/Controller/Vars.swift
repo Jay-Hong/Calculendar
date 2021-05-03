@@ -83,6 +83,7 @@ struct SettingsKeys {
     static let paySystemIndex = "paySystemIndex"    // 급여형태
     static let unitOfWorkSettingPeriodIndex = "unitOfWorkSettingPeriodIndex"    // 단가변경 기간(한달 or 하루)
     static let AdRemoval = "AdRemoval"              // 광고제거 구매 여부
+    static let firstLaunchTime = "firstLaunchTime"  // 앱 새로 설치 후 첫 런치한 기준시간   (업데이트 설치는 UserDefaults값 유지)
     
     static let firstScreenAd = "firstScreenAd"      //  [Deprecated] 첫화면 광고 여부, AdMob 페이지 에서 하루 한번만 첫화면 전면 광고 설정 가능
 }

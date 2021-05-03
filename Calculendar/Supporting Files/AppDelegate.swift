@@ -1,5 +1,7 @@
 import UIKit
 import GoogleMobileAds
+import AppTrackingTransparency
+import AdSupport
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDelegate {
@@ -9,21 +11,78 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     var launchScreenView: UIView?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        print("\n + + + + + + + + + + + + + + + + + + + + + + willFinishLaunchingWithOptions + + + + + + + + + + + + + + + + + + + + + + ")
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!)
-        print("\nwillFinishLaunchingWithOptions")
-        print("AdRemoval = \(UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval))\n")
+        print("AdRemoval = \(UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval))")
         
         GADMobileAds.sharedInstance().start(completionHandler: nil)
         
-        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)
+        var firstLaunchTime = UserDefaults.standard.object(forKey: SettingsKeys.firstLaunchTime) as? Date
+        print("firstLaunchTime = \(String(describing: firstLaunchTime))")
+        if (firstLaunchTime == nil) {
+            firstLaunchTime = Date()
+            UserDefaults.standard.setValue(firstLaunchTime, forKey: SettingsKeys.firstLaunchTime)
+            print("firstLaunchTime = \(String(describing: firstLaunchTime))")
+        }
+        
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)   // || Date(timeInterval: 60 * 60 * 2, since: firstLaunchTime!) >= Date()
         {
             //  앱 제거 구매 시 광고 실행 안함
         } else {
-            fakeLaunchScreenView()
-            loadGADInterstitialAd()
+            requestIDFA()
+            if Date(timeInterval: 60 * 60 * 2, since: firstLaunchTime!) < Date() {  // 앱 설치 후 첫 실행시 2시간동안 광고 실행 안함
+                fakeLaunchScreenView()
+                loadGADInterstitialAd()
+            }
         }
         
         return true
+    }
+    
+    func requestIDFA() {
+        if #available(iOS 14, *) {
+            self.printTrackingAuthorizationStatus()
+            self.printIDFA("(설정 전)")
+        }
+        if #available(iOS 14.5, *) {
+            ATTrackingManager.requestTrackingAuthorization { (status) in
+                switch status {
+                case .authorized:
+                    self.printTrackingAuthorizationStatus()
+                    self.printIDFA("(설정 후)")
+                case .denied:
+                    self.printTrackingAuthorizationStatus()
+                    self.printIDFA("(설정 후)")
+                case .notDetermined:
+                    self.printTrackingAuthorizationStatus()
+                    self.printIDFA("(설정 후)")
+                case .restricted:
+                    self.printTrackingAuthorizationStatus()
+                    self.printIDFA("(설정 후)")
+                default:
+                    print("default")
+                }
+            }
+        } else {
+            print("iOS 14.5 이상이 아닙니다")
+        }
+    }
+    
+    func printTrackingAuthorizationStatus() {
+        if #available(iOS 14, *) {
+            let state = ATTrackingManager.trackingAuthorizationStatus.rawValue
+            switch state {
+            case 0: print("\n.notDetermined")
+            case 1: print("\n.restricted")
+            case 2: print("\n.denied")
+            case 3: print("\n.authorized")
+            default: print("No Value \(state)")
+            }
+        }
+    }
+    
+    func printIDFA(_ string : String) {
+        print("IDFA\(string) : \(ASIdentifierManager.shared().advertisingIdentifier.uuidString)\n")
     }
     
     // 전면광고 로드
@@ -82,7 +141,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         
         print("\napplicationWillEnterForeground")
-        print("AdRemoval = \(UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval))\n")
         
     }
 
