@@ -116,7 +116,25 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                     cell.unitOfWorkLabel.isHidden = true
                 } else {    // 공수에 값이 있을경우
                     cell.unitOfWorkLabel.isHidden = false
-                    cell.unitOfWorkLabel.text = monthlyItemArray[itemArrayIndex].strUnitOfWork
+                    
+                    switch dashBoardCurrentPage {
+                    case 0:
+                        cell.unitOfWorkLabel.text = monthlyItemArray[itemArrayIndex].strUnitOfWork
+                    case 1:
+                        cell.unitOfWorkLabel.text = monthlyItemArray[itemArrayIndex].strUnitOfWork
+                    case 2:
+                        cell.unitOfWorkLabel.font = cell.unitOfWorkLabel.font.withSize(12)
+                        cell.unitOfWorkLabel.adjustsFontSizeToFitWidth = true
+                        cell.unitOfWorkLabel.text = formatter.string(from: NSNumber(value: monthlyItemArray[itemArrayIndex].numUnitOfWork * monthlyItemArray[itemArrayIndex].pay))
+                    case 3:
+                        cell.unitOfWorkLabel.font = cell.unitOfWorkLabel.font.withSize(12)
+                        cell.unitOfWorkLabel.adjustsFontSizeToFitWidth = true
+                        cell.unitOfWorkLabel.text = formatter.string(from: NSNumber(value: monthlyItemArray[itemArrayIndex].pay * (monthlyItemArray[itemArrayIndex].numUnitOfWork == 0 ? 0 : 1 )))
+                    default:
+                        cell.unitOfWorkLabel.text = monthlyItemArray[itemArrayIndex].strUnitOfWork
+                    }
+                    
+//                    cell.unitOfWorkLabel.text = monthlyItemArray[itemArrayIndex].strUnitOfWork
                     
                     let numUnitOfWork = monthlyItemArray[itemArrayIndex].numUnitOfWork
                     switch numUnitOfWork {

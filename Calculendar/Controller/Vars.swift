@@ -20,7 +20,7 @@ let numStartDayPickerItem = 28  // 1~27, 마지막날
 let iPhone12Max = CGSize(width: 428, height: 926)
 let iPhone12Pro = CGSize(width: 390, height: 844)       //  iPhone12
 let iPhone11Max = CGSize(width: 414, height: 896)       //  iPhoneXS Max , iPhone11 , iPhoneXR
-let iPhonemini = CGSize(width: 375, height: 812)        //  iPhoneXS , iPhoneX
+let iPhonemini = CGSize(width: 375, height: 812)        //  iPhoneXS , iPhoneX , iPhone11 Pro
 let iPhoneSE2  = CGSize(width: 375, height: 667)        //  iPhone8 , iPhone7 , iPhone6s
 let iPhone8Plus = CGSize(width: 414, height: 736)
 let iPhoneSE1 = CGSize(width: 320, height: 568)
@@ -28,6 +28,8 @@ let iPhoneSE1 = CGSize(width: 320, height: 568)
 let iOSVersion = UIDevice.current.systemVersion
 let iPhoneDevice = UIDevice.current.modelName
 let appVersion : Any! = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
+
+var dashBoardCurrentPage: Int = 0
 
 func setToday() {
     today = Date()                                      // 오늘
