@@ -565,7 +565,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         monthlySalalyAfterTax = monthlySalaly * afterTaxRatePercentage
         tax = monthlySalaly * taxRatePercentage
         
-        //  화폐단위 만원:0 / 천원:1 / 원:2  (기본값: 0 - 만원)
+        //  화폐단위 만원:0 / 천원:1 / 원:2
         switch moneyUnitData {
         case 0:
             formatter.maximumFractionDigits = 4
@@ -844,13 +844,15 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let dashBoardPrePage = dashBoardCurrentPage
         let layout = self.dashBoardCollectionView.collectionViewLayout as! UPCarouselFlowLayout
         let pageSide = (layout.scrollDirection == .horizontal) ? self.pageSize.width : self.pageSize.height
         let offset = (layout.scrollDirection == .horizontal) ? scrollView.contentOffset.x : scrollView.contentOffset.y
         dashBoardCurrentPage = Int(floor((offset - pageSide / 2) / pageSide) + 1)
-        print("\nscrollViewDidEndDecelerating")
-        print("currentPage = \(dashBoardCurrentPage)")
-        moveYearMonth(year: selectedYear, month: selectedMonth, day: selectedDay)
+        print("dashBoardCurrentPage = \(dashBoardCurrentPage)")
+        if dashBoardPrePage != dashBoardCurrentPage {
+            moveYearMonth(year: selectedYear, month: selectedMonth, day: selectedDay)
+        }
     }
     
     fileprivate var pageSize: CGSize {

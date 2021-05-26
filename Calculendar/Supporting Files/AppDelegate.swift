@@ -23,6 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
             firstLaunchTime = Date()
             UserDefaults.standard.setValue(firstLaunchTime, forKey: SettingsKeys.firstLaunchTime)
             print("firstLaunchTime = \(String(describing: firstLaunchTime))")
+            
+            //  화폐단위 만원:0 / 천원:1 / 원:2  (첫 실행이라면 기본값 원[2]을 기본 화폐단위로 만들어줌 아랫줄 없으면 만원[0] 이 기본값 될 것)
+            UserDefaults.standard.setValue(2, forKey: SettingsKeys.moneyUnit)
         }
         
         if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)   // || Date(timeInterval: 60 * 60 * 2, since: firstLaunchTime!) >= Date()
