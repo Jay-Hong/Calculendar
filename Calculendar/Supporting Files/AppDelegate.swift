@@ -2,6 +2,7 @@ import UIKit
 import GoogleMobileAds
 import AppTrackingTransparency
 import AdSupport
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDelegate {
@@ -16,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         print("AdRemoval = \(UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval))")
         
         GADMobileAds.sharedInstance().start(completionHandler: nil)
+        FirebaseApp.configure()
         
         var firstLaunchTime = UserDefaults.standard.object(forKey: SettingsKeys.firstLaunchTime) as? Date
         print("firstLaunchTime = \(String(describing: firstLaunchTime))")

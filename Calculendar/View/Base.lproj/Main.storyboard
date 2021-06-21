@@ -1665,9 +1665,8 @@
                             <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AS5-dC-286">
                                 <rect key="frame" x="0.0" y="540" width="390" height="50"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="단가변경 ⌜한달씩⌟ or ⌜하루씩⌟  설정페이지에서 변경가능" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Mgm-37-WCV">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="단가변경 ⌜한달씩⌟ or ⌜하루씩⌟  설정페이지에서 변경가능" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Mgm-37-WCV">
                                         <rect key="frame" x="0.0" y="0.0" width="390" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -1675,7 +1674,11 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="Mgm-37-WCV" firstAttribute="top" secondItem="AS5-dC-286" secondAttribute="top" id="Cb2-Nt-7y4"/>
                                     <constraint firstAttribute="height" constant="50" id="D7c-oZ-Nvf"/>
+                                    <constraint firstItem="Mgm-37-WCV" firstAttribute="leading" secondItem="AS5-dC-286" secondAttribute="leading" id="OlA-wV-Rh9"/>
+                                    <constraint firstAttribute="trailing" secondItem="Mgm-37-WCV" secondAttribute="trailing" id="TrX-6o-TQu"/>
+                                    <constraint firstAttribute="bottom" secondItem="Mgm-37-WCV" secondAttribute="bottom" id="raL-b0-PSE"/>
                                 </constraints>
                             </view>
                         </subviews>

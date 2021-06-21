@@ -8,5 +8,7 @@ target 'Calculendar' do
 
   # Pods for Calculendar
   pod 'Google-Mobile-Ads-SDK'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/InAppMessaging'
 
 end
