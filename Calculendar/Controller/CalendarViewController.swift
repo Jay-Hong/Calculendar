@@ -1,9 +1,13 @@
 import UIKit
+import SafariServices
 
 class CalendarViewController: UIViewController, UICollectionViewDataSource {
 
     @IBOutlet var calendarLineView: CalendarLineView!
     @IBOutlet weak var calendarCollectionView: UICollectionView!
+    
+    var storeButton = UIButton()    //  2021/10/12 스토어 바로가기 버튼 추가
+    
     var delegate: CalendarDelegate?
     
     var date = Date()   // 전달인자
@@ -41,6 +45,33 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
             setToday()
             self?.calendarCollectionView.reloadData()
         }
+        
+        //  storeButton
+        let storeButtonWidth = self.view.bounds.width / 7
+        self.view.addSubview(storeButton)
+        storeButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        storeButton.widthAnchor.constraint(equalToConstant: storeButtonWidth).isActive = true
+        storeButton.heightAnchor.constraint(equalToConstant: storeButtonWidth).isActive = true
+        
+        storeButton.setImage(UIImage(named: "Store_01"), for: .normal)
+        
+        if numberOfCells == 35 {
+            storeButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
+            storeButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        } else {
+            storeButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+            storeButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        }
+        
+        storeButton.addTarget(self, action: #selector(storeButtonAction), for: .touchUpInside)
+    }
+    
+    @objc func storeButtonAction() {
+        print("storeButton is pressed!!\n")
+        let storeURL = NSURL(string: "https://smartstore.naver.com/09090")
+        let storeSafariView: SFSafariViewController = SFSafariViewController(url: storeURL! as URL)
+        self.present(storeSafariView, animated: true, completion: nil)
     }
     
     //  viewWillLayoutSubviews() | viewDidLayoutSubviews()
