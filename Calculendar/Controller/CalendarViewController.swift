@@ -281,11 +281,20 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                     cell.dayLabel.textColor = UIColor.red
                 }
             } else if year == 2022 {
-                if month == 2 && (dayCounter == 1 || dayCounter == 2 || dayCounter == 3) {  //  설날
+                if month == 1 && (dayCounter == 31) {   //  설날
+                    cell.dayLabel.textColor = UIColor.red
+                }
+                if month == 2 && (dayCounter == 1 || dayCounter == 2) {  //  설날
                    cell.dayLabel.textColor = UIColor.red
-                }  else if month == 5 && dayCounter == 8 {  //  부처님오신날
+                } else if month == 3 && dayCounter == 9 {  //  대통령선거
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 5 && dayCounter == 8 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 6 && dayCounter == 1 {  //  지방선거
                     cell.dayLabel.textColor = UIColor.red
                 } else if month == 9 && (dayCounter == 9 || dayCounter == 10 || dayCounter == 12) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 10 && dayCounter == 10 {  //  한글날 대체공휴일
                     cell.dayLabel.textColor = UIColor.red
                 }
             } else if year == 2023 {
@@ -299,7 +308,9 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
             } else if year == 2024 {
                 if month == 2 && (dayCounter == 9 || dayCounter == 10 || dayCounter == 12) {  //  설날
                    cell.dayLabel.textColor = UIColor.red
-                }  else if month == 5 && dayCounter == 15 {  //  부처님오신날
+                } else if month == 4 && dayCounter == 10 {  //  국회의원 선거
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 5 && dayCounter == 15 {  //  부처님오신날
                     cell.dayLabel.textColor = UIColor.red
                 } else if month == 9 && (dayCounter == 16 || dayCounter == 17 || dayCounter == 18) {  //  추석
                     cell.dayLabel.textColor = UIColor.red

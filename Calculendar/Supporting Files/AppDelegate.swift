@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         {
             //  앱 제거 구매 시 광고 실행 안함
         } else {
-            requestIDFA()
+            requestIDFA()   //  iOS15  이후 실행 안됨 (앱이 완전히 활성화된 이후 실행 가능함
             if Date(timeInterval: 60 * 60 * 2, since: firstLaunchTime!) < Date() {  // 앱 설치 후 첫 실행시 2시간동안 광고 실행 안함
                 fakeLaunchScreenView()
                 loadGADInterstitialAd()
@@ -151,6 +151,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        requestIDFA()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
