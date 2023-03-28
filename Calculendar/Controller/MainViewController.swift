@@ -164,18 +164,18 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         //  Device Type 에 따라 화면 조정
         switch UIScreen.main.bounds.size {
         //  스토리보드 기본사이즈
-        //  topBarViewHeightConstraint.constant = 70
+        //  topBarViewHeightConstraint.constant = 40
         
-        case iPhone12Pro, iPhonemini, iPhone12Max, iPhone11Max: //  Top Bar 80으로 늘려주기
-            topBarViewHeightConstraint.constant = 80
+        case iPhone14ProMax, iPhone14Pro, iPhone14, iPhone14Plus, iPhone13Pro, iPhone11: //  Top Bar 30으로 줄여주기
+            topBarViewHeightConstraint.constant = 30
             bannerBackView.isHidden = false
         
-        case iPhoneSE2, iPhone8Plus:  // Top Bar 70 유지
-            topBarViewHeightConstraint.constant = 70
+        case iPhoneSE3, iPhone8Plus:  // Top Bar 40 유지
+            topBarViewHeightConstraint.constant = 40
             bannerBackView.isHidden = false
             
-        case iPhoneSE1:  //  메인화면 광고 없애기 , Top Bar 60으로 줄이기
-            topBarViewHeightConstraint.constant = 60
+        case iPhoneSE1:  //  Top Bar 40 유지
+            topBarViewHeightConstraint.constant = 40
             bannerBackViewHeightConstraint.constant = 0
             bannerBackView.isHidden = true
             

@@ -15,10 +15,10 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         //  스토리보드 기본사이즈
         //  calendarCellUnitOfWorkLabelHeightConstrint.constant = 22
         
-        case iPhone12Pro, iPhonemini, iPhoneSE2, iPhone8Plus, iPhoneSE1:
+        case iPhone13Pro, iPhone14, iPhoneSE3, iPhone8Plus, iPhoneSE1:
             calendarCellUnitOfWorkLabelHeightConstrint.constant = 22
         
-        case iPhone12Max, iPhone11Max:
+        case iPhone14ProMax, iPhone14Pro, iPhone14Plus, iPhone11:
             calendarCellUnitOfWorkLabelHeightConstrint.constant = 26
             
         default: break

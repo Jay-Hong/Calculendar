@@ -17,12 +17,21 @@ let formatter = NumberFormatter()
 //  시작일 Item 갯수
 let numStartDayPickerItem = 28  // 1~27, 마지막날
 
-let iPhone12Max = CGSize(width: 428, height: 926)
-let iPhone12Pro = CGSize(width: 390, height: 844)       //  iPhone12
-let iPhone11Max = CGSize(width: 414, height: 896)       //  iPhoneXS Max , iPhone11 , iPhoneXR
-let iPhonemini = CGSize(width: 375, height: 812)        //  iPhoneXS , iPhoneX , iPhone11 Pro
-let iPhoneSE2  = CGSize(width: 375, height: 667)        //  iPhone8 , iPhone7 , iPhone6s
+//let iPhone12Max = CGSize(width: 428, height: 926)
+//let iPhone12Pro = CGSize(width: 390, height: 844)       //  iPhone12
+//let iPhone11Max = CGSize(width: 414, height: 896)       //  iPhoneXS Max , iPhone11 , iPhoneXR
+//let iPhonemini = CGSize(width: 375, height: 812)        //  iPhoneXS , iPhoneX , iPhone11 Pro
+//let iPhoneSE2  = CGSize(width: 375, height: 667)        //  iPhone8 , iPhone7 , iPhone6s
+//let iPhone8Plus = CGSize(width: 414, height: 736)
+//let iPhoneSE1 = CGSize(width: 320, height: 568)
+let iPhone14ProMax = CGSize(width: 430, height: 932)
+let iPhone14Plus = CGSize(width: 428, height:926)        // iPhone12Max
+let iPhone11 = CGSize(width: 414, height: 896)           //  iPhone11ProMAX , iPhoneXS Max , iPhoneXR
+let iPhone14Pro = CGSize(width: 393, height: 852)
+let iPhone13Pro = CGSize(width: 390, height: 844)        //  iPhone12 , iPhone12Pro
+let iPhone14 = CGSize(width: 375, height: 812)           //  iPhoneXS , iPhoneX , iPhone11 Pro , iPhonemini
 let iPhone8Plus = CGSize(width: 414, height: 736)
+let iPhoneSE3  = CGSize(width: 375, height: 667)         //  iPhone8 , iPhone7 , iPhone6s , iPhoneSE2
 let iPhoneSE1 = CGSize(width: 320, height: 568)
 
 let iOSVersion = UIDevice.current.systemVersion
@@ -141,6 +150,15 @@ public extension UIDevice {
         case "iPhone13,2":                              return "iPhone 12"
         case "iPhone13,3":                              return "iPhone 12 Pro"
         case "iPhone13,4":                              return "iPhone 12 Pro Max"
+        case "iPhone14,4":                              return "iPhone 13 mini"
+        case "iPhone14,5":                              return "iPhone 13"
+        case "iPhone14,2":                              return "iPhone 13 Pro"
+        case "iPhone14,3":                              return "iPhone 13 Pro Max"
+        case "iPhone14,7":                              return "iPhone 14"
+        case "iPhone14,8":                              return "iPhone 14 Plus"
+        case "iPhone15,2":                              return "iPhone 14 Pro"
+        case "iPhone15,3":                              return "iPhone 14 Pro Max"
+        case "iPhone14,6":                              return "iPhone SE (3rd generation)"
         
         case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":return "iPad 2"
         case "iPad3,1", "iPad3,2", "iPad3,3":           return "iPad (3rd generation)"
@@ -166,11 +184,14 @@ public extension UIDevice {
         case "iPad7,1", "iPad7,2":                      return "iPad Pro (12.9-inch) (2nd generation)"
         case "iPad8,5", "iPad8,6", "iPad8,7", "iPad8,8":return "iPad Pro (12.9-inch) (3rd generation)"
         case "iPad8,11", "iPad8,12":                    return "iPad Pro (12.9-inch) (4th generation)"
+        case "iPad13,8", "iPad13,9", "iPad13,10", "iPad13,11":return "iPad Pro (12.9-inch) (5th generation)"
+        case "iPad14,5", "iPad14,6":                          return "iPad Pro (12.9-inch) (6th generation)"
+            
         case "AppleTV5,3":                              return "Apple TV"
         case "AppleTV6,2":                              return "Apple TV 4K"
         case "AudioAccessory1,1":                       return "HomePod"
         case "AudioAccessory5,1":                       return "HomePod mini"
-        case "i386", "x86_64":                          return "Simulator"
+        case "i386", "x86_64", "arm64":                 return "Simulator"
         default:                                        return identifier
         }
     }

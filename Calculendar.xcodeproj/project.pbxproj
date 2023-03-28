@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3836596391C3E08262E05C52 /* Pods_Calculendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4EF0C3F94AC3FB7249D5EB /* Pods_Calculendar.framework */; };
+		2E12638B51F1111D114D5683 /* Pods_Calculendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7203877AE818066E517FE705 /* Pods_Calculendar.framework */; };
 		6908F08520D78D850046F806 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6908F08420D78D850046F806 /* CalendarViewController.swift */; };
 		6908F08720D78DC00046F806 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6908F08620D78DC00046F806 /* Item.swift */; };
 		6908F08B20D78DD60046F806 /* UPCarouselFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6908F08820D78DD60046F806 /* UPCarouselFlowLayout.swift */; };
@@ -39,8 +39,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6415AA49C05955CAEC654504 /* Pods-Calculendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculendar.release.xcconfig"; path = "Target Support Files/Pods-Calculendar/Pods-Calculendar.release.xcconfig"; sourceTree = "<group>"; };
-		64ACFCAE6C92FFB55C571476 /* Pods-Calculendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculendar.debug.xcconfig"; path = "Target Support Files/Pods-Calculendar/Pods-Calculendar.debug.xcconfig"; sourceTree = "<group>"; };
+		501DE6F83BED56B836FE0ECA /* Pods-Calculendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculendar.debug.xcconfig"; path = "Target Support Files/Pods-Calculendar/Pods-Calculendar.debug.xcconfig"; sourceTree = "<group>"; };
 		6908F08420D78D850046F806 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		6908F08620D78DC00046F806 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		6908F08820D78DD60046F806 /* UPCarouselFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UPCarouselFlowLayout.swift; sourceTree = "<group>"; };
@@ -72,7 +71,8 @@
 		69F4507921B03E7600152812 /* DashBoardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashBoardCell.swift; sourceTree = "<group>"; };
 		69FC193925FE92AE00762DF0 /* Calculendar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Calculendar.entitlements; sourceTree = "<group>"; };
 		69FC193A25FE934C00762DF0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
-		7D4EF0C3F94AC3FB7249D5EB /* Pods_Calculendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Calculendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7203877AE818066E517FE705 /* Pods_Calculendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Calculendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1206E368C88DA4ADA20B0E8 /* Pods-Calculendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculendar.release.xcconfig"; path = "Target Support Files/Pods-Calculendar/Pods-Calculendar.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,7 @@
 			files = (
 				69FC193B25FE934C00762DF0 /* CloudKit.framework in Frameworks */,
 				69EF859D249DEFF700E643FE /* StoreKit.framework in Frameworks */,
-				3836596391C3E08262E05C52 /* Pods_Calculendar.framework in Frameworks */,
+				2E12638B51F1111D114D5683 /* Pods_Calculendar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,7 +94,7 @@
 			children = (
 				69FC193A25FE934C00762DF0 /* CloudKit.framework */,
 				69EF859C249DEFF700E643FE /* StoreKit.framework */,
-				7D4EF0C3F94AC3FB7249D5EB /* Pods_Calculendar.framework */,
+				7203877AE818066E517FE705 /* Pods_Calculendar.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -187,8 +187,8 @@
 		FEA50199D77DE9C8217D1E2A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				64ACFCAE6C92FFB55C571476 /* Pods-Calculendar.debug.xcconfig */,
-				6415AA49C05955CAEC654504 /* Pods-Calculendar.release.xcconfig */,
+				501DE6F83BED56B836FE0ECA /* Pods-Calculendar.debug.xcconfig */,
+				D1206E368C88DA4ADA20B0E8 /* Pods-Calculendar.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -200,11 +200,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 697A5EA320D6FD4F00951321 /* Build configuration list for PBXNativeTarget "Calculendar" */;
 			buildPhases = (
-				91ED00CF51AB781EE6FD2B3C /* [CP] Check Pods Manifest.lock */,
+				CC0694682FA12AB0D3046327 /* [CP] Check Pods Manifest.lock */,
 				697A5E8D20D6FD4800951321 /* Sources */,
 				697A5E8E20D6FD4800951321 /* Frameworks */,
 				697A5E8F20D6FD4800951321 /* Resources */,
-				F4FB35446F361B8BC69ADDC1 /* [CP] Embed Pods Frameworks */,
+				C15B11F9A3C4ABC30350A1A6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -274,7 +274,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		91ED00CF51AB781EE6FD2B3C /* [CP] Check Pods Manifest.lock */ = {
+		C15B11F9A3C4ABC30350A1A6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Calculendar/Pods-Calculendar-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Calculendar/Pods-Calculendar-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Calculendar/Pods-Calculendar-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CC0694682FA12AB0D3046327 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -294,23 +311,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F4FB35446F361B8BC69ADDC1 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Calculendar/Pods-Calculendar-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Calculendar/Pods-Calculendar-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Calculendar/Pods-Calculendar-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -499,7 +499,7 @@
 		};
 		697A5EA420D6FD4F00951321 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64ACFCAE6C92FFB55C571476 /* Pods-Calculendar.debug.xcconfig */;
+			baseConfigurationReference = 501DE6F83BED56B836FE0ECA /* Pods-Calculendar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Calculendar/Calculendar.entitlements;
@@ -509,7 +509,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/GoogleUserMessagingPlatform/Frameworks/Release",
-					"$(PROJECT_DIR)/Pods/Google-Mobile-Ads-SDK/Frameworks/GoogleMobileAdsFramework-Current",
 					"$(PROJECT_DIR)/Pods/GoogleAppMeasurement/Frameworks",
 				);
 				INFOPLIST_FILE = Calculendar/Info.plist;
@@ -518,7 +517,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2.1;
+				MARKETING_VERSION = 3.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Jay.Calculendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -528,7 +527,7 @@
 		};
 		697A5EA520D6FD4F00951321 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6415AA49C05955CAEC654504 /* Pods-Calculendar.release.xcconfig */;
+			baseConfigurationReference = D1206E368C88DA4ADA20B0E8 /* Pods-Calculendar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Calculendar/Calculendar.entitlements;
@@ -538,7 +537,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/GoogleUserMessagingPlatform/Frameworks/Release",
-					"$(PROJECT_DIR)/Pods/Google-Mobile-Ads-SDK/Frameworks/GoogleMobileAdsFramework-Current",
 					"$(PROJECT_DIR)/Pods/GoogleAppMeasurement/Frameworks",
 				);
 				INFOPLIST_FILE = Calculendar/Info.plist;
@@ -547,7 +545,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2.1;
+				MARKETING_VERSION = 3.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Jay.Calculendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

@@ -37,11 +37,29 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
         switch UIScreen.main.bounds.size {
         //  스토리보드 기본사이즈
         //  fromBottomToMemoBackViewHeightConstraint.constant = 360
-        //  fromTopToMemoBackViewHeightConstraint.constant = 4
+        //  fromTopToMemoBackViewHeightConstraint.constant = 0
         //  fromRightToMemoBackViewWidthConstraint.constant = 4
         //  fromLeftToMemoBackViewWidthConstraint.constant = 4
         
-        case iPhone12Max:
+        case iPhone14Pro:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
+//            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 360
+            //  메모화면 여백에 따른 광고효과 테스트 위에께 표준 밑에꺼는 자동완성기능시 광고가 많은부분 가림
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 313
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 370
+            
+        case iPhone14ProMax:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
+//            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 370
+            //  메모화면 여백에 따른 광고효과 테스트 위에께 표준 밑에꺼는 자동완성기능시 광고가 많은부분 가림
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 323
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 370
+            
+        case iPhone14Plus:
             fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
@@ -50,7 +68,7 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
             fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 323
             //  fromBottomToMemoBackViewHeightConstraint.constant = 370
         
-        case iPhone12Pro:
+        case iPhone13Pro:
             fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
@@ -59,7 +77,7 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
             fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 313
             //  fromBottomToMemoBackViewHeightConstraint.constant = 360
         
-        case iPhone11Max:
+        case iPhone11:
             fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
@@ -68,7 +86,7 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
             fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 323
             //  fromBottomToMemoBackViewHeightConstraint.constant = 370
         
-        case iPhonemini:
+        case iPhone14:
             fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
@@ -77,7 +95,7 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
             fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 313
             //  fromBottomToMemoBackViewHeightConstraint.constant = 360
         
-        case iPhoneSE2:
+        case iPhoneSE3:
             fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
