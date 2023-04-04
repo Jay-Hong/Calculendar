@@ -69,7 +69,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     
     @objc func storeButtonAction() {
         print("storeButton is pressed!!\n")
-        let storeURL = NSURL(string: "https://smartstore.naver.com/09090")
+        let storeURL = NSURL(string: "https://smartstore.naver.com/like-mart")
         let storeSafariView: SFSafariViewController = SFSafariViewController(url: storeURL! as URL)
         self.present(storeSafariView, animated: true, completion: nil)
     }
