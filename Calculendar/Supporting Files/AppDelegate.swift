@@ -1,4 +1,6 @@
 import UIKit
+import MediaPlayer
+import AVFAudio
 import GoogleMobileAds
 import AppTrackingTransparency
 import AdSupport
@@ -10,6 +12,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     var window: UIWindow?
     var interstitial: GADInterstitialAd?  //  전면광고용 변수
     var launchScreenView: UIView?
+    
+    var systemVolume: Float = 0       // 전면광고시 소리 안나오게 하기 위함
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         print("\n + + + + + + + + + + + + + + + + + + + + + + willFinishLaunchingWithOptions + + + + + + + + + + + + + + + + + + + + + + ")
@@ -92,6 +96,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     
     // 전면광고 로드
     func loadGADInterstitialAd() {
+        systemVolume = AVAudioSession.sharedInstance().outputVolume //  현재 미디어 볼륨 가져오기
+        print("systmeVolume = \(systemVolume)")
+        MPVolumeView.setVolume(0)                                   //  미디어 볼륨 0 만들기
+        
         let request = GADRequest()
         GADInterstitialAd.load(withAdUnitID:"ca-app-pub-5095960781666456/5144120126",
                                     request: request,
@@ -113,6 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     }
     
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        MPVolumeView.setVolume(systemVolume)            //  미디어 볼륨 복원
         print("Ad did dismiss full screen content.")
         launchScreenView?.removeFromSuperview()
     }

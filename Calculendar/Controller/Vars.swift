@@ -1,5 +1,6 @@
 import Foundation
 import MessageUI
+import MediaPlayer
 
 var daysInMonths = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]   //  0월은 존재X
 let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
@@ -193,6 +194,17 @@ public extension UIDevice {
         case "AudioAccessory5,1":                       return "HomePod mini"
         case "i386", "x86_64", "arm64":                 return "Simulator"
         default:                                        return identifier
+        }
+    }
+}
+
+extension MPVolumeView {
+    static func setVolume(_ volume: Float) {
+        let volumeView = MPVolumeView()
+        let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.01) {
+            slider?.value = volume
         }
     }
 }
