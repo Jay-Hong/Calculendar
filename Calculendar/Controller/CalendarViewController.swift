@@ -6,7 +6,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet var calendarLineView: CalendarLineView!
     @IBOutlet weak var calendarCollectionView: UICollectionView!
     
-    var storeButton = UIButton()    //  2021/10/12 스토어 바로가기 버튼 추가
+    var jobInfoButton = UIButton()    //  2021/10/12 스토어 바로가기 버튼 추가 -> 2023/05 채용정보 로 변경
     
     var delegate: CalendarDelegate?
     
@@ -46,32 +46,37 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
             self?.calendarCollectionView.reloadData()
         }
         
-        //  storeButton
-        let storeButtonWidth = self.view.bounds.width / 7
-        self.view.addSubview(storeButton)
-        storeButton.translatesAutoresizingMaskIntoConstraints = false
+        //  jobInfoButton
+        let jobInfoButtonWidth = self.view.bounds.width / 7
+        self.view.addSubview(jobInfoButton)
+        jobInfoButton.translatesAutoresizingMaskIntoConstraints = false
         
-        storeButton.widthAnchor.constraint(equalToConstant: storeButtonWidth).isActive = true
-        storeButton.heightAnchor.constraint(equalToConstant: storeButtonWidth).isActive = true
+        jobInfoButton.widthAnchor.constraint(equalToConstant: jobInfoButtonWidth).isActive = true
+        jobInfoButton.heightAnchor.constraint(equalToConstant: jobInfoButtonWidth).isActive = true
         
-        storeButton.setImage(UIImage(named: "Store_01"), for: .normal)
+        jobInfoButton.setImage(UIImage(named: "JOB_image"), for: .normal)
         
         if numberOfCells == 35 {
-            storeButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
-            storeButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            jobInfoButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
+            jobInfoButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         } else {
-            storeButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-            storeButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+            jobInfoButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+            jobInfoButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         }
         
-        storeButton.addTarget(self, action: #selector(storeButtonAction), for: .touchUpInside)
+        jobInfoButton.layer.cornerRadius = 5
+        jobInfoButton.layer.masksToBounds = true
+        
+        jobInfoButton.addTarget(self, action: #selector(jobInfoButtonAction), for: .touchUpInside)
     }
     
-    @objc func storeButtonAction() {
-        print("storeButton is pressed!!\n")
-        let storeURL = NSURL(string: "https://smartstore.naver.com/like-mart")
-        let storeSafariView: SFSafariViewController = SFSafariViewController(url: storeURL! as URL)
-        self.present(storeSafariView, animated: true, completion: nil)
+    @objc func jobInfoButtonAction() {
+        print("\nJob List Button is pressed!!\n")
+        self.performSegue(withIdentifier: "toJobListViewControllerSegue", sender: self)
+//        print("storeButton is pressed!!\n")
+//        let storeURL = NSURL(string: "https://smartstore.naver.com/like-mart")
+//        let storeSafariView: SFSafariViewController = SFSafariViewController(url: storeURL! as URL)
+//        self.present(storeSafariView, animated: true, completion: nil)
     }
     
     //  viewWillLayoutSubviews() | viewDidLayoutSubviews()

@@ -21,6 +21,10 @@ class AdRemovalViewController: UIViewController, SKProductsRequestDelegate, SKPa
         purchaseButton.layer.masksToBounds = true
         restoreButton.layer.cornerRadius = 8
         restoreButton.layer.masksToBounds = true
+        
+        let removeAD_Price = remoteConfig.configValue(forKey: RemoteConfigKeys.removeAD_Price).stringValue ?? ""
+        purchaseButton.setTitle(removeAD_Price, for: .normal)
+        
     }
     
     

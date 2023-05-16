@@ -1,6 +1,7 @@
 import UIKit
 import MessageUI
 import GoogleMobileAds
+import FirebaseRemoteConfig
 
 class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, GADBannerViewDelegate {
 
@@ -70,7 +71,31 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         setDashBoard()
         setAdMob()
         addNotification()
+        fetchRemoteConfig()
         
+    }
+    
+    func fetchRemoteConfig() {
+        // FIXME: Remove below three lines before we go into production!!
+//        let settings = RemoteConfigSettings()
+//        settings.minimumFetchInterval = 0
+//        remoteConfig.configSettings = settings
+        
+        remoteConfig.setDefaults(fromPlist: "remote_config_defaults")
+        
+        remoteConfig.fetch { (status, error) -> Void in
+            if status == .success {
+              print("Remote Config fetched!")
+                remoteConfig.activate { changed, error in
+                    print("Remote config activated!")
+                    //  Remote config 가져오자마자 할일
+                }
+            } else {
+              print("Remote Config not fetched")
+              print("Error fetching remote config: \(error?.localizedDescription ?? "unknown error")")
+            }
+            // self.displayWelcome()
+        }
     }
     
     func setStartDay() {

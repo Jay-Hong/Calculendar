@@ -1,5 +1,12 @@
 import Foundation
 import MessageUI
+import FirebaseRemoteConfig
+import FirebaseDatabase
+
+var remoteConfig = RemoteConfig.remoteConfig()
+let databaseReference = Database.database().reference()
+
+var imageSize = CGSize()    //  채용정보 관련 사진 사이즈
 
 var daysInMonths = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]   //  0월은 존재X
 let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
@@ -82,6 +89,15 @@ func makeTwoDigitString(_ number : Int) -> String {
     default:
         return"\(number)"
     }
+}
+
+struct RemoteConfigKeys {
+    static let jobInfoJSON = "jobInfoJSON"
+    static let removeAD_Price = "removeAD_Price"
+    static let selectJobDB = "selectJobDB"
+    static let jobDB_GithubURL = "jobDB_GithubURL"
+    static let applyByMessage = "applyByMessage"
+    static let jobInfoMail = "jobInfoMail"
 }
 
 struct SettingsKeys {
