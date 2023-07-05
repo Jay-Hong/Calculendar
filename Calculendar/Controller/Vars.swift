@@ -98,6 +98,8 @@ struct RemoteConfigKeys {
     static let jobDB_GithubURL = "jobDB_GithubURL"
     static let applyByMessage = "applyByMessage"
     static let jobInfoMail = "jobInfoMail"
+    static let jobListAD = "jobListAD"
+    static let jobDetailAD = "jobDetailAD"
 }
 
 struct SettingsKeys {

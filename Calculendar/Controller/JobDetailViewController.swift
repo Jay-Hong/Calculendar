@@ -132,7 +132,7 @@ class JobDetailViewController: UIViewController, GADBannerViewDelegate {
     }
 
     func setAdMob() {
-        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) || !remoteConfig.configValue(forKey: RemoteConfigKeys.jobDetailAD).boolValue {
             bannerView.isHidden = true
             adView.isHidden = true
             adViewHeightConstraint.constant = 0

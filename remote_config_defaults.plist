@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>jobDetailAD</key>
+	<string>true</string>
+	<key>jobListAD</key>
+	<string>true</string>
 	<key>jobInfoMail</key>
 	<string>▹ 상세한 채용정보는 많은 지원자로 이어집니다
 
