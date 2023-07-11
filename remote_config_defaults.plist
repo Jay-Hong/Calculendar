@@ -75,6 +75,6 @@
 	<key>selectJobDB</key>
 	<string>0</string>
 	<key>jobDB_GithubURL</key>
-	<string>https://raw.githubusercontent.com/Jay-Hong/Calculendar/master/jobinfoURL.json</string>
+	<string>https://raw.githubusercontent.com/Jay-Hong/Calculendar_JSON/master/jobinfoURL.json</string>
 </dict>
 </plist>
