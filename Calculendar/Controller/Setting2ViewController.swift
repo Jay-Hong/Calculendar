@@ -1,8 +1,10 @@
 import UIKit
 import MessageUI
 import GoogleMobileAds
+import AppTrackingTransparency
+import AdSupport
 
-class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADInterstitialDelegate {
+class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADFullScreenContentDelegate {
     
     @IBOutlet weak var bannerView: GADBannerView!
     @IBOutlet weak var basePayDetailLabel: UILabel!
@@ -17,7 +19,8 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADI
     
     @IBOutlet weak var versionDetailLabel: UILabel!
     
-    var interstitial: GADInterstitial!  //  전면광고용 변수
+//    var interstitial: GADInterstitial!  //  전면광고용 변수(예전)
+    private var interstitial: GADInterstitialAd?    // 전면광고용 변수
     
     var taxPickerViewIsOn = false       // 첫 세팅화면에 TaxPicker 안보이게
     var startDayPickerViewIsOn = false  // 첫 세팅화면에 StartPicker 안보이게
@@ -57,7 +60,7 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADI
     
     override func viewDidLoad() {
 
-        setSettingAdMob()
+        setAdMob()
         initialSetting()
         
         //  광고제거 구매/복원 시
@@ -114,16 +117,24 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADI
             return 0
         }
         
-        //  광고제거 구매/복원 시
-        if indexPath.section == 0 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+        //  광고제거 구매/복원 시 ⌜설정 상단 광고⌟ 안나오게    ||  앱추적요청 허용 시 ⌜설정 상단 광고⌟ 안나오게
+        if indexPath.section == 0 && indexPath.row == 0 {
+            if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) { return 0 }
+            
+            if #available(iOS 14, *) {
+                if ATTrackingManager.trackingAuthorizationStatus == ATTrackingManager.AuthorizationStatus.authorized {
+                    return 0
+                }
+            }
+        }
+        
+        //  광고제거 구매/복원 시 ⌜모든 광고 제거⌟ 안나오게
+        if indexPath.section == 1 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             return 0
         }
         
-        if indexPath.section == 2 && indexPath.row == 0 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
-            return 0
-        }
-        
-        if indexPath.section == 2 && indexPath.row == 1 && UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+        //  설정 전면광고 안보이기 (전면광고 테스트용으로 사용)
+        if indexPath.section == 2 && indexPath.row == 0 {
             return 0
         }
         
@@ -149,21 +160,25 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADI
             tableView.endUpdates()
         }
         
+        if indexPath.section == 1 && indexPath.row == 1 {
+            print("iCloud 백원 / 복원")
+        }
+        
         //  E-Mail
-        if indexPath.section == 1 && indexPath.row == 0 {
+        if indexPath.section == 1 && indexPath.row == 2 {
             sendMailButtonAction()
         }
         
-        if indexPath.section == 2 && indexPath.row == 0 {
-
+        if indexPath.section == 1 && indexPath.row == 3 {
+            print("버전정보")
         }
         
-        if indexPath.section == 2 && indexPath.row == 1 {
+        if indexPath.section == 2 && indexPath.row == 0 {
             
-            if interstitial.isReady {
-              interstitial.present(fromRootViewController: self)
+            if let ad = interstitial {
+                ad.present(fromRootViewController: self)
             } else {
-              print("광고 준비 완됨")
+                print("Ad wasn't ready")
             }
         }
         
@@ -171,7 +186,7 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADI
     }
     
     //MARK:  - AdMob 광고용 함수
-    func setSettingAdMob() {
+    func setAdMob() {
         if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             //  광고 제거 됨
         } else {
@@ -184,19 +199,28 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADI
             bannerView.layer.masksToBounds = true
             bannerView.delegate = self
             //  Google AdMob 전면광고 준비
-            interstitial = createAndLoadInterstitial()
+//            loadGADInterstitialAd()
         }
     }
     
-    func createAndLoadInterstitial() -> GADInterstitial {
-      interstitial = GADInterstitial(adUnitID: "ca-app-pub-5095960781666456/7571982734")
-      interstitial.delegate = self
-      interstitial.load(GADRequest())
-      return interstitial
+    func loadGADInterstitialAd() {
+        let request = GADRequest()
+        GADInterstitialAd.load(withAdUnitID:"ca-app-pub-5095960781666456/7571982734",
+                                    request: request,
+                        completionHandler: { [self] ad, error in
+                            if let error = error {
+                                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                                return
+                            }
+                            interstitial = ad
+                            interstitial?.fullScreenContentDelegate = self
+                        }
+        )
     }
-
-    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
-      interstitial = createAndLoadInterstitial()
+    
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        print("Ad did dismiss full screen content.")
+        loadGADInterstitialAd()
     }
     
     //MARK:  - Prepare

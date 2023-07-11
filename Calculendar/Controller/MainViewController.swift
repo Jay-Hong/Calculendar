@@ -1,6 +1,7 @@
 import UIKit
 import MessageUI
 import GoogleMobileAds
+import FirebaseRemoteConfig
 
 class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, GADBannerViewDelegate {
 
@@ -48,7 +49,8 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     var unitOfWorkTemp = String()
     
     //  메인화면 하단 출력용 변수
-    var strMonthlyUnitOfWrk = String()
+    var strMonthlyUnitOfWork = String()
+    var strMonthlyWorkDay = String()
     var strDaylyPay = String()
     var strMonthlySalaly = String()
     var strMonthlySalalyAfterTax = String()
@@ -69,7 +71,31 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         setDashBoard()
         setAdMob()
         addNotification()
+        fetchRemoteConfig()
         
+    }
+    
+    func fetchRemoteConfig() {
+        // FIXME: Remove below three lines before we go into production!!
+//        let settings = RemoteConfigSettings()
+//        settings.minimumFetchInterval = 0
+//        remoteConfig.configSettings = settings
+        
+        remoteConfig.setDefaults(fromPlist: "remote_config_defaults")
+        
+        remoteConfig.fetch { (status, error) -> Void in
+            if status == .success {
+              print("Remote Config fetched!")
+                remoteConfig.activate { changed, error in
+                    print("Remote config activated!")
+                    //  Remote config 가져오자마자 할일
+                }
+            } else {
+              print("Remote Config not fetched")
+              print("Error fetching remote config: \(error?.localizedDescription ?? "unknown error")")
+            }
+            // self.displayWelcome()
+        }
     }
     
     func setStartDay() {
@@ -96,14 +122,16 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         NotificationCenter.default.addObserver(self, selector: #selector(onDidTogglePaySystem), name: .didTogglePaySystem, object: nil)
         //  날짜 바뀌면 Dash Board 다시 로드
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object:nil, queue: .main) { [weak self] _ in
+            setToday()
             self?.setMonthlyUnitOfWorkOnDashboard()
+            self?.setMonthlyWorkDayOnDashboard()
             self?.setMonthlySalalyOnDashboard()
             self?.dashBoardCollectionView.reloadData()
-            UserDefaults.standard.set(false, forKey: SettingsKeys.firstScreenAd)
-            print("날짜 바뀜 - firstScreenAd :  \(UserDefaults.standard.bool(forKey: SettingsKeys.firstScreenAd))")
         }
         //  광고제거 구매/복원 시
         NotificationCenter.default.addObserver(self, selector: #selector(onDidPurchaseAdRemoval), name: .didPurchaseAdRemoval, object: nil)
+        //  iCloud 백업파일 디바이스 복원 시
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidRestoreOperation), name: .didRestoreOperation, object: nil)
     }
     
     @objc func onDidSaveBasePay(_ notification: Notification) {
@@ -123,6 +151,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     @objc func onDidSaveStartDay(_ notification: Notification) {
         setStartDay()
         setMonthlyUnitOfWorkOnDashboard()
+        setMonthlyWorkDayOnDashboard()
         setMonthlySalalyOnDashboard()
         dashBoardCollectionView.reloadData()
     }
@@ -136,6 +165,10 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         bannerView.isHidden = true
         bannerBackView.isHidden = true
         bannerBackViewHeightConstraint.constant = 0
+    }
+    
+    @objc func onDidRestoreOperation(_ notification: Notification) {
+        moveYearMonth(year: selectedYear, month: selectedMonth)
     }
     
     func setAdMob() {
@@ -155,18 +188,21 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     func setTopBar() {
         //  Device Type 에 따라 화면 조정
         switch UIScreen.main.bounds.size {
-        case iPhoneSE:  //  메인화면 광고 없애기 , Top Bar 60으로 줄이기
-            topBarViewHeightConstraint.constant = 60
+        //  스토리보드 기본사이즈
+        //  topBarViewHeightConstraint.constant = 40
+        
+        case iPhone14ProMax, iPhone14Pro, iPhone14, iPhone14Plus, iPhone13Pro, iPhone11: //  Top Bar 30으로 줄여주기
+            topBarViewHeightConstraint.constant = 30
+            bannerBackView.isHidden = false
+        
+        case iPhoneSE3, iPhone8Plus:  // Top Bar 40 유지
+            topBarViewHeightConstraint.constant = 40
+            bannerBackView.isHidden = false
+            
+        case iPhoneSE1:  //  Top Bar 40 유지
+            topBarViewHeightConstraint.constant = 40
             bannerBackViewHeightConstraint.constant = 0
             bannerBackView.isHidden = true
-            
-        case iPhone8Plus, iPhone8:  // Top Bar 70 유지
-            topBarViewHeightConstraint.constant = 70
-            bannerBackView.isHidden = false
-            
-        case iPhoneXS, iPhoneXSMAX, iPhoneXR:   //  Top Bar 80으로 늘려주기
-            topBarViewHeightConstraint.constant = 80
-            bannerBackView.isHidden = false
             
         default:
             bannerBackView.isHidden = false
@@ -199,6 +235,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         loadPreItems()
         loadNextItems()
         setMonthlyUnitOfWorkOnDashboard()
+        setMonthlyWorkDayOnDashboard()
         setMonthlySalalyOnDashboard()
         setDaylyPayOnDashboard()
     }
@@ -261,6 +298,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             loadPreItems()
             loadNextItems()
             setMonthlyUnitOfWorkOnDashboard()
+            setMonthlyWorkDayOnDashboard()
             setMonthlySalalyOnDashboard()
             setDaylyPayOnDashboard()
             dashBoardCollectionView.reloadData()
@@ -406,13 +444,77 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             }
         }
         
-        strMonthlyUnitOfWrk = String(format: "%.2f", totalMonthlyUnitOfWork)
-        if strMonthlyUnitOfWrk.contains(".") {
-            while (strMonthlyUnitOfWrk.hasSuffix("0")) {
-                strMonthlyUnitOfWrk.removeLast() }
-            if strMonthlyUnitOfWrk.hasSuffix(".") {
-                strMonthlyUnitOfWrk.removeLast() }
+        strMonthlyUnitOfWork = String(format: "%.2f", totalMonthlyUnitOfWork)
+        if strMonthlyUnitOfWork.contains(".") {
+            while (strMonthlyUnitOfWork.hasSuffix("0")) {
+                strMonthlyUnitOfWork.removeLast() }
+            if strMonthlyUnitOfWork.hasSuffix(".") {
+                strMonthlyUnitOfWork.removeLast() }
         }
+    }
+    
+    // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
+    func setMonthlyWorkDayOnDashboard() {
+        var totalMonthlyWorkDay = Int()    //  해당월 총 근무일
+        //  현재 날짜에 따른 DashBoard 맞춤 출력
+        if toDay >= startDay {
+            switch startDay {
+            case 1: //  시작일이 1일 일경우 해당월만 계산
+                if !itemArray.isEmpty {
+                    for item in itemArray
+                    {if item.numUnitOfWork != 0 {totalMonthlyWorkDay += 1}}
+                }
+            case 2..<numStartDayPickerItem: //  시작일이 1일이 아니고 마지막날도 아닐경우
+                if !itemArray.isEmpty {
+                    for i in startDay - 1 ... itemArray.count - 1
+                    {if itemArray[i].numUnitOfWork != 0 {totalMonthlyWorkDay += 1}}
+                }
+                if !itemNextArray.isEmpty {
+                    for i in 0 ..< startDay - 1
+                    {if itemNextArray[i].numUnitOfWork != 0 {totalMonthlyWorkDay += 1}}
+                }
+            case numStartDayPickerItem: //  시작일이 마지막 날일 경우
+                if !itemArray.isEmpty {
+                    if itemArray.last!.numUnitOfWork != 0 {totalMonthlyWorkDay += 1}
+                }
+                if !itemNextArray.isEmpty {
+                    for i in 0 ..< itemNextArray.count - 1
+                    {if itemNextArray[i].numUnitOfWork != 0 {totalMonthlyWorkDay += 1}}
+                }
+            default:
+                if !itemArray.isEmpty {
+                    for item in itemArray
+                    {if item.numUnitOfWork != 0 {totalMonthlyWorkDay += 1}}
+                }
+            }
+        } else {    //  toDay < startDay
+            switch startDay {
+            case 2..<numStartDayPickerItem:
+                if !itemArray.isEmpty {
+                    for i in 0 ..< startDay - 1
+                    {if itemArray[i].numUnitOfWork != 0 {totalMonthlyWorkDay += 1}}
+                }
+                if !itemPreArray.isEmpty {
+                    for i in startDay - 1 ... itemPreArray.count - 1
+                    {if itemPreArray[i].numUnitOfWork != 0 {totalMonthlyWorkDay += 1}}
+                }
+            case numStartDayPickerItem:
+                if !itemArray.isEmpty {
+                    for i in 0 ..< itemArray.count - 1
+                    {if itemArray[i].numUnitOfWork != 0 {totalMonthlyWorkDay += 1}}
+                }
+                if !itemPreArray.isEmpty
+                {if itemPreArray.last!.numUnitOfWork != 0 {totalMonthlyWorkDay += 1}}
+            default:
+                if !itemArray.isEmpty {
+                    for item in itemArray
+                    {if item.numUnitOfWork != 0 {totalMonthlyWorkDay += 1}}
+                }
+            }
+        }
+        
+        strMonthlyWorkDay = String(totalMonthlyWorkDay)
+        
     }
     
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
@@ -488,7 +590,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         monthlySalalyAfterTax = monthlySalaly * afterTaxRatePercentage
         tax = monthlySalaly * taxRatePercentage
         
-        //  화폐단위 만원:0 / 천원:1 / 원:2  (기본값: 0 - 만원)
+        //  화폐단위 만원:0 / 천원:1 / 원:2
         switch moneyUnitData {
         case 0:
             formatter.maximumFractionDigits = 4
@@ -655,6 +757,9 @@ extension MainViewController: PopupDelegate {
             itemArray[selectedDay-1].pay = Float(payTemp)!
         }
         saveItems()
+        
+        moveYearMonth(year: selectedYear, month: selectedMonth, day: selectedDay)
+        
         setMonthlySalalyOnDashboard()
         setDaylyPayOnDashboard()
         dashBoardCollectionView.reloadData()
@@ -699,6 +804,7 @@ extension MainViewController: PopupDelegate {
         moveYearMonth(year: selectedYear, month: selectedMonth, day: selectedDay)
         
         setMonthlyUnitOfWorkOnDashboard()
+        setMonthlyWorkDayOnDashboard()
         setMonthlySalalyOnDashboard()
         setDaylyPayOnDashboard()
         dashBoardCollectionView.reloadData()
@@ -725,6 +831,7 @@ extension MainViewController: PopupDelegate {
         loadPreItems()
         loadNextItems()
         setMonthlyUnitOfWorkOnDashboard()
+        setMonthlyWorkDayOnDashboard()
         setMonthlySalalyOnDashboard()
         setDaylyPayOnDashboard()
         dashBoardCollectionView.reloadData()
@@ -747,7 +854,7 @@ extension MainViewController: CalendarDelegate {
 
 //MARK:  - DashBoard Controller
 extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    
+
     func setDashBoard() {
         
         let flowLayout = UPCarouselFlowLayout()
@@ -757,10 +864,43 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         flowLayout.sideItemAlpha = 0.4
         flowLayout.spacingMode = .fixed(spacing: 10)
         dashBoardCollectionView.collectionViewLayout = flowLayout
+        
+        dashBoardCurrentPage = 0
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let dashBoardPrePage = dashBoardCurrentPage
+        let layout = self.dashBoardCollectionView.collectionViewLayout as! UPCarouselFlowLayout
+        let pageSide = (layout.scrollDirection == .horizontal) ? self.pageSize.width : self.pageSize.height
+        let offset = (layout.scrollDirection == .horizontal) ? scrollView.contentOffset.x : scrollView.contentOffset.y
+        dashBoardCurrentPage = Int(floor((offset - pageSide / 2) / pageSide) + 1)
+        print("dashBoardCurrentPage = \(dashBoardCurrentPage)")
+        if dashBoardPrePage != dashBoardCurrentPage {
+            moveYearMonth(year: selectedYear, month: selectedMonth, day: selectedDay)
+        }
+    }
+    
+    fileprivate var pageSize: CGSize {
+        let layout = self.dashBoardCollectionView.collectionViewLayout as! UPCarouselFlowLayout
+        var pageSize = layout.itemSize
+        if layout.scrollDirection == .horizontal {
+            pageSize.width += layout.minimumLineSpacing
+        } else {
+            pageSize.height += layout.minimumLineSpacing
+        }
+        return pageSize
+    }
+    
+    fileprivate var orientation: UIDeviceOrientation {
+        return UIDevice.current.orientation
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("현재 선택된 indexPath.row 는 : \(indexPath.row)")
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -798,7 +938,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
                 }
             }
             
-            cell.contentLabel.text = strMonthlyUnitOfWrk
+            cell.contentLabel.text = strMonthlyUnitOfWork
 
             //  일급:0 / 시급:1
             switch paySystemIndex {
@@ -813,6 +953,36 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             cell.iconImgView.image = #imageLiteral(resourceName: "ic_schedule")
             
         case 1:
+            if toDay >= startDay {
+                switch startDay {
+                case 1: //  시작일이 1일 일경우 해당월만 계산
+                    cell.descriptionLabel.text = "\(selectedMonth)월 근무일"
+                case 2..<numStartDayPickerItem: //  시작일이 1일이 아니고 마지막날도 아닐경우
+                    cell.descriptionLabel.text = "\(selectedMonth)/\(startDay) ~ \(followingMonth)/\(startDay-1) 근무일"
+                case numStartDayPickerItem: //  시작일이 마지막 날일 경우
+                    cell.descriptionLabel.text = "\(selectedMonth)/\(daysInMonths[selectedMonth]) ~ \(followingMonth)/\(daysInMonths[Int(followingMonth)!]-1) 근무일"
+                default:
+                    cell.descriptionLabel.text = "\(selectedMonth)월 근무일"
+                }
+            } else {    //  toDay < startDay
+                switch startDay {
+                case 2..<numStartDayPickerItem:
+                   cell.descriptionLabel.text = "\(previousMonth)/\(startDay) ~ \(selectedMonth)/\(startDay-1) 근무일"
+                case numStartDayPickerItem:
+                    cell.descriptionLabel.text = "\(previousMonth)/\(daysInMonths[Int(previousMonth)!]) ~ \(selectedMonth)/\(daysInMonths[selectedMonth]-1) 근무일"
+                default:
+                    cell.descriptionLabel.text = "\(selectedMonth)월 근무일"
+                }
+            }
+            
+            cell.contentLabel.text = strMonthlyWorkDay
+            cell.unitLabel.text = "일"
+
+            cell.backView.backgroundColor = #colorLiteral(red: 0.9570236802, green: 0.5908840299, blue: 0.1887014806, alpha: 1)
+            cell.imgBackView.backgroundColor = #colorLiteral(red: 0.8799408078, green: 0.5285210013, blue: 0.1777598858, alpha: 1)
+            cell.iconImgView.image = #imageLiteral(resourceName: "ic_day_white_48")
+            
+        case 2:
             if toDay >= startDay {
                 switch startDay {
                 case 1: //  시작일이 1일 일경우 해당월만 계산
@@ -844,7 +1014,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             cell.imgBackView.backgroundColor = #colorLiteral(red: 0.8705882353, green: 0, blue: 0.3098039216, alpha: 1)
             cell.iconImgView.image = #imageLiteral(resourceName: "ic_wallet")
             
-        case 2:
+        case 3:
             cell.contentLabel.text = strDaylyPay
             cell.descriptionLabel.text = "\(selectedMonth)월 \(selectedDay)일 단가"
             cell.unitLabel.text = moneyUnitsDataSource[moneyUnitData]   // 만원 or 천원 or 원

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>jobDetailAD</key>
+	<string>true</string>
+	<key>jobListAD</key>
+	<string>true</string>
+	<key>jobInfoMail</key>
+	<string>▹ 상세한 채용정보는 많은 지원자로 이어집니다
+
+지역: 
+
+제목: 
+
+직종: 
+
+급여: 
+
+인원: 
+
+연락처: 
+
+상세내용:
+
+
+근무조건: #숙식제공  #4대보험  #장기근무  #단기근무  #출퇴근가능
+
+📷 채용관련 사진 한장 등록 가능
+
+✔︎ 간단한 검토 후 채용공고가 등록됩니다
+(등록에 시간이 걸릴 수 있습니다)
+</string>
+	<key>applyByMessage</key>
+	<string>채용공고 보고 지원 드립니다
+이름: OOO
+나이: OO
+경력:
+</string>
+	<key>jobInfoJSON</key>
+	<string>[
+  {
+    &quot;title&quot;: &quot;서버 점검중 입니다&quot;,
+    &quot;site&quot;: &quot;전국&quot;,
+    &quot;type&quot;: &quot;&quot;,
+    &quot;pay&quot;: &quot;&quot;,
+    &quot;etc1&quot;: &quot;&quot;,
+    &quot;etc2&quot;: &quot;&quot;,
+    &quot;etc3&quot;: &quot;&quot;,
+    &quot;numpeople&quot;: &quot;&quot;,
+    &quot;phone&quot;: &quot;&quot;,
+    &quot;detail&quot;: &quot;Remote Config from Firebase&quot;,
+    &quot;imageURL&quot;: &quot;&quot;,
+    &quot;time&quot;: &quot;&quot;,
+    &quot;sponsored&quot;: &quot;&quot;
+  },
+  {
+    &quot;title&quot;: &quot;&quot;,
+    &quot;site&quot;: &quot;&quot;,
+    &quot;type&quot;: &quot;&quot;,
+    &quot;pay&quot;: &quot;&quot;,
+    &quot;etc1&quot;: &quot;&quot;,
+    &quot;etc2&quot;: &quot;&quot;,
+    &quot;etc3&quot;: &quot;&quot;,
+    &quot;numpeople&quot;: &quot;&quot;,
+    &quot;phone&quot;: &quot;&quot;,
+    &quot;detail&quot;: &quot;&quot;,
+    &quot;imageURL&quot;: &quot;&quot;,
+    &quot;time&quot;: &quot;&quot;,
+    &quot;sponsored&quot;: &quot;&quot;
+  }
+]</string>
+	<key>removeAD_Price</key>
+	<string>구매   ₩9,900</string>
+	<key>selectJobDB</key>
+	<string>0</string>
+	<key>jobDB_GithubURL</key>
+	<string>https://raw.githubusercontent.com/Jay-Hong/Calculendar/master/jobinfoURL.json</string>
+</dict>
+</plist>

@@ -9,22 +9,18 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var calendarCellUnitOfWorkLabelHeightConstrint: NSLayoutConstraint!
     
     func setCalendarCellUnitOfWorkLabelHeightConstrint() {
-        //  Device Type 에 따라 공수(시간)출력 레이블 높이 조정
+        
         switch UIScreen.main.bounds.size {
-        case iPhoneSE:
+        //  Device Type 에 따라 Calendar Cell별(날짜별) 공수출력 레이블 높이 조정
+        //  스토리보드 기본사이즈
+        //  calendarCellUnitOfWorkLabelHeightConstrint.constant = 22
+        
+        case iPhone13Pro, iPhone14, iPhoneSE3, iPhone8Plus, iPhoneSE1:
             calendarCellUnitOfWorkLabelHeightConstrint.constant = 22
-            
-        case iPhone8:
+        
+        // iPhone14ProMax 에서 캘린더 셀 메모에서 5줄 출력 가능하도록 26 -> 22로 줄임
+        case iPhone14ProMax, iPhone14Pro, iPhone14Plus, iPhone11:
             calendarCellUnitOfWorkLabelHeightConstrint.constant = 22
-            
-        case iPhone8Plus, iPhoneXS:
-            calendarCellUnitOfWorkLabelHeightConstrint.constant = 23
-            
-        case iPhoneXR:
-            calendarCellUnitOfWorkLabelHeightConstrint.constant = 25
-            
-        case iPhoneXSMAX:
-            calendarCellUnitOfWorkLabelHeightConstrint.constant = 26
             
         default: break
         }

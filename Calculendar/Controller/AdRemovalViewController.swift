@@ -21,6 +21,10 @@ class AdRemovalViewController: UIViewController, SKProductsRequestDelegate, SKPa
         purchaseButton.layer.masksToBounds = true
         restoreButton.layer.cornerRadius = 8
         restoreButton.layer.masksToBounds = true
+        
+        let removeAD_Price = remoteConfig.configValue(forKey: RemoteConfigKeys.removeAD_Price).stringValue ?? ""
+        purchaseButton.setTitle(removeAD_Price, for: .normal)
+        
     }
     
     
@@ -119,7 +123,7 @@ class AdRemovalViewController: UIViewController, SKProductsRequestDelegate, SKPa
                 //  OK 버튼 누를시 실행될 내용
             }
             alert.addAction(okAction)
-            present(alert, animated: false, completion: nil)
+            present(alert, animated: true, completion: nil)
             print("구매 내역이 없습니다")
         } else {
             let alert = UIAlertController(title: "복원 되었습니다", message: "", preferredStyle: UIAlertController.Style.alert)
@@ -128,7 +132,7 @@ class AdRemovalViewController: UIViewController, SKProductsRequestDelegate, SKPa
                 self.navigationController?.popViewController(animated: true)
             }
             alert.addAction(okAction)
-            present(alert, animated: false, completion: nil)
+            present(alert, animated: true, completion: nil)
             print("복원 되었습니다")
 
         }

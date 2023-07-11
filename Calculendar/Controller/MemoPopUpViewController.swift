@@ -1,4 +1,3 @@
-
 import UIKit
 import GoogleMobileAds
 
@@ -36,42 +35,92 @@ class MemoPopUpViewController: UIViewController, GADBannerViewDelegate {
     func setMemoBackViewConstraint() {
         //  Device Type 에 따라 메모화면 조정
         switch UIScreen.main.bounds.size {
-        case iPhoneXS:
-            fromTopToMemoBackViewHeightConstraint.constant = 4
-//            fromBottomToMemoBackViewHeightConstraint.constant = 360
+        //  스토리보드 기본사이즈
+        //  fromBottomToMemoBackViewHeightConstraint.constant = 360
+        //  fromTopToMemoBackViewHeightConstraint.constant = 0
+        //  fromRightToMemoBackViewWidthConstraint.constant = 4
+        //  fromLeftToMemoBackViewWidthConstraint.constant = 4
+        
+        case iPhone14Pro:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 360
-        case iPhoneXSMAX:
-            fromTopToMemoBackViewHeightConstraint.constant = 4
-//            fromBottomToMemoBackViewHeightConstraint.constant = 370
+//            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 360
+            //  메모화면 여백에 따른 광고효과 테스트 위에께 표준 밑에꺼는 자동완성기능시 광고가 많은부분 가림
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 313
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 370
+            
+        case iPhone14ProMax:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 370
-        case iPhoneXR:
-            fromTopToMemoBackViewHeightConstraint.constant = 4
-//            fromBottomToMemoBackViewHeightConstraint.constant = 365
+//            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 370
+            //  메모화면 여백에 따른 광고효과 테스트 위에께 표준 밑에꺼는 자동완성기능시 광고가 많은부분 가림
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 323
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 370
+            
+        case iPhone14Plus:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 310 : 365
-        case iPhone8:
-            fromTopToMemoBackViewHeightConstraint.constant = 4
-//            fromBottomToMemoBackViewHeightConstraint.constant = 320
+//            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 370
+            //  메모화면 여백에 따른 광고효과 테스트 위에께 표준 밑에꺼는 자동완성기능시 광고가 많은부분 가림
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 323
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 370
+        
+        case iPhone13Pro:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 265 : 320
+//            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 360
+            //  메모화면 여백에 따른 광고효과 테스트 위에께 표준 밑에꺼는 자동완성기능시 광고가 많은부분 가림
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 313
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 360
+        
+        case iPhone11:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
+//            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 370
+            //  메모화면 여백에 따른 광고효과 테스트 위에께 표준 밑에꺼는 자동완성기능시 광고가 많은부분 가림
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 315 : 323
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 370
+        
+        case iPhone14:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
+//            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 360
+            //  메모화면 여백에 따른 광고효과 테스트 위에께 표준 밑에꺼는 자동완성기능시 광고가 많은부분 가림
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 305 : 313
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 360
+        
+        case iPhoneSE3:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
+            fromRightToMemoBackViewWidthConstraint.constant = 4
+            fromLeftToMemoBackViewWidthConstraint.constant = 4
+//            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 265 : 320
+            //  메모화면 여백에 따른 광고효과 테스트 위에께 표준 밑에꺼는 자동완성기능시 광고가 많은부분 가림
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 265 : 273
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 320
+        
         case iPhone8Plus:
-            fromTopToMemoBackViewHeightConstraint.constant = 4
-//            fromBottomToMemoBackViewHeightConstraint.constant = 330
+            fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 275 : 330
-        case iPhoneSE:
-            fromTopToMemoBackViewHeightConstraint.constant = 4
-//            fromBottomToMemoBackViewHeightConstraint.constant = 303
+//            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 275 : 330
+            //  메모화면 여백에 따른 광고효과 테스트 위에께 표준 밑에꺼는 자동완성기능시 광고가 많은부분 가림
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 275 : 283
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 330
+        
+        case iPhoneSE1:
+            fromTopToMemoBackViewHeightConstraint.constant = 0
             fromRightToMemoBackViewWidthConstraint.constant = 4
             fromLeftToMemoBackViewWidthConstraint.constant = 4
-            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 248 : 303
+//            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 248 : 303
+            //  메모화면 여백에 따른 광고효과 테스트 위에께 표준 밑에꺼는 자동완성기능시 광고가 많은부분 가림
+            fromBottomToMemoBackViewHeightConstraint.constant = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) ? 248 : 256
+            //  fromBottomToMemoBackViewHeightConstraint.constant = 303
         default:
             break
         }

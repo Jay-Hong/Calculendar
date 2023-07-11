@@ -1,9 +1,13 @@
 import UIKit
+import SafariServices
 
 class CalendarViewController: UIViewController, UICollectionViewDataSource {
 
     @IBOutlet var calendarLineView: CalendarLineView!
     @IBOutlet weak var calendarCollectionView: UICollectionView!
+    
+    var jobInfoButton = UIButton()    //  2021/10/12 스토어 바로가기 버튼 추가 -> 2023/05 채용정보 로 변경
+    
     var delegate: CalendarDelegate?
     
     var date = Date()   // 전달인자
@@ -41,6 +45,38 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
             setToday()
             self?.calendarCollectionView.reloadData()
         }
+        
+        //  jobInfoButton
+        let jobInfoButtonWidth = self.view.bounds.width / 7
+        self.view.addSubview(jobInfoButton)
+        jobInfoButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        jobInfoButton.widthAnchor.constraint(equalToConstant: jobInfoButtonWidth).isActive = true
+        jobInfoButton.heightAnchor.constraint(equalToConstant: jobInfoButtonWidth).isActive = true
+        
+        jobInfoButton.setImage(UIImage(named: "JOB_image"), for: .normal)
+        
+        if numberOfCells == 35 {
+            jobInfoButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
+            jobInfoButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        } else {
+            jobInfoButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+            jobInfoButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        }
+        
+        jobInfoButton.layer.cornerRadius = 5
+        jobInfoButton.layer.masksToBounds = true
+        
+        jobInfoButton.addTarget(self, action: #selector(jobInfoButtonAction), for: .touchUpInside)
+    }
+    
+    @objc func jobInfoButtonAction() {
+        print("\nJob List Button is pressed!!\n")
+        self.performSegue(withIdentifier: "toJobListViewControllerSegue", sender: self)
+//        print("storeButton is pressed!!\n")
+//        let storeURL = NSURL(string: "https://smartstore.naver.com/like-mart")
+//        let storeSafariView: SFSafariViewController = SFSafariViewController(url: storeURL! as URL)
+//        self.present(storeSafariView, animated: true, completion: nil)
     }
     
     //  viewWillLayoutSubviews() | viewDidLayoutSubviews()
@@ -116,7 +152,25 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                     cell.unitOfWorkLabel.isHidden = true
                 } else {    // 공수에 값이 있을경우
                     cell.unitOfWorkLabel.isHidden = false
-                    cell.unitOfWorkLabel.text = monthlyItemArray[itemArrayIndex].strUnitOfWork
+                    
+                    switch dashBoardCurrentPage {
+                    case 0:
+                        cell.unitOfWorkLabel.text = monthlyItemArray[itemArrayIndex].strUnitOfWork
+                    case 1:
+                        cell.unitOfWorkLabel.text = monthlyItemArray[itemArrayIndex].strUnitOfWork
+                    case 2:
+                        cell.unitOfWorkLabel.font = cell.unitOfWorkLabel.font.withSize(12)
+                        cell.unitOfWorkLabel.adjustsFontSizeToFitWidth = true
+                        cell.unitOfWorkLabel.text = formatter.string(from: NSNumber(value: monthlyItemArray[itemArrayIndex].numUnitOfWork * monthlyItemArray[itemArrayIndex].pay))
+                    case 3:
+                        cell.unitOfWorkLabel.font = cell.unitOfWorkLabel.font.withSize(12)
+                        cell.unitOfWorkLabel.adjustsFontSizeToFitWidth = true
+                        cell.unitOfWorkLabel.text = formatter.string(from: NSNumber(value: monthlyItemArray[itemArrayIndex].pay * (monthlyItemArray[itemArrayIndex].numUnitOfWork == 0 ? 0 : 1 )))
+                    default:
+                        cell.unitOfWorkLabel.text = monthlyItemArray[itemArrayIndex].strUnitOfWork
+                    }
+                    
+//                    cell.unitOfWorkLabel.text = monthlyItemArray[itemArrayIndex].strUnitOfWork
                     
                     let numUnitOfWork = monthlyItemArray[itemArrayIndex].numUnitOfWork
                     switch numUnitOfWork {
@@ -203,7 +257,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                 cell.dayLabel.textColor = UIColor.red
             } else if month == 5 && dayCounter == 5 {  //  어린이날
                 cell.dayLabel.textColor = UIColor.red
-            }  else if month == 6 && dayCounter == 6 {  //  현출일
+            }  else if month == 6 && dayCounter == 6 {  //  현충일
                 cell.dayLabel.textColor = UIColor.red
             } else if month == 8 && dayCounter == 15 {  //  광복절
                 cell.dayLabel.textColor = UIColor.red
@@ -232,17 +286,26 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                     cell.dayLabel.textColor = UIColor.red
                 }
             } else if year == 2022 {
-                if month == 2 && (dayCounter == 1 || dayCounter == 2 || dayCounter == 3) {  //  설날
+                if month == 1 && (dayCounter == 31) {   //  설날
+                    cell.dayLabel.textColor = UIColor.red
+                }
+                if month == 2 && (dayCounter == 1 || dayCounter == 2) {  //  설날
                    cell.dayLabel.textColor = UIColor.red
-                }  else if month == 5 && dayCounter == 8 {  //  부처님오신날
+                } else if month == 3 && dayCounter == 9 {  //  대통령선거
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 5 && dayCounter == 8 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 6 && dayCounter == 1 {  //  지방선거
                     cell.dayLabel.textColor = UIColor.red
                 } else if month == 9 && (dayCounter == 9 || dayCounter == 10 || dayCounter == 12) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 10 && dayCounter == 10 {  //  한글날 대체공휴일
                     cell.dayLabel.textColor = UIColor.red
                 }
             } else if year == 2023 {
                 if month == 1 && (dayCounter == 21 || dayCounter == 23 || dayCounter == 24) {  //  설날
                    cell.dayLabel.textColor = UIColor.red
-                }  else if month == 5 && dayCounter == 26 {  //  부처님오신날
+                }  else if month == 5 && dayCounter == 27 {  //  부처님오신날
                     cell.dayLabel.textColor = UIColor.red
                 } else if month == 9 && (dayCounter == 28 || dayCounter == 29 || dayCounter == 30) {  //  추석
                     cell.dayLabel.textColor = UIColor.red
@@ -250,9 +313,39 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
             } else if year == 2024 {
                 if month == 2 && (dayCounter == 9 || dayCounter == 10 || dayCounter == 12) {  //  설날
                    cell.dayLabel.textColor = UIColor.red
-                }  else if month == 5 && dayCounter == 15 {  //  부처님오신날
+                } else if month == 4 && dayCounter == 10 {  //  국회의원 선거
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 5 && dayCounter == 6 {  //  어린이날 대체휴일
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 5 && dayCounter == 15 {  //  부처님오신날
                     cell.dayLabel.textColor = UIColor.red
                 } else if month == 9 && (dayCounter == 16 || dayCounter == 17 || dayCounter == 18) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                }
+            } else if year == 2025 {
+                if month == 1 && (dayCounter == 28 || dayCounter == 29 || dayCounter == 30) {  //  설날
+                   cell.dayLabel.textColor = UIColor.red
+                } else if month == 3 && dayCounter == 3 {  //  3.1절 대체공휴일
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 5 && dayCounter == 6 {  //  어린이날, 부처님오신날 대체 공휴일
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 5 && dayCounter == 15 {  //  부처님오신날
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 10 && (dayCounter == 6 || dayCounter == 7 || dayCounter == 8) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                }
+            } else if year == 2026 {
+                if month == 2 && (dayCounter == 16 || dayCounter == 17 || dayCounter == 18) {  //  설날
+                   cell.dayLabel.textColor = UIColor.red
+                } else if month == 3 && dayCounter == 2 {  //  3.1절 대체공휴일
+                    cell.dayLabel.textColor = UIColor.red
+//                } else if month == 5 && dayCounter == 6 {  //  부처님오신날 대체 공휴일
+//                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 8 && dayCounter == 17 {  //  광복절 대체공휴일
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 9 && (dayCounter == 24 || dayCounter == 25 || dayCounter == 26) {  //  추석
+                    cell.dayLabel.textColor = UIColor.red
+                } else if month == 10 && dayCounter == 5 {  //  개천절 대체공휴일
                     cell.dayLabel.textColor = UIColor.red
                 }
             }
