@@ -6,7 +6,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet var calendarLineView: CalendarLineView!
     @IBOutlet weak var calendarCollectionView: UICollectionView!
     
-    var jobInfoButton = UIButton()    //  2021/10/12 스토어 바로가기 버튼 추가 -> 2023/05 채용정보 로 변경
+    var jobNewsButton = UIButton()    //  2021/10/12 스토어 바로가기 버튼 추가 -> 2023/05 채용정보 로 변경
     
     var delegate: CalendarDelegate?
     
@@ -32,13 +32,13 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     //  Line 은 한번만 그려줘도 bounds 변하면 알아서 따라 변한다 / Collectionview Cell 들은 다시 reload() 해줘야 함
     var didDrawLines = false
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setPosition(date)
         
-        //  초기 AdRemoval
-        beginningAdRemoval = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)
+        beginningAdRemoval = UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)     //  초기 AdRemoval
         
         //  날짜 바뀌면 오늘표시 바꿔주기
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object:nil, queue: .main) { [weak self] _ in
@@ -46,38 +46,16 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
             self?.calendarCollectionView.reloadData()
         }
         
-        //  jobInfoButton
-        let jobInfoButtonWidth = self.view.bounds.width / 7
-        self.view.addSubview(jobInfoButton)
-        jobInfoButton.translatesAutoresizingMaskIntoConstraints = false
+        addJobNewsButton()
         
-        jobInfoButton.widthAnchor.constraint(equalToConstant: jobInfoButtonWidth).isActive = true
-        jobInfoButton.heightAnchor.constraint(equalToConstant: jobInfoButtonWidth).isActive = true
-        
-        jobInfoButton.setImage(UIImage(named: "JOB_image"), for: .normal)
-        
-        if numberOfCells == 35 {
-            jobInfoButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
-            jobInfoButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        } else {
-            jobInfoButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-            jobInfoButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        }
-        
-        jobInfoButton.layer.cornerRadius = 5
-        jobInfoButton.layer.masksToBounds = true
-        
-        jobInfoButton.addTarget(self, action: #selector(jobInfoButtonAction), for: .touchUpInside)
     }
     
-    @objc func jobInfoButtonAction() {
-        print("\nJob List Button is pressed!!\n")
-        self.performSegue(withIdentifier: "toJobListViewControllerSegue", sender: self)
-//        print("storeButton is pressed!!\n")
-//        let storeURL = NSURL(string: "https://smartstore.naver.com/like-mart")
-//        let storeSafariView: SFSafariViewController = SFSafariViewController(url: storeURL! as URL)
-//        self.present(storeSafariView, animated: true, completion: nil)
+    
+    override func viewDidAppear(_ animated: Bool) {
+//        basicAnimation(imageView: jobNewsButton.imageView!) //  채용&뉴스 버튼 반짝이는 애니메이션
+        advancedAnimation(imageView: jobNewsButton.imageView!)
     }
+    
     
     //  viewWillLayoutSubviews() | viewDidLayoutSubviews()
     //  will be called whenever the bounds change in the view controller
@@ -87,6 +65,45 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
             calendarCollectionView.reloadData()
         }
     }
+    
+    
+    func addJobNewsButton() {
+        //  jobInfoButton
+        let jobInfoButtonWidth = self.view.bounds.width / 7
+        self.view.addSubview(jobNewsButton)
+        jobNewsButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        jobNewsButton.widthAnchor.constraint(equalToConstant: jobInfoButtonWidth).isActive = true
+        jobNewsButton.heightAnchor.constraint(equalToConstant: jobInfoButtonWidth).isActive = true
+        
+        jobNewsButton.setImage(UIImage(named: "job_news_image"), for: .normal)
+        
+        if numberOfCells == 35 {
+            jobNewsButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
+            jobNewsButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        } else {
+            jobNewsButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+            jobNewsButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        }
+        
+        jobNewsButton.layer.cornerRadius = 5
+        jobNewsButton.layer.masksToBounds = true
+        
+        jobNewsButton.addTarget(self, action: #selector(jobInfoButtonAction), for: .touchUpInside)
+        
+//        basicAnimation(imageView: jobNewsButton.imageView!)
+    }
+    
+    
+    @objc func jobInfoButtonAction() {
+        print("\nJob List Button is pressed!!\n")
+        self.performSegue(withIdentifier: "toTabBarControllerSegue", sender: self)
+//        print("storeButton is pressed!!\n")
+//        let storeURL = NSURL(string: "https://smartstore.naver.com/like-mart")
+//        let storeSafariView: SFSafariViewController = SFSafariViewController(url: storeURL! as URL)
+//        self.present(storeSafariView, animated: true, completion: nil)
+    }
+    
     
     func setPosition(_ date: Date) {
         year = calendar.component(.year, from: date)
@@ -108,6 +125,30 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         numberOfCells = firstDayPosition + daysInMonths[month]
     }
     
+    func advancedAnimation(imageView: UIImageView) {
+        let opacityKeyframe = CAKeyframeAnimation(keyPath: "opacity")
+        opacityKeyframe.values = [0.1, 1.0, 1.0, 0.1]
+        opacityKeyframe.keyTimes = [0, 0.25, 0.75, 1]
+//        opacityKeyframe.duration = 2.3
+//        opacityKeyframe.repeatCount = .infinity
+        
+        let scaleKeyFrame = CAKeyframeAnimation(keyPath: "transform.scale")
+        scaleKeyFrame.values = [0.9, 1.0, 1.0, 0.9]
+        scaleKeyFrame.keyTimes = [0, 0.25, 0.75, 1]
+        
+        let animationGroup = CAAnimationGroup()
+        animationGroup.animations = [opacityKeyframe, scaleKeyFrame]
+        animationGroup.duration = 2.5
+        animationGroup.repeatCount = Float.infinity
+        animationGroup.fillMode = .forwards             // 애니메이션 완료 후 상태 유지
+        animationGroup.isRemovedOnCompletion = false    // 애니메이션 완료 후 제거하지 않음
+        
+        imageView.layer.add(animationGroup, forKey: "advancedAnimationGroup")
+
+//        imageView.layer.removeAnimation(forKey: "myAnimationGroup")       //  애니메이션 삭제 방법
+    }
+    
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         cellWidth = collectionView.bounds.width /   7
         cellHeight = numberOfCells > 35 ? (collectionView.bounds.height / 6) : (collectionView.bounds.height / 5)
@@ -120,6 +161,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         }
         return numberOfCells
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "calendarCell", for: indexPath) as! CalendarCollectionViewCell
@@ -368,6 +410,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         return cell
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let dayCounter = indexPath.row + 1 - firstDayPosition
         delegate?.selectYearMonthDay(year: year, month: month, day: dayCounter)
@@ -388,6 +431,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     }
     
 }
+
 
 extension CalendarViewController: UICollectionViewDelegateFlowLayout {
     //  collectionview 크기에 맞추어 Cell 크기 설정

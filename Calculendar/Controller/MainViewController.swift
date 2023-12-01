@@ -4,7 +4,7 @@ import GoogleMobileAds
 import FirebaseRemoteConfig
 
 class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, GADBannerViewDelegate {
-
+    
     //MARK:  - Valuables
     @IBOutlet weak var mainYearMonthButton: UIButton!
     @IBOutlet weak var pageCalendarView: UIView!
@@ -14,6 +14,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     //  광고 , 광고 백뷰
     @IBOutlet weak var bannerBackView: UIView!
     @IBOutlet weak var bannerView: GADBannerView!
+    @IBOutlet weak var bannerBackButton: UIButton!
     
     //  메인화면 광고 back View 높이 설정
     @IBOutlet weak var bannerBackViewHeightConstraint: NSLayoutConstraint!
@@ -57,6 +58,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     var strTax = String()
     var salaryDescription = String()
     
+    
     //MARK:  - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,32 +77,34 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         
     }
     
+    
     func fetchRemoteConfig() {
         // FIXME: Remove below three lines before we go into production!!
-//        let settings = RemoteConfigSettings()
-//        settings.minimumFetchInterval = 0
-//        remoteConfig.configSettings = settings
+        //        let settings = RemoteConfigSettings()
+        //        settings.minimumFetchInterval = 0
+        //        remoteConfig.configSettings = settings
         
         remoteConfig.setDefaults(fromPlist: "remote_config_defaults")
         
         remoteConfig.fetch { (status, error) -> Void in
             if status == .success {
-              print("Remote Config fetched!")
+                print("Remote Config fetched!")
                 remoteConfig.activate { changed, error in
                     print("Remote config activated!")
                     //  Remote config 가져오자마자 할일
                 }
             } else {
-              print("Remote Config not fetched")
-              print("Error fetching remote config: \(error?.localizedDescription ?? "unknown error")")
+                print("Remote Config not fetched")
+                print("Error fetching remote config: \(error?.localizedDescription ?? "unknown error")")
             }
-            // self.displayWelcome()
         }
     }
+    
     
     func setStartDay() {
         startDay = UserDefaults.standard.integer(forKey: SettingsKeys.startDay)
     }
+    
     
     func setFormatter() {
         //  세자리 숫자마다 , 표시위함
@@ -108,6 +112,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         formatter.locale = Locale.current
         formatter.maximumFractionDigits = 4
     }
+    
     
     func addNotification() {
         //  기본단가(BasePay)가 새로 저장될 경우
@@ -171,10 +176,12 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         moveYearMonth(year: selectedYear, month: selectedMonth)
     }
     
+    
     func setAdMob() {
         if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
             bannerView.isHidden = true
             bannerBackView.isHidden = true
+            bannerBackButton.isHidden = true
             bannerBackViewHeightConstraint.constant = 0
         } else {
             bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
@@ -182,19 +189,35 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             bannerView.rootViewController = self
             bannerView.load(GADRequest())
             bannerView.delegate = self
+            bannerBackButton.isHidden = true    //  광고게제 준비시에는 광고백버튼 안보이게
         }
     }
+    
+    
+    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+        print("\n\n bannerView didFailToReceiveAdWithError: \(error.localizedDescription)\n\n")
+        bannerView.isHidden = true
+        bannerBackButton.isHidden = false   //  광고로드 실패 시 광고 백버튼 보이게
+    }
+    
+    
+    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+      print("\n\n bannerViewDidReceiveAd \n\n")
+        bannerView.isHidden = false
+        bannerBackButton.isHidden = true
+    }
+    
     
     func setTopBar() {
         //  Device Type 에 따라 화면 조정
         switch UIScreen.main.bounds.size {
-        //  스토리보드 기본사이즈
-        //  topBarViewHeightConstraint.constant = 40
-        
-        case iPhone14ProMax, iPhone14Pro, iPhone14, iPhone14Plus, iPhone13Pro, iPhone11: //  Top Bar 30으로 줄여주기
+            //  스토리보드 기본사이즈
+            //  topBarViewHeightConstraint.constant = 40
+            
+        case iPhone15ProMax, iPhone15Pro, iPhone14, iPhone14Plus, iPhone13Pro, iPhone11: //  Top Bar 30으로 줄여주기
             topBarViewHeightConstraint.constant = 30
             bannerBackView.isHidden = false
-        
+            
         case iPhoneSE3, iPhone8Plus:  // Top Bar 40 유지
             topBarViewHeightConstraint.constant = 40
             bannerBackView.isHidden = false
@@ -209,6 +232,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         }
     }
     
+    
     func makeCalendarScreen() {
         // 달력화면 붙이기
         pageVC = self.storyboard?.instantiateViewController(withIdentifier: "pageViewController") as! UIPageViewController
@@ -219,6 +243,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         pageVC.dataSource = self
         pageVC.delegate = self
     }
+    
     
     func makeCalendar() {
         let firstViewController = createCalendarViewController(today)
@@ -240,6 +265,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         setDaylyPayOnDashboard()
     }
     
+    
     func printPaySystemOnInputUnitOfWorkButton() {
         //  일급:0 / 시급:1  따른  공수입력 / 시간입력  버튼 출력
         switch UserDefaults.standard.integer(forKey: SettingsKeys.paySystemIndex) {
@@ -249,6 +275,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             inputUnitOfWorkButton.setTitle("시간", for: .normal)
         }
     }
+    
     
     func createDate (_ year: Int, _ month: Int, _ day: Int) -> Date {
         var dateComponents = DateComponents()
@@ -262,6 +289,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         return userCalendar.date(from: dateComponents) ?? Date()
     }
     
+    
     func createCalendarViewController(_ date: Date) -> CalendarViewController {
         let calendarVC = self.storyboard?.instantiateViewController(withIdentifier: "CanlendarViewController") as! CalendarViewController
         calendarVC.date = date
@@ -274,6 +302,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     // 같은 페이징 상환인데도 다음번 나와야할 ViewController를 준비할때가 있고 가끔 준비하지 않을때가 있음
     // willTransitionTo / didFinishAnimating 을 사용하여 해결
     
+    
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         nextCalendarVC = pendingViewControllers[0] as! CalendarViewController   // 앞으로 가려고하는 달력 월
         let currentDate = nextCalendarVC.date
@@ -283,10 +312,11 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         print("\nwillTransitionTo \(nextYear)년 \(nextMonth)월\n")
     }
     
+    
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         let calendarVC = previousViewControllers[0] as! CalendarViewController  // 현재 달력 월
         let currentDate = calendarVC.date
-//        let year = calendar.component(.year, from: currentDate)
+        //        let year = calendar.component(.year, from: currentDate)
         let month = calendar.component(.month, from: currentDate)
         if month != nextMonth && completed {    //  completed 가 True ? => 페이지가 넘어갔다
             mainYearMonthButton.setTitle("\(nextYear)년 \(nextMonth)월", for: .normal)
@@ -309,6 +339,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         }
     }
     
+    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let calendarVC = viewController as! CalendarViewController  // 현재 달력 월
         let currentDate = calendarVC.date
@@ -327,6 +358,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         return createCalendarViewController(newDate)
     }
     
+    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let calendarVC = viewController as! CalendarViewController  // 현재 달력 월
         let currentDate = calendarVC.date
@@ -344,6 +376,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         let newDate = createDate(year, month, day)
         return createCalendarViewController(newDate)
     }
+    
     
     //MARK:  - Prepare for Segues
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -381,6 +414,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             }
         }
     }
+    
     
     //MARK:  - DashBoard Setting
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
@@ -517,6 +551,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         
     }
     
+    
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
     func setMonthlySalalyOnDashboard() {
         
@@ -610,14 +645,8 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             strMonthlySalalyAfterTax = formatter.string(from: NSNumber(value: monthlySalalyAfterTax))!
             formatter.maximumFractionDigits = 4
         }
-        
-//        if strMonthlySalaly.contains(".") {
-//            while (strMonthlySalaly.hasSuffix("0")) {
-//                strMonthlySalaly.removeLast() }
-//            if strMonthlySalaly.hasSuffix(".") {
-//                strMonthlySalaly.removeLast() }
-//        }
     }
+    
     
     // 호출전에 해당 년월.plist 값이 itemArray에 load 되어 있어야 함
     func setDaylyPayOnDashboard() {
@@ -629,7 +658,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         } else {
             daylyPay = itemArray[selectedDay-1].pay
         }
-
+        
         strDaylyPay = formatter.string(from: NSNumber(value: daylyPay))!
         if strDaylyPay.contains(".") {
             while (strDaylyPay.hasSuffix("0")) {
@@ -638,6 +667,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
                 strDaylyPay.removeLast() }
         }
     }
+    
     
     //MARK:  - PList 입출력
     func saveItems() {
@@ -649,6 +679,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             print("Error encoding item array, \(error)")
         }
     }
+    
     
     func loadItems() {
         itemArray.removeAll()
@@ -662,6 +693,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         }
     }
     
+    
     func loadPreItems() {
         itemPreArray.removeAll()
         if let data = try? Data(contentsOf: (dataFilePath?.appendingPathComponent("\(strPreYearMonth).plist"))!) {
@@ -673,6 +705,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             }
         }
     }
+    
     
     func loadNextItems() {
         itemNextArray.removeAll()
@@ -686,17 +719,19 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         }
     }
     
+    
     func makeItemArray() {
         for _ in 1...daysInMonths[selectedMonth] {
             itemArray.append(Item())
-            
         }
     }
+    
     
     // status bar text color 흰색으로 바꿔주기
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    
     
     //MARK:  - Button Actions
     @IBAction func inputUnitOfWorkButtonAction(_ sender: UIButton) {
@@ -705,11 +740,13 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         unitOfWorkTemp = !itemArray.isEmpty ? String(itemArray[selectedDay-1].numUnitOfWork) : "0"
     }
     
+    
     @IBAction func inputMemoButtonAction(_ sender: UIButton) {
         loadItems()
         // 선택된 날짜의 메모 입력화면에 출력
         memoTemp = !itemArray.isEmpty ? itemArray[selectedDay-1].memo : ""
     }
+    
     
     @IBAction func inputPayButtonAction(_ sender: UIButton) {
         loadItems()
@@ -717,7 +754,13 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         payTemp = !itemArray.isEmpty ? String(itemArray[selectedDay-1].pay) : UserDefaults.standard.object(forKey: SettingsKeys.basePay) as? String ?? "0"
     }
     
+    
+    @IBAction func bannerBackButtonAction(_ sender: Any) {
+        print("\n\n bannerBackButtonAction  \n\n")
+    }
+    
 }
+
 
 //MARK:  - Popup Delegate
 extension MainViewController: PopupDelegate {
@@ -765,6 +808,7 @@ extension MainViewController: PopupDelegate {
         dashBoardCollectionView.reloadData()
     }
     
+    
     func saveUnitOfWork(unitOfWork: String) {
         let newItem = Item()
         //loadItems()
@@ -810,11 +854,13 @@ extension MainViewController: PopupDelegate {
         dashBoardCollectionView.reloadData()
     }
     
+    
     func moveYearMonth(year: Int, month: Int, day: Int) {
         let date = createDate(year, month, day)
         let selectedVC = createCalendarViewController(date)
         pageVC.setViewControllers([selectedVC], direction: .forward, animated: false, completion: nil)
     }
+    
     
     func moveYearMonth(year: Int, month: Int) {
         let day = (year == toYear && month == toMonth) ? toDay : 1
@@ -838,6 +884,7 @@ extension MainViewController: PopupDelegate {
     }
 }
 
+
 //MARK:  - Calendar Delegate
 extension MainViewController: CalendarDelegate {
     func selectYearMonthDay(year: Int, month: Int, day: Int) {
@@ -852,9 +899,10 @@ extension MainViewController: CalendarDelegate {
     }
 }
 
+
 //MARK:  - DashBoard Controller
 extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-
+    
     func setDashBoard() {
         
         let flowLayout = UPCarouselFlowLayout()
@@ -868,6 +916,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         dashBoardCurrentPage = 0
     }
     
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let dashBoardPrePage = dashBoardCurrentPage
         let layout = self.dashBoardCollectionView.collectionViewLayout as! UPCarouselFlowLayout
@@ -880,6 +929,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         }
     }
     
+    
     fileprivate var pageSize: CGSize {
         let layout = self.dashBoardCollectionView.collectionViewLayout as! UPCarouselFlowLayout
         var pageSize = layout.itemSize
@@ -891,17 +941,21 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
         return pageSize
     }
     
+    
     fileprivate var orientation: UIDeviceOrientation {
         return UIDevice.current.orientation
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("현재 선택된 indexPath.row 는 : \(indexPath.row)")
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 4
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dashBoardCollectionView.dequeueReusableCell(withReuseIdentifier: "dashboardcell", for: indexPath) as! DashBoardCell
@@ -930,7 +984,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             } else {    //  toDay < startDay
                 switch startDay {
                 case 2..<numStartDayPickerItem:
-                   cell.descriptionLabel.text = "\(previousMonth)/\(startDay) ~ \(selectedMonth)/\(startDay-1) 근무"
+                    cell.descriptionLabel.text = "\(previousMonth)/\(startDay) ~ \(selectedMonth)/\(startDay-1) 근무"
                 case numStartDayPickerItem:
                     cell.descriptionLabel.text = "\(previousMonth)/\(daysInMonths[Int(previousMonth)!]) ~ \(selectedMonth)/\(daysInMonths[selectedMonth]-1) 근무"
                 default:
@@ -939,7 +993,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             }
             
             cell.contentLabel.text = strMonthlyUnitOfWork
-
+            
             //  일급:0 / 시급:1
             switch paySystemIndex {
             case 0:
@@ -967,7 +1021,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             } else {    //  toDay < startDay
                 switch startDay {
                 case 2..<numStartDayPickerItem:
-                   cell.descriptionLabel.text = "\(previousMonth)/\(startDay) ~ \(selectedMonth)/\(startDay-1) 근무일"
+                    cell.descriptionLabel.text = "\(previousMonth)/\(startDay) ~ \(selectedMonth)/\(startDay-1) 근무일"
                 case numStartDayPickerItem:
                     cell.descriptionLabel.text = "\(previousMonth)/\(daysInMonths[Int(previousMonth)!]) ~ \(selectedMonth)/\(daysInMonths[selectedMonth]-1) 근무일"
                 default:
@@ -977,7 +1031,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             
             cell.contentLabel.text = strMonthlyWorkDay
             cell.unitLabel.text = "일"
-
+            
             cell.backView.backgroundColor = #colorLiteral(red: 0.9570236802, green: 0.5908840299, blue: 0.1887014806, alpha: 1)
             cell.imgBackView.backgroundColor = #colorLiteral(red: 0.8799408078, green: 0.5285210013, blue: 0.1777598858, alpha: 1)
             cell.iconImgView.image = #imageLiteral(resourceName: "ic_day_white_48")
@@ -997,7 +1051,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
             } else {    //  toDay < startDay
                 switch startDay {
                 case 2..<numStartDayPickerItem:
-                   salaryDescription = "\(previousMonth)/\(startDay) ~ \(selectedMonth)/\(startDay-1)"
+                    salaryDescription = "\(previousMonth)/\(startDay) ~ \(selectedMonth)/\(startDay-1)"
                 case numStartDayPickerItem:
                     salaryDescription = "\(previousMonth)/\(daysInMonths[Int(previousMonth)!]) ~ \(selectedMonth)/\(daysInMonths[selectedMonth]-1)"
                 default:

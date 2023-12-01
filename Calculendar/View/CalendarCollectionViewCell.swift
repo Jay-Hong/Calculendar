@@ -18,8 +18,8 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         case iPhone13Pro, iPhone14, iPhoneSE3, iPhone8Plus, iPhoneSE1:
             calendarCellUnitOfWorkLabelHeightConstrint.constant = 22
         
-        // iPhone14ProMax 에서 캘린더 셀 메모에서 5줄 출력 가능하도록 26 -> 22로 줄임
-        case iPhone14ProMax, iPhone14Pro, iPhone14Plus, iPhone11:
+        // iPhone15ProMax 에서 캘린더 셀 메모에서 5줄 출력 가능하도록 26 -> 22로 줄임
+        case iPhone15ProMax, iPhone15Pro, iPhone14Plus, iPhone11:
             calendarCellUnitOfWorkLabelHeightConstrint.constant = 22
             
         default: break

@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>newsListNextBigCell</key>
+	<string>13</string>
+	<key>newsListImageWords</key>
+	<string>SON,손흥민,이강인,김민재,황희찬,조규성,류현진,김하성</string>
+	<key>newsListBigAdIndex</key>
+	<string>26,52,78,104,130,156,182,208,234,260,286,312,338</string>
+	<key>newsListAdIndex</key>
+	<string>7,20,33,46,59,72,85,98,111,124,137,150,163,176,189,202,215,228,241,254,267,280,293,306,319,332,345</string>
+	<key>newsDB_GithubURL</key>
+	<string>https://raw.githubusercontent.com/Jay-Hong/News_JSON/master/newsURL.json</string>
 	<key>jobDetailAD</key>
 	<string>true</string>
 	<key>jobListAD</key>
@@ -9,17 +19,17 @@
 	<key>jobInfoMail</key>
 	<string>▹ 상세한 채용정보는 많은 지원자로 이어집니다
 
-지역: 
+지역:
 
-제목: 
+제목:
 
-직종: 
+직종:
 
-급여: 
+급여:
 
-인원: 
+인원:
 
-연락처: 
+연락처:
 
 상세내용:
 
@@ -71,7 +81,7 @@
   }
 ]</string>
 	<key>removeAD_Price</key>
-	<string>구매   ₩9,900</string>
+	<string>구매   ₩19,900</string>
 	<key>selectJobDB</key>
 	<string>0</string>
 	<key>jobDB_GithubURL</key>

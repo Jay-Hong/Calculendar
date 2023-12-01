@@ -39,7 +39,7 @@ class BackupRestoreViewController: UITableViewController {
         backupSubview.backgroundColor = .black
         backupSubview.alpha = 0.6
         backupActivityIndicatorView.frame = CGRect(x:0, y:0, width:40, height:40)
-        backupActivityIndicatorView.style = .whiteLarge
+        backupActivityIndicatorView.style = UIActivityIndicatorView.Style.large
         backupActivityIndicatorView.center = CGPoint(x: backupSubview.frame.size.width / 2, y: backupSubview.frame.size.height / 3)
         backupSubview.addSubview(backupActivityIndicatorView)
     }
