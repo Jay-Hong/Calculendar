@@ -2,10 +2,11 @@ import UIKit
 import MessageUI
 import GoogleMobileAds
 
-class JobDetailViewController: UIViewController, GADBannerViewDelegate {
+class JobDetailViewController: UIViewController, GADBannerViewDelegate, UIScrollViewDelegate {
 
     var detailData = JobInfo()
     
+    @IBOutlet weak var jobScrollView: UIScrollView!
     @IBOutlet weak var jobInfoView: UIView!
     
     @IBOutlet weak var jobSiteLabel: UILabel!
@@ -27,8 +28,22 @@ class JobDetailViewController: UIViewController, GADBannerViewDelegate {
     @IBOutlet weak var bannerView: GADBannerView!
     
     @IBOutlet weak var applyView: UIView!
+    @IBOutlet weak var cancelView: UIView!
+    
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var topViewHeightConstraint: NSLayoutConstraint!
+    
+    private var lastContentOffset: CGFloat = 0
+    private var initialTopViewHeight: CGFloat = 0
+    private var initialBottomViewHeight: CGFloat = 0
     
     var phoneNumber: String = ""    // 전화번호 숫자만
+    
+    override func loadView() {
+        super.loadView()
+        jobScrollView.delegate = self
+        initialTopViewHeight = topViewHeightConstraint.constant
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +55,64 @@ class JobDetailViewController: UIViewController, GADBannerViewDelegate {
         
     }
     
-    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print("\n⬇️ scrollViewDidScroll")
+        
+        if scrollView.contentOffset.y > 0 && scrollView.contentOffset.y <= (scrollView.contentSize.height - jobScrollView.frame.height) {
+            print("컨텐츠 내부")
+            
+            if (self.lastContentOffset > scrollView.contentOffset.y) {  // 스크롤 올릴때
+                print("move up")
+                view.layoutIfNeeded() //layout을 모두 업데이트 시켜놓는다.
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                    self.topViewHeightConstraint.constant =  self.initialTopViewHeight
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+                
+//                if topViewHeightConstraint.constant <= initialTopViewHeight {   //  topView
+//                    topViewHeightConstraint.constant += (self.lastContentOffset - scrollView.contentOffset.y) / 2
+//                    if topViewHeightConstraint.constant >= initialTopViewHeight {
+//                        topViewHeightConstraint.constant = initialTopViewHeight
+//                    } else if topViewHeightConstraint.constant > initialTopViewHeight / 2 {
+//                        cancelButton.isHidden = false
+//                    }
+//                }
+            }
+            
+            else if (self.lastContentOffset < scrollView.contentOffset.y) { // 스크롤 내릴때
+                print("move down")
+                view.layoutIfNeeded() //layout을 모두 업데이트 시켜놓는다.
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                    self.topViewHeightConstraint.constant =  0
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+                
+//                if topViewHeightConstraint.constant > 0 {   //  topView
+//                    topViewHeightConstraint.constant += (self.lastContentOffset - scrollView.contentOffset.y) / 2
+//                    if topViewHeightConstraint.constant <= 0 {
+//                        topViewHeightConstraint.constant = 0
+//                        cancelButton.isHidden = true  // backButton시 필요
+//                    } else if topViewHeightConstraint.constant <= initialTopViewHeight / 2  {
+//                        cancelButton.isHidden = true
+//                    }
+//                }
+            }
+            
+        } else {    // 컨텐츠 외부 스크롤 동작 안함 (처음과 끝 애니매이션시 동작 안함)
+            print("컨텐츠 외부")
+            if (self.lastContentOffset > scrollView.contentOffset.y) {
+                print("move up")
+            }
+            else if (self.lastContentOffset < scrollView.contentOffset.y) {
+                print("move down")
+            }
+        }
+        
+        print(topViewHeightConstraint.constant)
+        print(self.lastContentOffset - scrollView.contentOffset.y)
+        print("scrollView.contentOffset.y : \(scrollView.contentOffset.y)")
+        self.lastContentOffset = scrollView.contentOffset.y
+    }
     
     func getImageFromURL() {
         imageSize = CGSize(width: 0,height: 0)
@@ -191,10 +263,25 @@ class JobDetailViewController: UIViewController, GADBannerViewDelegate {
         applyView.layer.shadowOpacity = 1.0
         applyView.layer.shadowRadius = 1.5
         
+        cancelView.layer.cornerRadius = 12
+        cancelView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7).cgColor
+        cancelView.layer.shadowOffset = CGSize(width: 1.0, height: 2.5)
+        cancelView.layer.shadowOpacity = 1.0
+        cancelView.layer.shadowRadius = 1.5
+        
+        
         //  공지사항 용  =>  연락처에 숫자가 포함되지 않으면 (전화번호 없으면) || @포함되면 (이메일주소면) ->  지원하기 버튼 안나오게
         applyView.isHidden =  (phoneNumber.isEmpty || phoneNumber.contains("@")) ? true :  false
         
     }
+    
+    //  
+    @IBAction func cancelButtonAction(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+//        navigationController?.popViewController(animated: true)
+//        navigationController?.popToRootViewController(animated: true)
+    }
+    
     
     @IBAction func applyButtonAction(_ sender: Any) {
         // 문자열에서 숫자만 뽑아주기 (지원하기에 사용 위함)

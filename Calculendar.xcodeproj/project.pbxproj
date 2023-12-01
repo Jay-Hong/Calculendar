@@ -15,6 +15,15 @@
 		691AD8C0262043EB00EE6F95 /* BackupRestoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691AD8BF262043EB00EE6F95 /* BackupRestoreViewController.swift */; };
 		69225F4D22D5FB9600A6109A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69225F4C22D5FB9600A6109A /* Assets.xcassets */; };
 		69229C2D2678BCAD001CF217 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 69229C2C2678BCAD001CF217 /* GoogleService-Info.plist */; };
+		692A15182B0928BC00223B41 /* NewsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692A15172B0928BC00223B41 /* NewsListViewController.swift */; };
+		692A151A2B0928EE00223B41 /* NewsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692A15192B0928EE00223B41 /* NewsInfo.swift */; };
+		692A151C2B0929EA00223B41 /* NewsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692A151B2B0929EA00223B41 /* NewsListCell.swift */; };
+		692A151E2B092A7A00223B41 /* NewsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692A151D2B092A7A00223B41 /* NewsDetailViewController.swift */; };
+		692A15202B092B9C00223B41 /* NewsListBigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692A151F2B092B9C00223B41 /* NewsListBigImageCell.swift */; };
+		692A15242B092DA700223B41 /* NewsListBigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 692A15232B092DA700223B41 /* NewsListBigImageCell.xib */; };
+		692A15262B09300B00223B41 /* NativeAdBigCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 692A15252B09300B00223B41 /* NativeAdBigCell.xib */; };
+		692A15282B09307500223B41 /* NativeAdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 692A15272B09307500223B41 /* NativeAdCell.xib */; };
+		692A152A2B0930D600223B41 /* NativeAdBigCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692A15292B0930D600223B41 /* NativeAdBigCell.swift */; };
 		692A184C29FE5297003AA72E /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 692A184B29FE5297003AA72E /* GoogleMobileAds */; };
 		692A184F29FE53EB003AA72E /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 692A184E29FE53EB003AA72E /* FirebaseAnalytics */; };
 		692A185129FE53EB003AA72E /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 692A185029FE53EB003AA72E /* FirebaseDatabase */; };
@@ -57,6 +66,15 @@
 		69229C2C2678BCAD001CF217 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		692313DE238EAB9A00684D43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		692313DF238EAB9B00684D43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		692A15172B0928BC00223B41 /* NewsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListViewController.swift; sourceTree = "<group>"; };
+		692A15192B0928EE00223B41 /* NewsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsInfo.swift; sourceTree = "<group>"; };
+		692A151B2B0929EA00223B41 /* NewsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListCell.swift; sourceTree = "<group>"; };
+		692A151D2B092A7A00223B41 /* NewsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetailViewController.swift; sourceTree = "<group>"; };
+		692A151F2B092B9C00223B41 /* NewsListBigImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListBigImageCell.swift; sourceTree = "<group>"; };
+		692A15232B092DA700223B41 /* NewsListBigImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsListBigImageCell.xib; sourceTree = "<group>"; };
+		692A15252B09300B00223B41 /* NativeAdBigCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NativeAdBigCell.xib; sourceTree = "<group>"; };
+		692A15272B09307500223B41 /* NativeAdCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NativeAdCell.xib; sourceTree = "<group>"; };
+		692A15292B0930D600223B41 /* NativeAdBigCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdBigCell.swift; sourceTree = "<group>"; };
 		692A185629FECB52003AA72E /* JobListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobListCell.swift; sourceTree = "<group>"; };
 		694CE8C323D9714F0058E3B1 /* BasePayPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePayPopUpViewController.swift; sourceTree = "<group>"; };
 		695C4E5423D6E856008A606B /* Setting2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting2ViewController.swift; sourceTree = "<group>"; };
@@ -160,6 +178,7 @@
 			children = (
 				6908F08620D78DC00046F806 /* Item.swift */,
 				69D6E2F929FE4120008796EA /* JobInfo.swift */,
+				692A15192B0928EE00223B41 /* NewsInfo.swift */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -169,10 +188,16 @@
 			children = (
 				697A5E9820D6FD4800951321 /* Main.storyboard */,
 				697A5E9D20D6FD4F00951321 /* LaunchScreen.storyboard */,
+				692A15232B092DA700223B41 /* NewsListBigImageCell.xib */,
+				692A15272B09307500223B41 /* NativeAdCell.xib */,
+				692A15252B09300B00223B41 /* NativeAdBigCell.xib */,
 				69F4507921B03E7600152812 /* DashBoardCell.swift */,
 				692A185629FECB52003AA72E /* JobListCell.swift */,
 				69A8DF2820D7918E00158864 /* CalendarCollectionViewCell.swift */,
 				69A8DF2620D78FEB00158864 /* CalendarLineView.swift */,
+				692A151B2B0929EA00223B41 /* NewsListCell.swift */,
+				692A151F2B092B9C00223B41 /* NewsListBigImageCell.swift */,
+				692A15292B0930D600223B41 /* NativeAdBigCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -194,6 +219,8 @@
 				691AD8BF262043EB00EE6F95 /* BackupRestoreViewController.swift */,
 				69D6E2F729FCE650008796EA /* JobListViewController.swift */,
 				69FC99992A0A396800752BFA /* JobDetailViewController.swift */,
+				692A15172B0928BC00223B41 /* NewsListViewController.swift */,
+				692A151D2B092A7A00223B41 /* NewsDetailViewController.swift */,
 				69A8DF2420D78F9800158864 /* Vars.swift */,
 			);
 			path = Controller;
@@ -282,6 +309,9 @@
 				69ACEA3A2A10BC0E00952F7B /* remote_config_defaults.plist in Resources */,
 				697A5E9F20D6FD4F00951321 /* LaunchScreen.storyboard in Resources */,
 				69D3746520E33FDC00B1C8B5 /* Main.storyboard in Resources */,
+				692A15262B09300B00223B41 /* NativeAdBigCell.xib in Resources */,
+				692A15242B092DA700223B41 /* NewsListBigImageCell.xib in Resources */,
+				692A15282B09307500223B41 /* NativeAdCell.xib in Resources */,
 				69229C2D2678BCAD001CF217 /* GoogleService-Info.plist in Resources */,
 				69225F4D22D5FB9600A6109A /* Assets.xcassets in Resources */,
 			);
@@ -295,8 +325,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				6908F08720D78DC00046F806 /* Item.swift in Sources */,
+				692A152A2B0930D600223B41 /* NativeAdBigCell.swift in Sources */,
 				69A8DF3620D7B9A900158864 /* YearMonthPopUpViewController.swift in Sources */,
 				69A8DF2520D78F9800158864 /* Vars.swift in Sources */,
+				692A151E2B092A7A00223B41 /* NewsDetailViewController.swift in Sources */,
 				6984ABAE241D940F0017B1ED /* TaxBeforeAfterViewController.swift in Sources */,
 				69C3D53723E3580900082BC6 /* MoneyUnitViewController.swift in Sources */,
 				6908F08520D78D850046F806 /* CalendarViewController.swift in Sources */,
@@ -304,6 +336,8 @@
 				69FC999A2A0A396800752BFA /* JobDetailViewController.swift in Sources */,
 				69A8DF3520D7B9A900158864 /* UnitOfWorkPopUpViewController.swift in Sources */,
 				69A8DF2920D7918E00158864 /* CalendarCollectionViewCell.swift in Sources */,
+				692A15202B092B9C00223B41 /* NewsListBigImageCell.swift in Sources */,
+				692A151C2B0929EA00223B41 /* NewsListCell.swift in Sources */,
 				69A8DF3320D7B9A900158864 /* PayPopUpViewController.swift in Sources */,
 				697A5E9520D6FD4800951321 /* AppDelegate.swift in Sources */,
 				6908F08D20D78DD60046F806 /* CalendarDelegate.swift in Sources */,
@@ -313,12 +347,14 @@
 				695C4E5523D6E857008A606B /* Setting2ViewController.swift in Sources */,
 				6908F08C20D78DD60046F806 /* PopupDelegate.swift in Sources */,
 				694CE8C423D9714F0058E3B1 /* BasePayPopUpViewController.swift in Sources */,
+				692A151A2B0928EE00223B41 /* NewsInfo.swift in Sources */,
 				69D6E2F829FCE650008796EA /* JobListViewController.swift in Sources */,
 				692A185729FECB52003AA72E /* JobListCell.swift in Sources */,
 				691AD8C0262043EB00EE6F95 /* BackupRestoreViewController.swift in Sources */,
 				69ABC33024AB86EB0032FB06 /* AdRemovalViewController.swift in Sources */,
 				69A8DF2720D78FEB00158864 /* CalendarLineView.swift in Sources */,
 				69D6E2FA29FE4120008796EA /* JobInfo.swift in Sources */,
+				692A15182B0928BC00223B41 /* NewsListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,7 +435,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -457,7 +493,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
@@ -477,12 +513,12 @@
 				DEVELOPMENT_TEAM = G5C8AQ6V38;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Calculendar/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.3.1;
+				MARKETING_VERSION = 3.4;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Jay.Calculendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -501,12 +537,12 @@
 				DEVELOPMENT_TEAM = G5C8AQ6V38;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Calculendar/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.3.1;
+				MARKETING_VERSION = 3.4;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Jay.Calculendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";

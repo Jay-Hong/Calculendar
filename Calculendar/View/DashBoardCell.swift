@@ -22,7 +22,7 @@ class DashBoardCell: UICollectionViewCell {
         //  imgBackViewWidthConstraint.constant = 76
         //  unitLabelBackViewWidth.constant = 50
         
-        case iPhone14ProMax, iPhone14Pro, iPhone13Pro, iPhone14, iPhoneSE3, iPhone8Plus:
+        case iPhone15ProMax, iPhone15Pro, iPhone13Pro, iPhone14, iPhoneSE3, iPhone8Plus:
             imgBackViewWidthConstraint.constant = 76
             unitLabelBackViewWidth.constant = 50
         
