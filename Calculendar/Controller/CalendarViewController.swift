@@ -127,18 +127,18 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     
     func advancedAnimation(imageView: UIImageView) {
         let opacityKeyframe = CAKeyframeAnimation(keyPath: "opacity")
-        opacityKeyframe.values = [0.1, 1.0, 1.0, 0.1]
-        opacityKeyframe.keyTimes = [0, 0.25, 0.75, 1]
+        opacityKeyframe.values = [1.0, 1.0, 0.0, 1.0, 1.0]
+        opacityKeyframe.keyTimes = [0, 0.3, 0.5, 0.7, 1.0]
 //        opacityKeyframe.duration = 2.3
 //        opacityKeyframe.repeatCount = .infinity
         
         let scaleKeyFrame = CAKeyframeAnimation(keyPath: "transform.scale")
-        scaleKeyFrame.values = [0.9, 1.0, 1.0, 0.9]
-        scaleKeyFrame.keyTimes = [0, 0.25, 0.75, 1]
+        scaleKeyFrame.values = [1.0, 1.0, 0.5, 1.0, 1.0]
+        scaleKeyFrame.keyTimes = [0, 0.3, 0.5, 0.7, 1.0]
         
         let animationGroup = CAAnimationGroup()
         animationGroup.animations = [opacityKeyframe, scaleKeyFrame]
-        animationGroup.duration = 2.5
+        animationGroup.duration = 2.2
         animationGroup.repeatCount = Float.infinity
         animationGroup.fillMode = .forwards             // 애니메이션 완료 후 상태 유지
         animationGroup.isRemovedOnCompletion = false    // 애니메이션 완료 후 제거하지 않음
