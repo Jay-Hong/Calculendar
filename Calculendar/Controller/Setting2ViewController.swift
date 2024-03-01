@@ -65,10 +65,16 @@ class Setting2ViewController: UITableViewController, GADBannerViewDelegate, GADF
         
         //  광고제거 구매/복원 시
         NotificationCenter.default.addObserver(self, selector: #selector(onDidPurchaseAdRemoval), name: .didPurchaseAdRemoval, object: nil)
-        
+        //  구매상태 업데이트 시
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidUpdatePurchasedProducts), name: .didUpdatePurchasedProducts, object: nil)
     }
     
     @objc func onDidPurchaseAdRemoval(_ notification: Notification) {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    @objc func onDidUpdatePurchasedProducts(_ notification: Notification) {
         tableView.beginUpdates()
         tableView.endUpdates()
     }

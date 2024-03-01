@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>subscription_Detail</key>
+	<string>매년 ₩19,900의 요금이 청구되며 구독은 언제든지 해지할 수 있습니다. 다음 요금 결제일 24시간 전까지 앱스토어 계정의 구독 관리를 통해 구독을 해지해야 갱신되지 않습니다.</string>
+	<key>subscription_Price</key>
+	<string>₩19,900 / 12개월</string>
 	<key>newsListNextBigCell</key>
 	<string>13</string>
 	<key>newsListImageWords</key>

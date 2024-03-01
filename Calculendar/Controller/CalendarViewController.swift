@@ -32,6 +32,10 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     //  Line 은 한번만 그려줘도 bounds 변하면 알아서 따라 변한다 / Collectionview Cell 들은 다시 reload() 해줘야 함
     var didDrawLines = false
     
+    let oddDaysColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.03)
+    let evenDaysColor = UIColor.clear
+    let selectedDayColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 0.3)
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,11 +158,11 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         cellHeight = numberOfCells > 35 ? (collectionView.bounds.height / 6) : (collectionView.bounds.height / 5)
         
         //  Paging 시 라인이 두번씩 겹쳐그려지는 현상 해결위해 didDrawLines 사용
-        if !didDrawLines {
-            calendarLineView.setHeight(cellHeight)
-            calendarLineView.setNeedsDisplay()
-            didDrawLines = true
-        }
+//        if !didDrawLines {
+//            calendarLineView.setHeight(cellHeight)
+//            calendarLineView.setNeedsDisplay()
+//            didDrawLines = true
+//        }
         return numberOfCells
     }
     
@@ -394,16 +398,26 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
             
             if preIndexPath.isEmpty {   // 새로만들어진 캘린더일 경우
                 if dayCounter == day {
-                    cell.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
+                    cell.backgroundColor = selectedDayColor
                     preIndexPath = indexPath
                 } else {
-                    cell.backgroundColor = UIColor.clear
+//                    cell.backgroundColor = UIColor.clear
+                    if dayCounter % 2 == 1 {
+                        cell.backgroundColor = oddDaysColor
+                    } else {
+                        cell.backgroundColor = evenDaysColor
+                    }
                 }
             } else {    // 날짜바뀌었을 때
                 if indexPath == preIndexPath {
-                    cell.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
+                    cell.backgroundColor = selectedDayColor
                 } else {
-                    cell.backgroundColor = UIColor.clear
+//                    cell.backgroundColor = UIColor.clear
+                    if dayCounter % 2 == 1 {
+                        cell.backgroundColor = oddDaysColor
+                    } else {
+                        cell.backgroundColor = evenDaysColor
+                    }
                 }
             }
         }
@@ -415,9 +429,26 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         let dayCounter = indexPath.row + 1 - firstDayPosition
         delegate?.selectYearMonthDay(year: year, month: month, day: dayCounter)
         delegate?.callDisplayDaylyPay()
-        collectionView.cellForItem(at: preIndexPath)?.backgroundColor = UIColor.clear
-        collectionView.cellForItem(at: firstDayIndexPath)?.backgroundColor = UIColor.clear
-        collectionView.cellForItem(at: indexPath)?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
+        
+        print(firstDayIndexPath.row)
+        print(firstDayPosition)
+        
+        if firstDayPosition % 2 == firstDayIndexPath.row % 2 {
+            collectionView.cellForItem(at: firstDayIndexPath)?.backgroundColor = oddDaysColor
+        } else {
+            collectionView.cellForItem(at: firstDayIndexPath)?.backgroundColor = evenDaysColor
+        }
+        
+        if firstDayPosition % 2 == preIndexPath.row % 2 {
+            collectionView.cellForItem(at: preIndexPath)?.backgroundColor = oddDaysColor
+        } else {
+            collectionView.cellForItem(at: preIndexPath)?.backgroundColor = evenDaysColor
+        }
+        
+//        collectionView.cellForItem(at: preIndexPath)?.backgroundColor = UIColor.clear
+        
+        
+        collectionView.cellForItem(at: indexPath)?.backgroundColor = selectedDayColor
         preIndexPath = indexPath
     }
     

@@ -10,6 +10,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     var window: UIWindow?
     var interstitial: GADInterstitialAd?  //  전면광고용 변수
     var launchScreenView: UIView?
+    private var purchaseManager = PurchaseManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         print("\n + + + + + + + + + + + + + + + + + + + + + + willFinishLaunchingWithOptions + + + + + + + + + + + + + + + + + + + + + + ")
@@ -39,6 +40,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
                 fakeLaunchScreenView()
                 loadGADInterstitialAd()
             }
+        }
+        
+        Task {
+            print("\nAPPDelegate - will - purchaseManager.updatePurchasedProducts() \n")
+            await purchaseManager.updatePurchasedProducts()
+            print("\nAPPDelegate - did - purchaseManager.updatePurchasedProducts() \n")
         }
         
         return true
