@@ -9,10 +9,13 @@ class JobListViewController: UIViewController, GADBannerViewDelegate {
     @IBOutlet weak var bannerView: GADBannerView!
     @IBOutlet weak var bannerViewHeightConstraint: NSLayoutConstraint!
     
+    var originBannerViewHeight = CGFloat()
     var jobInfoList: [JobInfo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        originBannerViewHeight = bannerViewHeightConstraint.constant    //  구인 홈 하단 광고 다시 시작할시 필요
 
         //  0:GitHub 에서 JSON파일 가져오기 , 1:Remote Config 통한 JSON , 2:Firebase ReaitimeDB , 3:서버점검 메세지
         let selectedDB = remoteConfig.configValue(forKey: RemoteConfigKeys.selectJobDB).numberValue
@@ -32,7 +35,24 @@ class JobListViewController: UIViewController, GADBannerViewDelegate {
         }
         
         setAdMob()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidUpdatePurchasedProducts), name: .didUpdatePurchasedProducts, object: nil)
     }
+    
+    
+    @objc func onDidUpdatePurchasedProducts(_ notification: Notification) {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) || !remoteConfig.configValue(forKey: RemoteConfigKeys.jobListAD).boolValue {
+            bannerView.isHidden = true
+            bannerViewHeightConstraint.constant = 0
+        } else {
+            bannerView.isHidden = false
+            if bannerViewHeightConstraint.constant != originBannerViewHeight {
+                bannerViewHeightConstraint.constant = originBannerViewHeight
+                setAdMob()
+            }
+        }
+    }
+    
     
     func jobDBfromGithubJSON() {
         // URL 에서 json 데이터 가져오기

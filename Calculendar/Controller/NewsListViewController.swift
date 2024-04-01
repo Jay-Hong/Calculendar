@@ -1,10 +1,13 @@
 import UIKit
 import GoogleMobileAds
 
-class NewsListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, GADNativeAdLoaderDelegate, GADNativeAdDelegate {
+class NewsListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, GADNativeAdLoaderDelegate, GADNativeAdDelegate, GADBannerViewDelegate {
     
     @IBOutlet weak var newsTableView: UITableView!
+    @IBOutlet weak var bannerView: GADBannerView!
+    @IBOutlet weak var bannerViewHeightConstraint: NSLayoutConstraint!
     
+    var originBannerViewHeight = CGFloat()
     //    var newsInfoList: [NewsInfo] = []
     //    var newsInfoList: [AnyObject] = []
     var newsInfoList = [AnyObject]()
@@ -36,29 +39,31 @@ class NewsListViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        originBannerViewHeight = bannerViewHeightConstraint.constant    //  구인 홈 하단 광고 다시 시작할시 필요
+        
         registerXib()
         newsTableView.rowHeight = UITableView.automaticDimension
         getRemoteConfig()
         setAdMob()
         
-        // URL 에서 json 데이터 가져오기
-        let jsonURLString = "https://raw.githubusercontent.com/Jay-Hong/News_JSON/master/newsURL.json"
-        // let jsonURLString = remoteConfig.configValue(forKey: RemoteConfigKeys.newsDB_GithubURL).stringValue ?? ""
-        guard let jsonURL = URL(string: jsonURLString) else {return}
-        URLSession.shared.dataTask(with: jsonURL) { data, response, error in
-            guard let jsonData = data else {return}
-            do{
-                self.newsInfoList = try JSONDecoder().decode([NewsInfo].self, from: jsonData)
-                DispatchQueue.main.async(execute: {
-                    self.newsInfoList.shuffle()
-                    self.newsTableView.reloadData()
-                })
-            }catch{
-                print("\(error.localizedDescription)")
-            }
-        }.resume()
+        getNewsList()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidUpdatePurchasedProducts), name: .didUpdatePurchasedProducts, object: nil)
     }
     
+    @objc func onDidUpdatePurchasedProducts(_ notification: Notification) {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) || !remoteConfig.configValue(forKey: RemoteConfigKeys.newsHomeAD).boolValue {
+            bannerView.isHidden = true
+            bannerViewHeightConstraint.constant = 0
+            getNewsList()
+        } else {
+            bannerView.isHidden = false
+            if bannerViewHeightConstraint.constant != originBannerViewHeight {
+                bannerViewHeightConstraint.constant = originBannerViewHeight
+                setAdMob()
+            }
+        }
+    }
     
     func getRemoteConfig() {
         //  사진 꼭 넣을 뉴스단어 가져오기
@@ -84,7 +89,40 @@ class NewsListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     
+    func getNewsList() {
+        // URL 에서 json 데이터 가져오기
+        let jsonURLString = "https://raw.githubusercontent.com/Jay-Hong/News_JSON/master/newsURL.json"
+        // let jsonURLString = remoteConfig.configValue(forKey: RemoteConfigKeys.newsDB_GithubURL).stringValue ?? ""
+        guard let jsonURL = URL(string: jsonURLString) else {return}
+        URLSession.shared.dataTask(with: jsonURL) { data, response, error in
+            guard let jsonData = data else {return}
+            do{
+                self.newsInfoList = try JSONDecoder().decode([NewsInfo].self, from: jsonData)
+                DispatchQueue.main.async(execute: {
+                    self.newsInfoList.shuffle()
+                    self.newsTableView.reloadData()
+                })
+            }catch{
+                print("\(error.localizedDescription)")
+            }
+        }.resume()
+    }
+    
+    
     func setAdMob() {
+        //  뉴스홈 하단 배너광고
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) || !remoteConfig.configValue(forKey: RemoteConfigKeys.newsHomeAD).boolValue {
+            bannerView.isHidden = true
+            bannerViewHeightConstraint.constant = 0
+        } else {
+            bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.size.width)
+            bannerView.adUnitID = "ca-app-pub-5095960781666456/9974751224"
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            bannerView.delegate = self
+        }
+        
+        //  뉴스리스트 내 셀 네이티브 광고
         if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) || newsListAllAdIndex.isEmpty {
             //  Do nothing
         } else {

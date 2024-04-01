@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fhV-dd-b0N">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -360,7 +360,7 @@
                             <tableViewSection id="5Yz-Rp-P4V">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="vFc-jH-iOL" rowHeight="44" style="IBUITableViewCellStyleDefault" id="7Tx-Tp-Oz5">
-                                        <rect key="frame" x="0.0" y="565.33333587646484" width="393" height="44"/>
+                                        <rect key="frame" x="0.0" y="565.33333587646496" width="393" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7Tx-Tp-Oz5" id="4JF-cD-NSC">
                                             <rect key="frame" x="0.0" y="0.0" width="362.66666666666669" height="44"/>
@@ -380,7 +380,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Igc-z0-VKZ" rowHeight="44" style="IBUITableViewCellStyleDefault" id="LTo-sF-bdW">
-                                        <rect key="frame" x="0.0" y="609.33333587646484" width="393" height="44"/>
+                                        <rect key="frame" x="0.0" y="609.33333587646496" width="393" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LTo-sF-bdW" id="kyg-YP-gZL">
                                             <rect key="frame" x="0.0" y="0.0" width="362.66666666666669" height="44"/>
@@ -400,7 +400,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="OsI-Dr-y1L" style="IBUITableViewCellStyleDefault" id="e7T-aZ-4vH">
-                                        <rect key="frame" x="0.0" y="653.33333587646484" width="393" height="43.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="653.33333587646496" width="393" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="e7T-aZ-4vH" id="V3c-vK-Xn6">
                                             <rect key="frame" x="0.0" y="0.0" width="362.66666666666669" height="43.666667938232422"/>
@@ -417,7 +417,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="0rt-Om-mTA" detailTextLabel="Bz1-tS-l3x" style="IBUITableViewCellStyleValue1" id="L5b-ep-niJ">
-                                        <rect key="frame" x="0.0" y="697.00000381469727" width="393" height="43.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="697.00000381469738" width="393" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L5b-ep-niJ" id="Jeb-Ra-qs7">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
@@ -445,7 +445,7 @@
                             <tableViewSection id="TK3-5G-nWD">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="J4t-fK-g4N" style="IBUITableViewCellStyleDefault" id="jDQ-KV-i0Y">
-                                        <rect key="frame" x="0.0" y="776.66667175292969" width="393" height="44"/>
+                                        <rect key="frame" x="0.0" y="776.6666717529298" width="393" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jDQ-KV-i0Y" id="zsh-Kr-Uqd">
                                             <rect key="frame" x="0.0" y="0.0" width="362.66666666666669" height="44"/>
@@ -492,9 +492,9 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5fj-qt-QNz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2179.3893129770991" y="27.464788732394368"/>
+            <point key="canvasLocation" x="1424" y="27"/>
         </scene>
-        <!--Main View Controller-->
+        <!--공수달력-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="mainViewController" id="BYZ-38-t0r" customClass="MainViewController" customModule="Calculendar" customModuleProvider="target" sceneMemberID="viewController">
@@ -628,11 +628,11 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lW1-aL-zIW">
-                                <rect key="frame" x="0.0" y="119" width="393" height="524"/>
+                                <rect key="frame" x="0.0" y="119" width="393" height="475"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="UiG-JM-Zfe">
-                                <rect key="frame" x="0.0" y="643" width="393" height="80"/>
+                                <rect key="frame" x="0.0" y="594" width="393" height="80"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="YmI-68-tVE"/>
@@ -766,7 +766,7 @@
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WK5-Y1-fEK">
-                                <rect key="frame" x="0.0" y="723" width="393" height="44"/>
+                                <rect key="frame" x="0.0" y="674" width="393" height="44"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="xvm-85-PcO">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
@@ -820,7 +820,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MuL-Ay-G4C">
-                                <rect key="frame" x="0.0" y="767" width="393" height="51"/>
+                                <rect key="frame" x="0.0" y="718" width="393" height="51"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yLI-Zi-zK3">
                                         <rect key="frame" x="0.0" y="1" width="393" height="50"/>
@@ -880,6 +880,7 @@
                             <constraint firstItem="rRs-lg-CJ5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="vlz-ah-lEw"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="공수달력" image="calendar" catalog="system" id="gig-kA-6ti"/>
                     <connections>
                         <outlet property="bannerBackButton" destination="yLI-Zi-zK3" id="NUL-mL-FWx"/>
                         <outlet property="bannerBackView" destination="MuL-Ay-G4C" id="eIt-Dl-yGD"/>
@@ -894,7 +895,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-100.46511627906976" y="27.682403433476395"/>
+            <point key="canvasLocation" x="-873" y="27"/>
         </scene>
         <!--채용정보-->
         <scene sceneID="q4U-M7-QdN">
@@ -905,7 +906,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="170" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="VS4-AS-BbI">
-                                <rect key="frame" x="0.0" y="44" width="393" height="709"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="616"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="jobBasicCell" rowHeight="170" id="sAA-dr-m4P" customClass="JobListCell" customModule="Calculendar" customModuleProvider="target">
@@ -1076,7 +1077,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2jM-lq-3mK" customClass="GADBannerView">
-                                <rect key="frame" x="0.0" y="753" width="393" height="50"/>
+                                <rect key="frame" x="0.0" y="719" width="393" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="R07-vM-eJk"/>
@@ -1097,6 +1098,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="채용정보" id="d7n-vt-5wl">
                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="vsK-fF-KIA">
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="cancelButtonAction:" destination="4FL-KT-VwG" id="QQy-1i-Fh6"/>
                             </connections>
@@ -1752,7 +1754,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k7E-j3-Ei2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1647" y="896"/>
+            <point key="canvasLocation" x="-2440" y="896"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="FSA-T7-l4s">
@@ -1764,6 +1766,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="2ym-cZ-wK2"/>
                         <segue destination="s2y-Yz-B7d" kind="relationship" relationship="viewControllers" id="awB-dE-U5J"/>
                         <segue destination="bky-S6-Y1P" kind="relationship" relationship="viewControllers" id="nS6-fi-JIt"/>
                     </connections>
@@ -1779,7 +1782,7 @@
                     <tabBarItem key="tabBarItem" title="채용정보" image="binoculars" catalog="system" id="cBX-Q1-04l"/>
                     <navigationItem key="navigationItem" id="fqW-M3-kQQ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="E99-Vz-FYP">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -1888,12 +1891,12 @@
                     <connections>
                         <outlet property="calendarCollectionView" destination="8Vb-iQ-D1v" id="hVy-nx-Z2b"/>
                         <outlet property="calendarLineView" destination="QdQ-OR-KhK" id="C4V-ad-dsJ"/>
-                        <segue destination="fhV-dd-b0N" kind="presentation" identifier="toTabBarControllerSegue" modalPresentationStyle="overCurrentContext" id="EuL-zw-6pE"/>
+                        <segue destination="mPa-rY-80h" kind="presentation" identifier="toSubscriptionControllerSegue" id="TVe-rm-SVV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pdr-Lv-rP3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1648" y="-681"/>
+            <point key="canvasLocation" x="-100" y="27"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="Ytr-kd-KIu">
@@ -1901,7 +1904,7 @@
                 <pageViewController storyboardIdentifier="pageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" pageSpacing="2" navigationOrientation="vertical" spineLocation="none" id="kfW-0N-94Y" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hOD-b0-6xI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-871" y="28"/>
+            <point key="canvasLocation" x="-1648" y="27"/>
         </scene>
         <!--Memo Pop Up View Controller-->
         <scene sceneID="gKJ-g8-PXr">
@@ -2022,7 +2025,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AE5-kS-o8o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-100" y="895.56650246305423"/>
+            <point key="canvasLocation" x="-874" y="896"/>
         </scene>
         <!--Pay Pop Up View Controller-->
         <scene sceneID="s78-xP-D0q">
@@ -2361,7 +2364,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aLS-k7-U0e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="644.61538461538464" y="895.73459715639808"/>
+            <point key="canvasLocation" x="-100" y="896"/>
         </scene>
         <!--Unit Of Work Pop Up View Controller-->
         <scene sceneID="zsq-o4-431">
@@ -2675,7 +2678,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R6h-JO-KpW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1385" y="896"/>
+            <point key="canvasLocation" x="645" y="896"/>
         </scene>
         <!--Ad Removal View Controller-->
         <scene sceneID="6Xj-7B-dj0">
@@ -2800,7 +2803,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rag-rR-5EC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3067" y="895"/>
+            <point key="canvasLocation" x="-2440" y="-1389"/>
         </scene>
         <!--Tax Before After View Controller-->
         <scene sceneID="bGv-ND-roa">
@@ -3027,7 +3030,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6gR-gu-iHV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-871.20000000000005" y="895.56650246305423"/>
+            <point key="canvasLocation" x="-1648" y="896"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="rho-9P-2zI">
@@ -3046,7 +3049,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3MF-E0-Zq7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="646" y="28"/>
+            <point key="canvasLocation" x="642" y="27"/>
         </scene>
         <!--Base Pay Pop Up View Controller-->
         <scene sceneID="YMW-6i-Odd">
@@ -3365,7 +3368,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4uX-AS-ZwW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="O8T-oX-fI9" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3067" y="-681"/>
+            <point key="canvasLocation" x="2178" y="-682"/>
         </scene>
         <!--Money Unit View Controller-->
         <scene sceneID="Vrb-US-SLM">
@@ -3408,7 +3411,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e49-O0-Huq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="IcZ-cw-fHX" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2180" y="-681"/>
+            <point key="canvasLocation" x="2178" y="27"/>
         </scene>
         <!--Backup Restore View Controller-->
         <scene sceneID="PNw-Za-8x6">
@@ -3467,7 +3470,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LBp-wh-ZQ4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3067" y="28"/>
+            <point key="canvasLocation" x="2178" y="896"/>
         </scene>
         <!--뉴스-->
         <scene sceneID="FNd-xa-I56">
@@ -3478,7 +3481,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="109" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="blc-zO-ccA">
-                                <rect key="frame" x="0.0" y="44" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="616"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NewsListCell" rowHeight="109" id="2NG-pX-raJ" customClass="NewsListCell" customModule="Calculendar" customModuleProvider="target">
@@ -3654,30 +3657,43 @@
                                     <outlet property="delegate" destination="6lz-nn-9T6" id="9dP-9f-L1S"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Ci-Ye-zEB" customClass="GADBannerView">
+                                <rect key="frame" x="0.0" y="719" width="393" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="MTf-FI-hwJ"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="H9T-fs-mlU"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="2Ci-Ye-zEB" firstAttribute="top" secondItem="blc-zO-ccA" secondAttribute="bottom" id="Dfs-5X-Ces"/>
                             <constraint firstItem="blc-zO-ccA" firstAttribute="trailing" secondItem="H9T-fs-mlU" secondAttribute="trailing" id="Hbc-5H-wQr"/>
-                            <constraint firstItem="H9T-fs-mlU" firstAttribute="bottom" secondItem="blc-zO-ccA" secondAttribute="bottom" id="kAJ-ri-Mds"/>
+                            <constraint firstItem="2Ci-Ye-zEB" firstAttribute="leading" secondItem="H9T-fs-mlU" secondAttribute="leading" id="U2V-YS-KLR"/>
+                            <constraint firstItem="2Ci-Ye-zEB" firstAttribute="trailing" secondItem="H9T-fs-mlU" secondAttribute="trailing" id="hSL-rk-TLj"/>
+                            <constraint firstItem="2Ci-Ye-zEB" firstAttribute="bottom" secondItem="H9T-fs-mlU" secondAttribute="bottom" id="jhI-Uh-iGT"/>
                             <constraint firstItem="blc-zO-ccA" firstAttribute="leading" secondItem="H9T-fs-mlU" secondAttribute="leading" id="w43-oB-8fg"/>
                             <constraint firstItem="blc-zO-ccA" firstAttribute="top" secondItem="H9T-fs-mlU" secondAttribute="top" id="zqK-a7-3VC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="뉴스" id="kgq-hd-2sw">
                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="PrE-oo-ifQ">
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="cancelButtonAction:" destination="6lz-nn-9T6" id="RQb-tK-EIH"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="bannerView" destination="2Ci-Ye-zEB" id="vLP-lK-pE9"/>
+                        <outlet property="bannerViewHeightConstraint" destination="MTf-FI-hwJ" id="TnF-gp-skG"/>
                         <outlet property="newsTableView" destination="blc-zO-ccA" id="CL5-PH-TUY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5sG-u6-JM5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="644.65116279069764" y="-1389.2703862660944"/>
+            <point key="canvasLocation" x="643.51145038167931" y="-1389.4366197183099"/>
         </scene>
         <!--News Detail View Controller-->
         <scene sceneID="4XN-3f-2B5">
@@ -3836,7 +3852,7 @@
                 <navigationController id="bky-S6-Y1P" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="뉴스" image="newspaper" catalog="system" id="EFS-ij-sgU"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5Oc-iS-mah">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -3983,11 +3999,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iMZ-kJ-AxU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2180" y="895"/>
+            <point key="canvasLocation" x="1424" y="896"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="tg5-H7-RRY"/>
+        <segue reference="TVe-rm-SVV"/>
         <segue reference="wxY-0q-lSp"/>
         <segue reference="Eig-3d-Qus"/>
     </inferredMetricsTieBreakers>
@@ -3997,6 +4013,7 @@
         <image name="arrow.clockwise" catalog="system" width="113" height="128"/>
         <image name="arrow.forward" catalog="system" width="128" height="95"/>
         <image name="binoculars" catalog="system" width="128" height="90"/>
+        <image name="calendar" catalog="system" width="128" height="107"/>
         <image name="ic_arrow_down" width="48" height="48"/>
         <image name="ic_arrow_left" width="48" height="48"/>
         <image name="ic_arrow_right" width="48" height="48"/>

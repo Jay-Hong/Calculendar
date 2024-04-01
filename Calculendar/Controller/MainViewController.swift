@@ -173,6 +173,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         moveYearMonth(year: selectedYear, month: selectedMonth)
     }
     
+    //  구독모델 이후 사용 안함
     @objc func onDidPurchaseAdRemoval(_ notification: Notification) {
         bannerView.isHidden = true
         bannerBackView.isHidden = true
@@ -180,7 +181,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     }
     
     @objc func onDidUpdatePurchasedProducts(_ notification: Notification) {
-        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) || !remoteConfig.configValue(forKey: RemoteConfigKeys.calendarHomeAD).boolValue {
             bannerView.isHidden = true
             bannerBackView.isHidden = true
             bannerBackButton.isHidden = true
@@ -199,7 +200,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     
     
     func setAdMob() {
-        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) || !remoteConfig.configValue(forKey: RemoteConfigKeys.calendarHomeAD).boolValue {
             bannerView.isHidden = true
             bannerBackView.isHidden = true
             bannerBackButton.isHidden = true

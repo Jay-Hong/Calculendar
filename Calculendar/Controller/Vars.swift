@@ -100,6 +100,9 @@ struct RemoteConfigKeys {
     static let newsListNextBigCell = "newsListNextBigCell"
     static let subscription_Price = "subscription_Price"
     static let subscription_Detail = "subscription_Detail"
+    static let calendarAdRemovalButton = "calendarAdRemovalButton"
+    static let calendarHomeAD = "calendarHomeAD"
+    static let newsHomeAD = "newsHomeAD"
 }
 
 struct SettingsKeys {
