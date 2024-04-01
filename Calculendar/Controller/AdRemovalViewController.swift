@@ -13,7 +13,7 @@ class AdRemovalViewController: UIViewController, SKProductsRequestDelegate, SKPa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         fetchProducts()
         
         //  버튼 테두리 둥글게
@@ -52,9 +52,13 @@ class AdRemovalViewController: UIViewController, SKProductsRequestDelegate, SKPa
     
     //MARK:  - IAP
     func fetchProducts() {
-        let request = SKProductsRequest(productIdentifiers: ["com.Jay.Calculendar.AdRemoval"])
-        request.delegate = self
-        request.start()
+        if SKPaymentQueue.canMakePayments() {
+            let request = SKProductsRequest(productIdentifiers: ["com.Jay.Calculendar.AdRemoval"])
+            request.delegate = self
+            request.start()
+        } else {
+            print("In-app purchases are not allowed on this device.")
+        }
     }
     
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
@@ -70,45 +74,45 @@ class AdRemovalViewController: UIViewController, SKProductsRequestDelegate, SKPa
     
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
-          switch transaction.transactionState {
-          case .purchased:
-            print("Purchase Transaction Successful")
-            UserDefaults.standard.set(true, forKey: SettingsKeys.AdRemoval)
-            NotificationCenter.default.post(name: .didPurchaseAdRemoval, object: nil)
-            SKPaymentQueue.default().finishTransaction(transaction)
-            SKPaymentQueue.default().remove(self)
-            purchaseActivityIndicatorView.stopAnimating()
-            self.navigationController?.popViewController(animated: true)
-            break
+            switch transaction.transactionState {
+            case .purchased:
+                print("Purchase Transaction Successful")
+                UserDefaults.standard.set(true, forKey: SettingsKeys.AdRemoval)
+                NotificationCenter.default.post(name: .didPurchaseAdRemoval, object: nil)
+                SKPaymentQueue.default().finishTransaction(transaction)
+                SKPaymentQueue.default().remove(self)
+                purchaseActivityIndicatorView.stopAnimating()
+                self.navigationController?.popViewController(animated: true)
+                break
             case .restored:
-            print("Restored")
-            UserDefaults.standard.set(true, forKey: SettingsKeys.AdRemoval)
-            NotificationCenter.default.post(name: .didPurchaseAdRemoval, object: nil)
-            SKPaymentQueue.default().finishTransaction(transaction)
-            SKPaymentQueue.default().remove(self)
-            //  Restored 성공했을 경우 paymentQueueRestoreCompletedTransactionsFinished() 실행이 안되어 아랫줄 추가
-            paymentQueueRestoreCompletedTransactionsFinished(queue)
-            break
-          case .failed:
-            print("Transaction Failed")
-            SKPaymentQueue.default().finishTransaction(transaction)
-            SKPaymentQueue.default().remove(self)
-            purchaseActivityIndicatorView.stopAnimating()
-            break
-          case .deferred:
-            print("Deferred")
-            SKPaymentQueue.default().finishTransaction(transaction)
-            SKPaymentQueue.default().remove(self)
-            break
-          case .purchasing:
-            print("Purchasing")
-            // No OP
-            break
-          default:
-            print("Unknown Default")
-            SKPaymentQueue.default().finishTransaction(transaction)
-            SKPaymentQueue.default().remove(self)
-            break
+                print("Restored")
+                UserDefaults.standard.set(true, forKey: SettingsKeys.AdRemoval)
+                NotificationCenter.default.post(name: .didPurchaseAdRemoval, object: nil)
+                SKPaymentQueue.default().finishTransaction(transaction)
+                SKPaymentQueue.default().remove(self)
+                //  Restored 성공했을 경우 paymentQueueRestoreCompletedTransactionsFinished() 실행이 안되어 아랫줄 추가
+                paymentQueueRestoreCompletedTransactionsFinished(queue)
+                break
+            case .failed:
+                print("Transaction Failed")
+                SKPaymentQueue.default().finishTransaction(transaction)
+                SKPaymentQueue.default().remove(self)
+                purchaseActivityIndicatorView.stopAnimating()
+                break
+            case .deferred:
+                print("Deferred")
+                SKPaymentQueue.default().finishTransaction(transaction)
+                SKPaymentQueue.default().remove(self)
+                break
+            case .purchasing:
+                print("Purchasing")
+                // No OP
+                break
+            default:
+                print("Unknown Default")
+                SKPaymentQueue.default().finishTransaction(transaction)
+                SKPaymentQueue.default().remove(self)
+                break
             }
         }
     }
@@ -134,8 +138,8 @@ class AdRemovalViewController: UIViewController, SKProductsRequestDelegate, SKPa
             alert.addAction(okAction)
             present(alert, animated: true, completion: nil)
             print("복원 되었습니다")
-
+            
         }
     }
-
+    
 }

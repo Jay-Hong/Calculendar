@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>calendarAdRemovalButton</key>
+	<string>true</string>
+	<key>calendarHomeAD</key>
+	<string>false</string>
+	<key>subscription_Price</key>
+	<string>₩19,900 / 12개월</string>
+	<key>subscription_Detail</key>
+	<string>매년 ₩19,900의 요금이 청구되며 구독은 언제든지 해지할 수 있습니다. 다음 요금 결제일 24시간 전까지 앱스토어 계정의 구독 관리를 통해 구독을 해지해야 갱신되지 않습니다.</string>
 	<key>newsListNextBigCell</key>
 	<string>13</string>
 	<key>newsListImageWords</key>
@@ -12,10 +20,12 @@
 	<string>7,20,33,46,59,72,85,98,111,124,137,150,163,176,189,202,215,228,241,254,267,280,293,306,319,332,345</string>
 	<key>newsDB_GithubURL</key>
 	<string>https://raw.githubusercontent.com/Jay-Hong/News_JSON/master/newsURL.json</string>
+	<key>newsHomeAD</key>
+	<string>false</string>
 	<key>jobDetailAD</key>
-	<string>true</string>
+	<string>false</string>
 	<key>jobListAD</key>
-	<string>true</string>
+	<string>false</string>
 	<key>jobInfoMail</key>
 	<string>▹ 상세한 채용정보는 많은 지원자로 이어집니다
 

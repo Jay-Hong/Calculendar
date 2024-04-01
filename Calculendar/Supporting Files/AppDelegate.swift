@@ -10,6 +10,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     var window: UIWindow?
     var interstitial: GADInterstitialAd?  //  전면광고용 변수
     var launchScreenView: UIView?
+    private var purchaseManager = PurchaseManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         print("\n + + + + + + + + + + + + + + + + + + + + + + willFinishLaunchingWithOptions + + + + + + + + + + + + + + + + + + + + + + ")
@@ -35,10 +36,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
             //  앱 제거 구매 시 광고 실행 안함
         } else {
             requestIDFA()   //  iOS15  이후 실행 안됨 (앱이 완전히 활성화된 이후 실행 가능함
-            if Date(timeInterval: 60 * 60 * 2, since: firstLaunchTime!) < Date() {  // 앱 설치 후 첫 실행시 2시간동안 광고 실행 안함
+            if Date(timeInterval: 60 * 60 * 24 * 4, since: firstLaunchTime!) < Date() {  // 첫 실행 후 4일동안 광고 안함
                 fakeLaunchScreenView()
                 loadGADInterstitialAd()
             }
+        }
+        
+        Task {
+            print("\nAPPDelegate - will - purchaseManager.updatePurchasedProducts() \n")
+            await purchaseManager.updatePurchasedProducts()
+            print("\nAPPDelegate - did - purchaseManager.updatePurchasedProducts() \n")
         }
         
         return true

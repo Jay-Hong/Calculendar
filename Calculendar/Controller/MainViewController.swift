@@ -18,6 +18,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     
     //  메인화면 광고 back View 높이 설정
     @IBOutlet weak var bannerBackViewHeightConstraint: NSLayoutConstraint!
+    var originBannerBackViewHeight = CGFloat()
     
     //  년월 나오는 상단 바 높이 설정
     @IBOutlet weak var topBarViewHeightConstraint: NSLayoutConstraint!
@@ -62,7 +63,7 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
     //MARK:  - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        originBannerBackViewHeight = bannerBackViewHeightConstraint.constant    //  메인화면 하단 광고 다시 시작할시 필요
         setToday()
         setStartDay()
         setTopBar()
@@ -133,10 +134,12 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             self?.setMonthlySalalyOnDashboard()
             self?.dashBoardCollectionView.reloadData()
         }
-        //  광고제거 구매/복원 시
-        NotificationCenter.default.addObserver(self, selector: #selector(onDidPurchaseAdRemoval), name: .didPurchaseAdRemoval, object: nil)
         //  iCloud 백업파일 디바이스 복원 시
         NotificationCenter.default.addObserver(self, selector: #selector(onDidRestoreOperation), name: .didRestoreOperation, object: nil)
+        //  광고제거 구매/복원 시
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidPurchaseAdRemoval), name: .didPurchaseAdRemoval, object: nil)
+        //  구매상태 업데이트 시
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidUpdatePurchasedProducts), name: .didUpdatePurchasedProducts, object: nil)
     }
     
     @objc func onDidSaveBasePay(_ notification: Notification) {
@@ -166,19 +169,38 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
         dashBoardCollectionView.reloadData()    //  공수 / 시간
     }
     
+    @objc func onDidRestoreOperation(_ notification: Notification) {
+        moveYearMonth(year: selectedYear, month: selectedMonth)
+    }
+    
+    //  구독모델 이후 사용 안함
     @objc func onDidPurchaseAdRemoval(_ notification: Notification) {
         bannerView.isHidden = true
         bannerBackView.isHidden = true
         bannerBackViewHeightConstraint.constant = 0
     }
     
-    @objc func onDidRestoreOperation(_ notification: Notification) {
-        moveYearMonth(year: selectedYear, month: selectedMonth)
+    @objc func onDidUpdatePurchasedProducts(_ notification: Notification) {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) || !remoteConfig.configValue(forKey: RemoteConfigKeys.calendarHomeAD).boolValue {
+            bannerView.isHidden = true
+            bannerBackView.isHidden = true
+            bannerBackButton.isHidden = true
+            bannerBackViewHeightConstraint.constant = 0
+        } else {
+            bannerView.isHidden = false
+            bannerBackView.isHidden = false
+            bannerBackButton.isHidden = false
+            if bannerBackViewHeightConstraint.constant != originBannerBackViewHeight {
+                bannerBackViewHeightConstraint.constant = originBannerBackViewHeight
+                setAdMob()
+                makeCalendar()  //  광고가 생기면서 달력크기가 조정되지 않는 문제 해결
+            }
+        }
     }
     
     
     func setAdMob() {
-        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) || !remoteConfig.configValue(forKey: RemoteConfigKeys.calendarHomeAD).boolValue {
             bannerView.isHidden = true
             bannerBackView.isHidden = true
             bannerBackButton.isHidden = true
@@ -333,9 +355,14 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
             setDaylyPayOnDashboard()
             dashBoardCollectionView.reloadData()
             
-            // 기본 날짜선택 세팅을 변경 해당월일시 당일 표시 / 해당월 아닐시 1일 선택 (다른날짜를 선택했었더라도)
-            nextCalendarVC.calendarCollectionView.cellForItem(at: nextCalendarVC.preIndexPath)?.backgroundColor = UIColor.clear
-            nextCalendarVC.calendarCollectionView.cellForItem(at: nextCalendarVC.firstDayIndexPath)?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
+            if nextCalendarVC.firstDayPosition % 2 == nextCalendarVC.preIndexPath.row % 2 {
+                nextCalendarVC.calendarCollectionView.cellForItem(at: nextCalendarVC.preIndexPath)?.backgroundColor = nextCalendarVC.oddDaysColor
+            } else {
+                nextCalendarVC.calendarCollectionView.cellForItem(at: nextCalendarVC.preIndexPath)?.backgroundColor = nextCalendarVC.evenDaysColor
+            }
+            
+//            nextCalendarVC.calendarCollectionView.cellForItem(at: nextCalendarVC.preIndexPath)?.backgroundColor = UIColor.clear
+            nextCalendarVC.calendarCollectionView.cellForItem(at: nextCalendarVC.firstDayIndexPath)?.backgroundColor = nextCalendarVC.selectedDayColor
         }
     }
     

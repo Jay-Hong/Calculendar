@@ -98,6 +98,11 @@ struct RemoteConfigKeys {
     static let newsListBigAdIndex = "newsListBigAdIndex"
     static let newsListImageWords = "newsListImageWords"
     static let newsListNextBigCell = "newsListNextBigCell"
+    static let subscription_Price = "subscription_Price"
+    static let subscription_Detail = "subscription_Detail"
+    static let calendarAdRemovalButton = "calendarAdRemovalButton"
+    static let calendarHomeAD = "calendarHomeAD"
+    static let newsHomeAD = "newsHomeAD"
 }
 
 struct SettingsKeys {
@@ -121,8 +126,9 @@ extension Notification.Name {
     static let didSaveTaxRate = Notification.Name("didSaveTaxRate")
     static let didSaveStartDay = Notification.Name("didSaveStartDay")
     static let didTogglePaySystem = Notification.Name("didTogglePaySystem")
+    static let didRestoreOperation = Notification.Name("didRestoreOperation")       //  iCloud 백업파일 디바이스 복원 시
     static let didPurchaseAdRemoval = Notification.Name("didPurchaseAdRemoval")
-    static let didRestoreOperation = Notification.Name("didRestoreOperation")
+    static let didUpdatePurchasedProducts = Notification.Name("didUpdatePurchasedProducts")
 }
 
 public extension UIDevice {

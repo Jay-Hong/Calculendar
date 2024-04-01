@@ -6,7 +6,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet var calendarLineView: CalendarLineView!
     @IBOutlet weak var calendarCollectionView: UICollectionView!
     
-    var jobNewsButton = UIButton()    //  2021/10/12 스토어 바로가기 버튼 추가 -> 2023/05 채용정보 로 변경
+    var adRemovalButton = UIButton()    //  2021/10/12 스토어 바로가기 버튼 추가 -> 2023/05 채용정보 로 변경 -> 2024/03 광고제거 로 변경
     
     var delegate: CalendarDelegate?
     
@@ -32,6 +32,10 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     //  Line 은 한번만 그려줘도 bounds 변하면 알아서 따라 변한다 / Collectionview Cell 들은 다시 reload() 해줘야 함
     var didDrawLines = false
     
+    let oddDaysColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.03)
+    let evenDaysColor = UIColor.clear
+    let selectedDayColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 0.3)
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,14 +50,18 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
             self?.calendarCollectionView.reloadData()
         }
         
-        addJobNewsButton()
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) || !remoteConfig.configValue(forKey: RemoteConfigKeys.calendarAdRemovalButton).boolValue {
+            //  달력 내 광고제거 버튼 없음
+        } else {
+            addAdRemovalButton()
+        }
         
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
 //        basicAnimation(imageView: jobNewsButton.imageView!) //  채용&뉴스 버튼 반짝이는 애니메이션
-        advancedAnimation(imageView: jobNewsButton.imageView!)
+        advancedAnimation(imageView: adRemovalButton.imageView!)
     }
     
     
@@ -63,41 +71,42 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         //  광고제거 구매 / 복원 직후 시에만 reloadData()
         if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval) && !beginningAdRemoval {
             calendarCollectionView.reloadData()
+            adRemovalButton.isHidden = true
         }
     }
     
     
-    func addJobNewsButton() {
+    func addAdRemovalButton() {
         //  jobInfoButton
         let jobInfoButtonWidth = self.view.bounds.width / 7
-        self.view.addSubview(jobNewsButton)
-        jobNewsButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(adRemovalButton)
+        adRemovalButton.translatesAutoresizingMaskIntoConstraints = false
         
-        jobNewsButton.widthAnchor.constraint(equalToConstant: jobInfoButtonWidth).isActive = true
-        jobNewsButton.heightAnchor.constraint(equalToConstant: jobInfoButtonWidth).isActive = true
+        adRemovalButton.widthAnchor.constraint(equalToConstant: jobInfoButtonWidth).isActive = true
+        adRemovalButton.heightAnchor.constraint(equalToConstant: jobInfoButtonWidth).isActive = true
         
-        jobNewsButton.setImage(UIImage(named: "job_news_image"), for: .normal)
+        adRemovalButton.setImage(UIImage(named: "add_removal"), for: .normal)
         
         if numberOfCells == 35 {
-            jobNewsButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
-            jobNewsButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            adRemovalButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
+            adRemovalButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         } else {
-            jobNewsButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-            jobNewsButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+            adRemovalButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+            adRemovalButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         }
         
-        jobNewsButton.layer.cornerRadius = 5
-        jobNewsButton.layer.masksToBounds = true
+        adRemovalButton.layer.cornerRadius = 5
+        adRemovalButton.layer.masksToBounds = true
         
-        jobNewsButton.addTarget(self, action: #selector(jobInfoButtonAction), for: .touchUpInside)
+        adRemovalButton.addTarget(self, action: #selector(jobInfoButtonAction), for: .touchUpInside)
         
 //        basicAnimation(imageView: jobNewsButton.imageView!)
     }
     
     
     @objc func jobInfoButtonAction() {
-        print("\nJob List Button is pressed!!\n")
-        self.performSegue(withIdentifier: "toTabBarControllerSegue", sender: self)
+        print("\nSubscription Button is pressed!!\n")
+        self.performSegue(withIdentifier: "toSubscriptionControllerSegue", sender: self)
 //        print("storeButton is pressed!!\n")
 //        let storeURL = NSURL(string: "https://smartstore.naver.com/like-mart")
 //        let storeSafariView: SFSafariViewController = SFSafariViewController(url: storeURL! as URL)
@@ -127,18 +136,18 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
     
     func advancedAnimation(imageView: UIImageView) {
         let opacityKeyframe = CAKeyframeAnimation(keyPath: "opacity")
-        opacityKeyframe.values = [0.1, 1.0, 1.0, 0.1]
-        opacityKeyframe.keyTimes = [0, 0.25, 0.75, 1]
+        opacityKeyframe.values = [1.0, 1.0, 0.0, 0.0, 1.0, 1.0]
+        opacityKeyframe.keyTimes = [0, 0.25, 0.35, 0.65, 0.75, 1.0]
 //        opacityKeyframe.duration = 2.3
 //        opacityKeyframe.repeatCount = .infinity
         
         let scaleKeyFrame = CAKeyframeAnimation(keyPath: "transform.scale")
-        scaleKeyFrame.values = [0.9, 1.0, 1.0, 0.9]
-        scaleKeyFrame.keyTimes = [0, 0.25, 0.75, 1]
+        scaleKeyFrame.values = [1.0, 1.0, 0.5, 0.5, 1.0, 1.0]
+        scaleKeyFrame.keyTimes = [0, 0.25, 0.35, 0.65, 0.75, 1.0]
         
         let animationGroup = CAAnimationGroup()
         animationGroup.animations = [opacityKeyframe, scaleKeyFrame]
-        animationGroup.duration = 2.5
+        animationGroup.duration = 4
         animationGroup.repeatCount = Float.infinity
         animationGroup.fillMode = .forwards             // 애니메이션 완료 후 상태 유지
         animationGroup.isRemovedOnCompletion = false    // 애니메이션 완료 후 제거하지 않음
@@ -154,11 +163,11 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         cellHeight = numberOfCells > 35 ? (collectionView.bounds.height / 6) : (collectionView.bounds.height / 5)
         
         //  Paging 시 라인이 두번씩 겹쳐그려지는 현상 해결위해 didDrawLines 사용
-        if !didDrawLines {
-            calendarLineView.setHeight(cellHeight)
-            calendarLineView.setNeedsDisplay()
-            didDrawLines = true
-        }
+//        if !didDrawLines {
+//            calendarLineView.setHeight(cellHeight)
+//            calendarLineView.setNeedsDisplay()
+//            didDrawLines = true
+//        }
         return numberOfCells
     }
     
@@ -227,9 +236,9 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                     case 2 ..< 2.5:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 1, green: 0.4626982859, blue: 0.3224007863, alpha: 1)
                     case 2.5 ..< 3:
-                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.5514207035, green: 0.3453891092, blue: 0.9958749898, alpha: 1)
-                    case 3 ..< 4:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.8951854988, green: 0.4097951526, blue: 0.834882776, alpha: 1)
+                    case 3 ..< 4:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.5514207035, green: 0.3453891092, blue: 0.9958749898, alpha: 1)
                     case 4 ..< 5:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.1601935674, green: 0.4833306365, blue: 1, alpha: 1)
                     case 5 ..< 6:
@@ -394,16 +403,26 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
             
             if preIndexPath.isEmpty {   // 새로만들어진 캘린더일 경우
                 if dayCounter == day {
-                    cell.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
+                    cell.backgroundColor = selectedDayColor
                     preIndexPath = indexPath
                 } else {
-                    cell.backgroundColor = UIColor.clear
+//                    cell.backgroundColor = UIColor.clear
+                    if dayCounter % 2 == 1 {
+                        cell.backgroundColor = oddDaysColor
+                    } else {
+                        cell.backgroundColor = evenDaysColor
+                    }
                 }
             } else {    // 날짜바뀌었을 때
                 if indexPath == preIndexPath {
-                    cell.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
+                    cell.backgroundColor = selectedDayColor
                 } else {
-                    cell.backgroundColor = UIColor.clear
+//                    cell.backgroundColor = UIColor.clear
+                    if dayCounter % 2 == 1 {
+                        cell.backgroundColor = oddDaysColor
+                    } else {
+                        cell.backgroundColor = evenDaysColor
+                    }
                 }
             }
         }
@@ -415,9 +434,26 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
         let dayCounter = indexPath.row + 1 - firstDayPosition
         delegate?.selectYearMonthDay(year: year, month: month, day: dayCounter)
         delegate?.callDisplayDaylyPay()
-        collectionView.cellForItem(at: preIndexPath)?.backgroundColor = UIColor.clear
-        collectionView.cellForItem(at: firstDayIndexPath)?.backgroundColor = UIColor.clear
-        collectionView.cellForItem(at: indexPath)?.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
+        
+        print(firstDayIndexPath.row)
+        print(firstDayPosition)
+        
+        if firstDayPosition % 2 == firstDayIndexPath.row % 2 {
+            collectionView.cellForItem(at: firstDayIndexPath)?.backgroundColor = oddDaysColor
+        } else {
+            collectionView.cellForItem(at: firstDayIndexPath)?.backgroundColor = evenDaysColor
+        }
+        
+        if firstDayPosition % 2 == preIndexPath.row % 2 {
+            collectionView.cellForItem(at: preIndexPath)?.backgroundColor = oddDaysColor
+        } else {
+            collectionView.cellForItem(at: preIndexPath)?.backgroundColor = evenDaysColor
+        }
+        
+//        collectionView.cellForItem(at: preIndexPath)?.backgroundColor = UIColor.clear
+        
+        
+        collectionView.cellForItem(at: indexPath)?.backgroundColor = selectedDayColor
         preIndexPath = indexPath
     }
     

@@ -103,6 +103,7 @@ class BackupRestoreViewController: UITableViewController {
         
         guard createDocumentsDirectory() else { backupIsNotDone(); return }  //  폴더 생성 중 오류가 난다면 이미 백업 실패
 
+        print("Delete files in iCloudDocumnets")
         guard deleteFilesInDirectory(url: DocumentsDirectory.iCloudDocumentsURL) else { backupIsNotDone(); return } // iCloud Clear 중 오류가 나도 이미 백업 실패
         
         enumerator = fileManager.enumerator(atPath: DocumentsDirectory.localDocumentsURL.path)
@@ -148,6 +149,17 @@ class BackupRestoreViewController: UITableViewController {
             do {
                 let uploadedKey = try DocumentsDirectory.iCloudDocumentsURL?.appendingPathComponent(file).resourceValues(forKeys: [.ubiquitousItemIsUploadedKey])
                 let uploadingKey = try DocumentsDirectory.iCloudDocumentsURL?.appendingPathComponent(file).resourceValues(forKeys: [.ubiquitousItemIsUploadingKey])
+                
+                print("file : \(String(describing: DocumentsDirectory.iCloudDocumentsURL?.appendingPathComponent(file)))")
+                print("uploadedKey : \(String(describing: uploadedKey?.ubiquitousItemIsUploaded))")
+                print("uploadingKey : \(String(describing: uploadingKey?.ubiquitousItemIsUploading))")
+                
+                if uploadedKey?.ubiquitousItemIsUploaded == nil || uploadingKey?.ubiquitousItemIsUploading == nil {
+                    print("nil")
+                    print(uploadingKey?.ubiquitousItemUploadingError as Any)
+                    return UploadStatus.uploading
+                }
+                
                 if (uploadedKey?.ubiquitousItemIsUploaded)! {
                     print("\(file) is Uploaded")
                 } else if (uploadingKey?.ubiquitousItemIsUploading)! {
@@ -206,6 +218,7 @@ class BackupRestoreViewController: UITableViewController {
     }
     
     func deleteFilesInDirectory(url: URL?) -> Bool{
+        print(url ?? "")
         print(" - - - - - - - - - - - - - - - - - - deleteFilesInDirectory - - - - - - - - - - - - - - - - ")
         let fileManager = FileManager.default
         let enumerator = fileManager.enumerator(atPath: url!.path)

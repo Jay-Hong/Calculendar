@@ -1,0 +1,122 @@
+{
+  "identifier" : "F8B37C29",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "14.99",
+      "familyShareable" : false,
+      "internalID" : "1519568121",
+      "localizations" : [
+        {
+          "description" : "앱 내의 모든 광고를 제거합니다",
+          "displayName" : "광고제거",
+          "locale" : "ko"
+        }
+      ],
+      "productID" : "com.Jay.Calculendar.AdRemoval",
+      "referenceName" : "Ad Removal",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "1403270486",
+    "_compatibilityTimeRate" : {
+      "3" : 6
+    },
+    "_developerTeamID" : "G5C8AQ6V38",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 729764899.16927397,
+    "_locale" : "ko",
+    "_storefront" : "KOR",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ],
+    "_timeRate" : 1004
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21426563",
+      "localizations" : [
+
+      ],
+      "name" : "Subscription",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "14.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6474960956",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "광고없는 서비스 & 빠른 앱 로딩",
+              "displayName" : "프리미엄 구독",
+              "locale" : "ko"
+            }
+          ],
+          "productID" : "com.Jay.Calculendar.Premium.Yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Premium Subscription Yearly",
+          "subscriptionGroupID" : "21426563",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
