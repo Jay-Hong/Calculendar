@@ -127,6 +127,20 @@ class SubscriptionViewController: UIViewController {
         }
     }
     
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toTermsOfUseDetailVCSegue"{
+            if let subscriptionDetailVC = segue.destination as? SubscriptionDetailViewController {
+                subscriptionDetailVC.detailURL = "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
+            }
+        } else if segue.identifier == "toPrivacyPolicyDetailVCSegue"{
+            if let subscriptionDetailVC = segue.destination as? SubscriptionDetailViewController {
+                subscriptionDetailVC.detailURL = "https://calculendar.blogspot.com/2020/05/blog-post.html?m=1"
+            }
+        }
+    }
+    
+    
     func setMask() {
         //  버튼 테두리 둥글게
         purchaseButton.layer.cornerRadius = 8

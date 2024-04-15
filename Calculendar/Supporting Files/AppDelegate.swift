@@ -21,7 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         FirebaseApp.configure()
         
         var firstLaunchTime = UserDefaults.standard.object(forKey: SettingsKeys.firstLaunchTime) as? Date
+        var lastLaunchTime = UserDefaults.standard.object(forKey: SettingsKeys.lastLaunchTime) as? Date
+        
         print("firstLaunchTime = \(String(describing: firstLaunchTime))")
+        print("lastLaunchTime = \(String(describing: lastLaunchTime))")
+        
         if (firstLaunchTime == nil) {
             firstLaunchTime = Date()
             UserDefaults.standard.setValue(firstLaunchTime, forKey: SettingsKeys.firstLaunchTime)
@@ -31,16 +35,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
             UserDefaults.standard.setValue(2, forKey: SettingsKeys.moneyUnit)
         }
         
+        if (lastLaunchTime == nil) {
+            lastLaunchTime = Date()
+            UserDefaults.standard.setValue(lastLaunchTime, forKey: SettingsKeys.lastLaunchTime)
+            print("lastLaunchTime = \(String(describing: lastLaunchTime))")
+        }
+        
         if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)   // || Date(timeInterval: 60 * 60 * 2, since: firstLaunchTime!) >= Date()
         {
-            //  앱 제거 구매 시 광고 실행 안함
+            //  광고제거 구매했다면 광고 실행 안함
         } else {
             requestIDFA()   //  iOS15  이후 실행 안됨 (앱이 완전히 활성화된 이후 실행 가능함
-            if Date(timeInterval: 60 * 60 * 24 * 4, since: firstLaunchTime!) < Date() {  // 첫 실행 후 4일동안 광고 안함
-                fakeLaunchScreenView()
+            
+            if Date(timeInterval: 60 * 60 * 24 * 5, since: firstLaunchTime!) > Date() ||    //  첫 실행 후 5일 이내?
+                Date(timeInterval: 60 * 60 * 24 * 5, since: lastLaunchTime!) < Date() {     //  마지막 실행 후 5일 이상 경과?
+                //  앱 시작 전면광고 안함
+            } else {
+                if UserDefaults.standard.bool(forKey: SettingsKeys.fakeLaunchScreen) {
+                    fakeLaunchScreenView()
+                }
                 loadGADInterstitialAd()
             }
         }
+        
+        lastLaunchTime = Date()     //  지난 lastLaunchTime 확인 후 새로 입력
+        UserDefaults.standard.setValue(lastLaunchTime, forKey: SettingsKeys.lastLaunchTime)
         
         Task {
             print("\nAPPDelegate - will - purchaseManager.updatePurchasedProducts() \n")

@@ -30,6 +30,20 @@
         <true/>
         <key>NSUserTrackingUsageDescription</key>
         <string>고객 맞춤형 콘텐츠와 광고가 제공되고, 부적절한 광고를 제어하는데 사용합니다.</string>
+        
+        <key>NSUbiquitousContainers</key>
+        <dict>
+            <key>iCloud.com.Jay.Calculendar</key>
+            <dict>
+                <key>NSUbiquitousContainerIsDocumentScopePublic</key>
+                <false/>
+                <key>NSUbiquitousContainerSupportedFolderLevels</key>
+                <string>Any</string>
+                <key>NSUbiquitousContainerName</key>
+                <string>공수계산기</string>
+            </dict>
+        </dict>
+        
         <key>SKAdNetworkItems</key>
         <array>
             <dict>

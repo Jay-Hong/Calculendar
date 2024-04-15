@@ -35,6 +35,7 @@
 		694CE8C423D9714F0058E3B1 /* BasePayPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 694CE8C323D9714F0058E3B1 /* BasePayPopUpViewController.swift */; };
 		6952C8402BA2DEA000B5C847 /* BounceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6952C83F2BA2DEA000B5C847 /* BounceButton.swift */; };
 		695C4E5523D6E857008A606B /* Setting2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695C4E5423D6E856008A606B /* Setting2ViewController.swift */; };
+		697A1CF02BC254C000FFAE3D /* SubscriptionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A1CEF2BC254C000FFAE3D /* SubscriptionDetailViewController.swift */; };
 		697A5E9520D6FD4800951321 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A5E9420D6FD4800951321 /* AppDelegate.swift */; };
 		697A5E9720D6FD4800951321 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697A5E9620D6FD4800951321 /* MainViewController.swift */; };
 		697A5E9F20D6FD4F00951321 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 697A5E9D20D6FD4F00951321 /* LaunchScreen.storyboard */; };
@@ -84,6 +85,7 @@
 		694CE8C323D9714F0058E3B1 /* BasePayPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePayPopUpViewController.swift; sourceTree = "<group>"; };
 		6952C83F2BA2DEA000B5C847 /* BounceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceButton.swift; sourceTree = "<group>"; };
 		695C4E5423D6E856008A606B /* Setting2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting2ViewController.swift; sourceTree = "<group>"; };
+		697A1CEF2BC254C000FFAE3D /* SubscriptionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionDetailViewController.swift; sourceTree = "<group>"; };
 		697A5E9120D6FD4800951321 /* Calculendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		697A5E9420D6FD4800951321 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		697A5E9620D6FD4800951321 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				692A15172B0928BC00223B41 /* NewsListViewController.swift */,
 				692A151D2B092A7A00223B41 /* NewsDetailViewController.swift */,
 				6930DBD62B477A0D001814A1 /* SubscriptionViewController.swift */,
+				697A1CEF2BC254C000FFAE3D /* SubscriptionDetailViewController.swift */,
 				6938FC0D2B52EAC500F43FAD /* PurchaseManager.swift */,
 				69A8DF2420D78F9800158864 /* Vars.swift */,
 			);
@@ -359,6 +362,7 @@
 				6908F08C20D78DD60046F806 /* PopupDelegate.swift in Sources */,
 				694CE8C423D9714F0058E3B1 /* BasePayPopUpViewController.swift in Sources */,
 				692A151A2B0928EE00223B41 /* NewsInfo.swift in Sources */,
+				697A1CF02BC254C000FFAE3D /* SubscriptionDetailViewController.swift in Sources */,
 				69D6E2F829FCE650008796EA /* JobListViewController.swift in Sources */,
 				6952C8402BA2DEA000B5C847 /* BounceButton.swift in Sources */,
 				692A185729FECB52003AA72E /* JobListCell.swift in Sources */,
@@ -536,7 +540,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.5.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Jay.Calculendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -560,7 +564,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.5.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Jay.Calculendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
