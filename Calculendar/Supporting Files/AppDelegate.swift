@@ -43,11 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         
         if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)   // || Date(timeInterval: 60 * 60 * 2, since: firstLaunchTime!) >= Date()
         {
-            //  앱 제거 구매 시 광고 실행 안함
+            //  광고제거 구매했다면 광고 실행 안함
         } else {
             requestIDFA()   //  iOS15  이후 실행 안됨 (앱이 완전히 활성화된 이후 실행 가능함
-            if Date(timeInterval: 60 * 60 * 24 * 5, since: firstLaunchTime!) < Date() ||    // 첫 실행 후 5일동안 광고 안함
-                Date(timeInterval: 60 * 60 * 24 * 5, since: lastLaunchTime!) > Date() {     // 마지막 실행 후 5일 이상지났으면 광고 안함
+            
+            if Date(timeInterval: 60 * 60 * 24 * 5, since: firstLaunchTime!) > Date() ||    //  첫 실행 후 5일 이내?
+                Date(timeInterval: 60 * 60 * 24 * 5, since: lastLaunchTime!) < Date() {     //  마지막 실행 후 5일 이상 경과?
+                //  앱 시작 전면광고 안함
+            } else {
                 fakeLaunchScreenView()
                 loadGADInterstitialAd()
             }
