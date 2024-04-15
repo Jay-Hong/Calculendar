@@ -93,6 +93,8 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
                 remoteConfig.activate { changed, error in
                     print("Remote config activated!")
                     //  Remote config 가져오자마자 할일
+                    var fakeLaunchScreenOn = remoteConfig.configValue(forKey: RemoteConfigKeys.fakeLaunchScreen).boolValue
+                    UserDefaults.standard.set(fakeLaunchScreenOn, forKey: SettingsKeys.fakeLaunchScreen)
                 }
             } else {
                 print("Remote Config not fetched")

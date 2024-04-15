@@ -51,7 +51,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
                 Date(timeInterval: 60 * 60 * 24 * 5, since: lastLaunchTime!) < Date() {     //  마지막 실행 후 5일 이상 경과?
                 //  앱 시작 전면광고 안함
             } else {
-                fakeLaunchScreenView()
+                if UserDefaults.standard.bool(forKey: SettingsKeys.fakeLaunchScreen) {
+                    fakeLaunchScreenView()
+                }
                 loadGADInterstitialAd()
             }
         }

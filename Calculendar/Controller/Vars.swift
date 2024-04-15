@@ -103,6 +103,7 @@ struct RemoteConfigKeys {
     static let calendarAdRemovalButton = "calendarAdRemovalButton"
     static let calendarHomeAD = "calendarHomeAD"
     static let newsHomeAD = "newsHomeAD"
+    static let fakeLaunchScreen = "fakeLaunchScreen"
 }
 
 struct SettingsKeys {
@@ -117,6 +118,7 @@ struct SettingsKeys {
     static let AdRemoval = "AdRemoval"              // 광고제거 구매 여부
     static let firstLaunchTime = "firstLaunchTime"  // 앱 새로 설치 후 첫 런치한 기준시간   (업데이트 설치는 UserDefaults값 유지)
     static let lastLaunchTime = "lastLaunchTime"    // 앱 마지막으로 런치한 기준시간
+    static let fakeLaunchScreen = "fakeLaunchScreen"// 앱 시작 전체광고 시 바로광고 나오게 하도록 가짜로딩화면 (광고로딩시간으로 인한 시차 방지)
     
     static let firstScreenAd = "firstScreenAd"      //  [Deprecated] 첫화면 광고 여부, AdMob 페이지 에서 하루 한번만 첫화면 전면 광고 설정 가능
 }
