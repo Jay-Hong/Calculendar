@@ -9,8 +9,10 @@ class BackupRestoreViewController: UITableViewController {
         //  설정 "iCloud를 사용하는 앱" 에서 공수계산기를 꺼 놓으면  ⌜DocumentsDirectory.iCloudDocumentsURL == nil⌟
         //  My Mac 으로 테스트 하려면 "Document" 모드로 할 것 (폰과 Mac의 파일구조가 다른 듯)
         //  My Mac 은 UbiquitousKeyValueStore 역시 가져오지 못한다
+//        static let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)
 //        static let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
-        static let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.Jay.Calculendar")
+//        static let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.Jay.Calculendar")
+        static let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.Jay.Calculendar")?.appendingPathComponent("Documents")
         static let localDocumentsURL = dataFilePath!
     }
     
