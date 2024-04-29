@@ -119,6 +119,10 @@ class BackupRestoreViewController: UITableViewController {
                 backupIsNotDone(); return
             }
         }
+
+//        Test 용 ⬇️
+//        let fileURL = DocumentsDirectory.iCloudDocumentsURL!.appendingPathComponent("Lotto.txt")
+//        try! "1000억".write(to: fileURL, atomically: true, encoding: .utf8)
         
         watchUploadStatus()
         
