@@ -56,7 +56,6 @@ class JobListViewController: UIViewController, GADBannerViewDelegate {
     
     func jobDBfromGithubJSON() {
         // URL 에서 json 데이터 가져오기
-        //        let jsonURLString = "https://raw.githubusercontent.com/Jay-Hong/iTshirt/master/jobinfoURL.json"   // TEST URL
         let jsonURLString = remoteConfig.configValue(forKey: RemoteConfigKeys.jobDB_GithubURL).stringValue ?? ""
         guard let jsonURL = URL(string: jsonURLString) else {return}
         URLSession.shared.dataTask(with: jsonURL) { data, response, error in

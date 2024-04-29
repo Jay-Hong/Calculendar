@@ -10,6 +10,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     var window: UIWindow?
     var interstitial: GADInterstitialAd?  //  전면광고용 변수
     var launchScreenView: UIView?
+    var firstLaunchTime: Date?
+    var lastLaunchTime: Date?
+
     private var purchaseManager = PurchaseManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -20,8 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         GADMobileAds.sharedInstance().start(completionHandler: nil)
         FirebaseApp.configure()
         
-        var firstLaunchTime = UserDefaults.standard.object(forKey: SettingsKeys.firstLaunchTime) as? Date
-        var lastLaunchTime = UserDefaults.standard.object(forKey: SettingsKeys.lastLaunchTime) as? Date
+        firstLaunchTime = UserDefaults.standard.object(forKey: SettingsKeys.firstLaunchTime) as? Date
+        lastLaunchTime = UserDefaults.standard.object(forKey: SettingsKeys.lastLaunchTime) as? Date
         
         print("firstLaunchTime = \(String(describing: firstLaunchTime))")
         print("lastLaunchTime = \(String(describing: lastLaunchTime))")
@@ -41,25 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
             print("lastLaunchTime = \(String(describing: lastLaunchTime))")
         }
         
-        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)   // || Date(timeInterval: 60 * 60 * 2, since: firstLaunchTime!) >= Date()
-        {
-            //  광고제거 구매했다면 광고 실행 안함
-        } else {
-            requestIDFA()   //  iOS15  이후 실행 안됨 (앱이 완전히 활성화된 이후 실행 가능함
-            
-            if Date(timeInterval: 60 * 60 * 24 * 5, since: firstLaunchTime!) > Date() ||    //  첫 실행 후 5일 이내?
-                Date(timeInterval: 60 * 60 * 24 * 5, since: lastLaunchTime!) < Date() {     //  마지막 실행 후 5일 이상 경과?
-                //  앱 시작 전면광고 안함
-            } else {
-                if UserDefaults.standard.bool(forKey: SettingsKeys.fakeLaunchScreen) {
-                    fakeLaunchScreenView()
-                }
-                loadGADInterstitialAd()
-            }
-        }
-        
-        lastLaunchTime = Date()     //  지난 lastLaunchTime 확인 후 새로 입력
-        UserDefaults.standard.setValue(lastLaunchTime, forKey: SettingsKeys.lastLaunchTime)
+        fullScreenAd()
         
         Task {
             print("\nAPPDelegate - will - purchaseManager.updatePurchasedProducts() \n")
@@ -68,6 +53,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         }
         
         return true
+    }
+    
+    func fullScreenAd() {
+        if UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval)   // || Date(timeInterval: 60 * 60 * 2, since: firstLaunchTime!) >= Date()
+        {
+            //  광고제거 구매했다면 광고 실행 안함
+        } else {
+            requestIDFA()   //  iOS15  이후 실행 안됨 (앱이 완전히 활성화된 이후 실행 가능함
+            
+//            UserDefaults.standard.set(0, forKey: SettingsKeys.afterFirstLaunchTime)   //  Test 용
+//            UserDefaults.standard.set(0, forKey: SettingsKeys.afterLastLaunchTime)    //  Test 용
+            
+            print("\n afterFirstLaunchTime = \(String(describing: UserDefaults.standard.double(forKey: SettingsKeys.afterFirstLaunchTime)))")
+            print("\n afterLastLaunchTime = \(String(describing: UserDefaults.standard.double(forKey: SettingsKeys.afterLastLaunchTime)))")
+            
+//            if Date(timeInterval: 60 * 60 * 24 * 5, since: firstLaunchTime!) > Date() ||    //  첫 실행 후 5일 이내?
+//                Date(timeInterval: 60 * 60 * 24 * 5, since: lastLaunchTime!) < Date() {     //  마지막 실행 후 5일 이상 경과?
+            if Date(timeInterval: 60 * 60 * UserDefaults.standard.double(forKey: SettingsKeys.afterFirstLaunchTime), since: firstLaunchTime!) >= Date() ||
+                Date(timeInterval: 60 * 60 * UserDefaults.standard.double(forKey: SettingsKeys.afterLastLaunchTime), since: lastLaunchTime!) <= Date() {
+                //  앱 시작 전면광고 안함
+                print("\n 전면광고 NO \n")
+            } else {
+                if UserDefaults.standard.bool(forKey: SettingsKeys.fakeLaunchScreen) {
+                    fakeLaunchScreenView()
+                }
+                loadGADInterstitialAd()
+                print("\n 전면광고 Start! \n")
+            }
+        }
     }
     
     func requestIDFA() {
@@ -157,23 +171,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        
+        print("\n applicationWillResignActive \n")
+        
+        lastLaunchTime = Date()     //
+        UserDefaults.standard.setValue(lastLaunchTime, forKey: SettingsKeys.lastLaunchTime)
+        
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        print("\napplicationDidEnterBackground\n")
+        print("\n applicationDidEnterBackground \n")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         
-        print("\napplicationWillEnterForeground")
+        print("\n applicationWillEnterForeground \n")
+        
+        if Date(timeInterval: 60 * 60 * 1, since: lastLaunchTime!) < Date() {   //  앱 비활성화 후 1시간 지나면 새로시작
+            exit(0)   //  앱 종료시키고 새로 실행
+        }
         
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        print("\n applicationDidBecomeActive \n")
+        
         requestIDFA()
     }
 
