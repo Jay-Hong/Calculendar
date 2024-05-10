@@ -227,16 +227,50 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource {
                     switch numUnitOfWork {
                     case 0:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.631372549, green: 0.6869744353, blue: 0.699911484, alpha: 1)
-                    case 0.0001 ..< 1:
+                    case 0.0001 ..< 0.5:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.4691373706, green: 0.6944919229, blue: 0.9086990952, alpha: 1)
+                    case 0.5 ..< 1:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.3800676739, green: 0.5721034273, blue: 1, alpha: 1)
-                    case 1 ..< 1.5:
-                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.1841003787, green: 0.7484605911, blue: 0.06411089568, alpha: 1)
-                    case 1.5 ..< 2:
+                    case 1 ..< 1.1:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.1843137255, green: 0.7484605911, blue: 0.06411089568, alpha: 1)
+                    case 1.1 ..< 1.2:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.4705882353, green: 0.7529411765, blue: 0.09411764706, alpha: 1)
+                    case 1.2 ..< 1.3:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.6352941176, green: 0.7568627451, blue: 0.1490196078, alpha: 1)
+                    case 1.3 ..< 1.4:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.8235294118, green: 0.7647058824, blue: 0.1568627451, alpha: 1)
+                    case 1.4 ..< 1.5:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.9098039216, green: 0.768627451, blue: 0.1647058824, alpha: 1)
+                    case 1.5 ..< 1.6:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.977601601, green: 0.7735045688, blue: 0.1866027329, alpha: 1)
-                    case 2 ..< 2.5:
+                    case 1.6 ..< 1.7:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.9843137255, green: 0.7058823529, blue: 0.2274509804, alpha: 1)
+                    case 1.7 ..< 1.8:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.9882352941, green: 0.6431372549, blue: 0.2431372549, alpha: 1)
+                    case 1.8 ..< 1.9:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.9882352941, green: 0.568627451, blue: 0.2509803922, alpha: 1)
+                    case 1.9 ..< 2:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.5176470588, blue: 0.2901960784, alpha: 1)
+                    case 2 ..< 2.1:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 1, green: 0.4626982859, blue: 0.3224007863, alpha: 1)
-                    case 2.5 ..< 3:
+                    case 2.1 ..< 2.2:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.4549019608, blue: 0.4470588235, alpha: 1)
+                    case 2.2 ..< 2.3:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.9411764706, green: 0.4470588235, blue: 0.5490196078, alpha: 1)
+                    case 2.3 ..< 2.4:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.9254901961, green: 0.431372549, blue: 0.7058823529, alpha: 1)
+                    case 2.4 ..< 2.5:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.9333333333, green: 0.4235294118, blue: 0.7843137255, alpha: 1)
+                    case 2.5 ..< 2.6:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.8951854988, green: 0.4097951526, blue: 0.834882776, alpha: 1)
+                    case 2.6 ..< 2.7:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.8078431373, green: 0.3921568627, blue: 0.8941176471, alpha: 1)
+                    case 2.7 ..< 2.8:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.7215686275, green: 0.3764705882, blue: 0.8941176471, alpha: 1)
+                    case 2.8 ..< 2.9:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.7058823529, green: 0.3764705882, blue: 0.9019607843, alpha: 1)
+                    case 2.9 ..< 3:
+                        cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.6352941176, green: 0.3607843137, blue: 0.9647058824, alpha: 1)
                     case 3 ..< 4:
                         cell.unitOfWorkLabel.backgroundColor = #colorLiteral(red: 0.5514207035, green: 0.3453891092, blue: 0.9958749898, alpha: 1)
                     case 4 ..< 5:
