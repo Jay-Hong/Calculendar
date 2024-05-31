@@ -22,7 +22,7 @@ let moneyUnitsDataSource = ["만원" ,"천원" ,"원"]
 //  화폐 셋자리마다 , 찍어주기위한 formatter
 let formatter = NumberFormatter()
 //  시작일 Item 갯수
-let numStartDayPickerItem = 28  // 1~27, 마지막날
+let numStartDayPickerItem = 29  // 1~28, 마지막날
 
 let iPhone15ProMax = CGSize(width: 430, height: 932)     //  iPhone15 Plus
 let iPhone14Plus = CGSize(width: 428, height:926)        //  iPhone12Max
