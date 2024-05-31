@@ -34,6 +34,16 @@ let iPhone14 = CGSize(width: 375, height: 812)           //  iPhoneXS , iPhoneX 
 let iPhoneSE3  = CGSize(width: 375, height: 667)         //  iPhone8 , iPhone7 , iPhone6s , iPhoneSE2
 let iPhoneSE1 = CGSize(width: 320, height: 568)
 
+let iPadPro13iM4 = CGSize(width: 1032, height: 1376)
+let iPadAir13iM2 = CGSize(width: 1024, height: 1366)        //  Pro 12.9" (6th) , Pro 12.9" (3th) , Pro 12.9" (4th) , Pro 12.9" (3rd) , Pro 12.9" (2nd) , Pro 12.9" (1st)
+let iPadPro11iM4 = CGSize(width: 834, height: 1210)
+let iPadPro11i4th = CGSize(width: 834, height: 1194)        //  Pro 11"(3rd) , Pro 11"(2nd) , Pro 11"(1st)
+let iPadAir3rd = CGSize(width: 834, height: 1112)           //  Pro 10.5"
+let iPadAir11iM2 = CGSize(width: 820, height: 1180)         //  iPad (10th) , Air (5th) , Air (4th)
+let iPad9th = CGSize(width: 810, height: 1080)              //  iPad (8th) , iPad (7th)
+let iPadMini5th = CGSize(width: 768, height: 1024)          //  iPad (6th) , iPad (5th) , Pro 9.7" , Mini (4th) , Air (2nd) , Mini (3rd) , Air (1st) , Mini (2nd) , iPad (4th) , Mini (1st) , iPad (3rd) , iPad (2nd) , iPad (1st)
+let iPadMini6th = CGSize(width: 744, height: 1133)          //
+
 let iOSVersion = UIDevice.current.systemVersion
 let iPhoneDevice = UIDevice.current.modelName
 let appVersion : Any! = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
@@ -106,6 +116,7 @@ struct RemoteConfigKeys {
     static let fakeLaunchScreen = "fakeLaunchScreen"
     static let afterFirstLaunchTime = "afterFirstLaunchTime"
     static let afterLastLaunchTime = "afterLastLaunchTime"
+    static let beforeLastLaunchTime = "beforeLastLaunchTime"
 }
 
 struct SettingsKeys {
@@ -123,6 +134,7 @@ struct SettingsKeys {
     static let fakeLaunchScreen = "fakeLaunchScreen"// 앱 시작 전체광고 시 바로광고 나오게 하도록 가짜로딩화면 (광고로딩시간으로 인한 시차 방지)
     static let afterFirstLaunchTime = "afterFirstLaunchTime"
     static let afterLastLaunchTime = "afterLastLaunchTime"
+    static let beforeLastLaunchTime = "beforeLastLaunchTime"
     
     static let firstScreenAd = "firstScreenAd"      //  [Deprecated] 첫화면 광고 여부, AdMob 페이지 에서 하루 한번만 첫화면 전면 광고 설정 가능
 }
@@ -207,6 +219,8 @@ public extension UIDevice {
         case "iPad11,3", "iPad11,4":                          return "iPad Air (3rd generation)"
         case "iPad13,1", "iPad13,2":                          return "iPad Air (4th generation)"
         case "iPad13,16", "iPad13,17":                        return "iPad Air (5th generation)"
+        case "iPad14,8", "iPad14,9":                          return "iPad Air (11-inch) (M2)"
+        case "iPad14,10", "iPad14,11":                        return "iPad Air (13-inch) (M2)"
         case "iPad2,5", "iPad2,6", "iPad2,7":                 return "iPad mini"
         case "iPad4,4", "iPad4,5", "iPad4,6":                 return "iPad mini 2"
         case "iPad4,7", "iPad4,8", "iPad4,9":                 return "iPad mini 3"
@@ -219,12 +233,14 @@ public extension UIDevice {
         case "iPad8,9", "iPad8,10":                           return "iPad Pro (11-inch) (2nd generation)"
         case "iPad13,4", "iPad13,5", "iPad13,6", "iPad13,7":  return "iPad Pro (11-inch) (3rd generation)"
         case "iPad14,3", "iPad14,4":                          return "iPad Pro (11-inch) (4th generation)"
+        case "iPad16,3", "iPad16,4":                          return "iPad Pro (11-inch) (M4)"
         case "iPad6,7", "iPad6,8":                            return "iPad Pro (12.9-inch) (1st generation)"
         case "iPad7,1", "iPad7,2":                            return "iPad Pro (12.9-inch) (2nd generation)"
         case "iPad8,5", "iPad8,6", "iPad8,7", "iPad8,8":      return "iPad Pro (12.9-inch) (3rd generation)"
         case "iPad8,11", "iPad8,12":                          return "iPad Pro (12.9-inch) (4th generation)"
         case "iPad13,8", "iPad13,9", "iPad13,10", "iPad13,11":return "iPad Pro (12.9-inch) (5th generation)"
         case "iPad14,5", "iPad14,6":                          return "iPad Pro (12.9-inch) (6th generation)"
+        case "iPad16,5", "iPad16,6":                          return "iPad Pro (13-inch) (M4)"
             
         case "AppleTV5,3":                                    return "Apple TV"
         case "AppleTV6,2":                                    return "Apple TV 4K"

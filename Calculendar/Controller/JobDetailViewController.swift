@@ -58,7 +58,7 @@ class JobDetailViewController: UIViewController, GADBannerViewDelegate, UIScroll
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         print("\n⬇️ scrollViewDidScroll")
         
-        if scrollView.contentOffset.y > 0 && scrollView.contentOffset.y <= (scrollView.contentSize.height - jobScrollView.frame.height) {
+        if scrollView.contentOffset.y > 0 && scrollView.contentOffset.y < (scrollView.contentSize.height - jobScrollView.frame.height) {
             print("컨텐츠 내부")
             
             if (self.lastContentOffset > scrollView.contentOffset.y) {  // 스크롤 올릴때
@@ -296,6 +296,11 @@ class JobDetailViewController: UIViewController, GADBannerViewDelegate, UIScroll
         let callAction = UIAlertAction(title: "전화로 지원하기", style: .default) { (action) in
             self.makeACall()
         }
+        if let ppc = alert.popoverPresentationController {
+            ppc.sourceView = applyView as UIView
+            ppc.sourceRect = (applyView as UIView).bounds
+        }
+        
         alert.addAction(messageAction)
         alert.addAction(callAction)
         alert.addAction(cancelAction)
