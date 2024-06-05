@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     private var purchaseManager = PurchaseManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        print("\n + + + + + + + + + + + + + + + + + + + + + + willFinishLaunchingWithOptions + + + + + + + + + + + + + + + + + + + + + + ")
+        print("\n + + + + + + + + + + + + + + + + + + + + + + didFinishLaunchingWithOptions + + + + + + + + + + + + + + + + + + + + + + ")
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!)
         print("AdRemoval = \(UserDefaults.standard.bool(forKey: SettingsKeys.AdRemoval))")
         
@@ -39,8 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         }
         
         if (lastLaunchTime == nil) {
-            lastLaunchTime = Date()
-            UserDefaults.standard.setValue(lastLaunchTime, forKey: SettingsKeys.lastLaunchTime)
+            setLastLaunchTime()
             print("lastLaunchTime = \(String(describing: lastLaunchTime))")
         }
         
@@ -52,6 +51,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
             print("\nAPPDelegate - did - purchaseManager.updatePurchasedProducts() \n")
         }
         
+        setLastLaunchTime()
+        
+        print("\n End of didFinishLaunchingWithOptions \n")
         return true
     }
     
@@ -67,11 +69,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
             
             print("\n afterFirstLaunchTime = \(String(describing: UserDefaults.standard.double(forKey: SettingsKeys.afterFirstLaunchTime)))")
             print("\n afterLastLaunchTime = \(String(describing: UserDefaults.standard.double(forKey: SettingsKeys.afterLastLaunchTime)))")
+            print("\n beforeLastLaunchTime = \(String(describing: UserDefaults.standard.double(forKey: SettingsKeys.beforeLastLaunchTime)))")
             
 //            if Date(timeInterval: 60 * 60 * 24 * 5, since: firstLaunchTime!) > Date() ||    //  첫 실행 후 5일 이내?
 //                Date(timeInterval: 60 * 60 * 24 * 5, since: lastLaunchTime!) < Date() {     //  마지막 실행 후 5일 이상 경과?
-            if Date(timeInterval: 60 * 60 * UserDefaults.standard.double(forKey: SettingsKeys.afterFirstLaunchTime), since: firstLaunchTime!) >= Date() ||
-                Date(timeInterval: 60 * 60 * UserDefaults.standard.double(forKey: SettingsKeys.afterLastLaunchTime), since: lastLaunchTime!) <= Date() {
+            if Date(timeInterval: 60 * 60 * UserDefaults.standard.double(forKey: SettingsKeys.afterFirstLaunchTime), since: firstLaunchTime!) >= Date() ||  //  처음 앱 시작하고 일정기간 전면광고 NO
+                Date(timeInterval: 60 * 60 * UserDefaults.standard.double(forKey: SettingsKeys.afterLastLaunchTime), since: lastLaunchTime!) <= Date() ||   //  마지막 앱 실행후 일정기간 실행안하면 전면광고 NO
+                Date(timeInterval: 60 * UserDefaults.standard.double(forKey: SettingsKeys.beforeLastLaunchTime), since: lastLaunchTime!) >= Date() {  //  마지막 앱 실행후 일정시간안에 다시 실행하면 전면광고 NO
                 //  앱 시작 전면광고 안함
                 print("\n 전면광고 NO \n")
             } else {
@@ -168,31 +172,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         }
     }
     
+    func setLastLaunchTime() {
+        lastLaunchTime = Date()
+        UserDefaults.standard.setValue(lastLaunchTime, forKey: SettingsKeys.lastLaunchTime)
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         
         print("\n applicationWillResignActive \n")
-        
-        lastLaunchTime = Date()     //
-        UserDefaults.standard.setValue(lastLaunchTime, forKey: SettingsKeys.lastLaunchTime)
-        
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         print("\n applicationDidEnterBackground \n")
+        setLastLaunchTime()
+        exit(0)
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        // 백그라운드에서 ➡️ 활성화 될때만 실행 (그냥은 실행되지 않음)
         
         print("\n applicationWillEnterForeground \n")
-        
-        if Date(timeInterval: 60 * 60 * 1, since: lastLaunchTime!) < Date() {   //  앱 비활성화 후 1시간 지나면 새로시작
-            exit(0)   //  앱 종료시키고 새로 실행
-        }
         
     }
 
@@ -206,6 +210,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        print("\n applicationWillTerminate \n")
+        
+        setLastLaunchTime()
     }
 }
 

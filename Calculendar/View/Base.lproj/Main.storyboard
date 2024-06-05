@@ -3,7 +3,7 @@
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1067,7 +1067,7 @@
                                             <outlet property="jobSiteLabel" destination="GQ6-fE-n2h" id="o2V-BL-wgx"/>
                                             <outlet property="jobTitleLabel" destination="74Q-Kz-m6q" id="r31-em-Nur"/>
                                             <outlet property="jobTypeLabel" destination="l0T-Qp-Lxu" id="npJ-fM-acf"/>
-                                            <segue destination="6zp-8N-sHS" kind="showDetail" identifier="toJobDetailVCSegue" id="fkI-1u-4e8"/>
+                                            <segue destination="6zp-8N-sHS" kind="presentation" identifier="toJobDetailVCSegue" modalPresentationStyle="fullScreen" id="fkI-1u-4e8"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1124,7 +1124,7 @@
             <objects>
                 <viewController id="6zp-8N-sHS" customClass="JobDetailViewController" customModule="Calculendar" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6fe-D9-vxq">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8eB-LQ-gcR">
@@ -1150,7 +1150,7 @@
                                 </constraints>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1t-bI-k5d">
-                                <rect key="frame" x="0.0" y="40" width="393" height="802"/>
+                                <rect key="frame" x="0.0" y="40" width="393" height="812"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qx9-jj-197" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="841.33333333333337"/>
@@ -1921,7 +1921,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hfk-Cm-Xnr">
-                                <rect key="frame" x="4" y="0.0" width="385" height="492"/>
+                                <rect key="frame" x="4" y="0.0" width="385" height="472"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ix1-fv-YVY">
                                         <rect key="frame" x="8" y="0.0" width="369" height="26"/>
@@ -1933,7 +1933,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="V1R-8e-lpy">
-                                        <rect key="frame" x="8" y="451" width="369" height="33"/>
+                                        <rect key="frame" x="8" y="431" width="369" height="33"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gtd-Xo-Izy" customClass="BounceButton" customModule="Calculendar" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="180.66666666666666" height="33"/>
@@ -1963,7 +1963,7 @@
                                         </constraints>
                                     </stackView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="UWs-ch-gvZ">
-                                        <rect key="frame" x="8" y="26" width="369" height="417"/>
+                                        <rect key="frame" x="8" y="26" width="369" height="397"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -1985,7 +1985,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2z9-m9-8ha" customClass="GADBannerView">
-                                <rect key="frame" x="8" y="492" width="377" height="55"/>
+                                <rect key="frame" x="8" y="472" width="377" height="55"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="YEg-M5-RM9"/>
@@ -2004,7 +2004,7 @@
                             <constraint firstItem="FmF-Qo-t8Q" firstAttribute="bottom" secondItem="nQS-i0-hgV" secondAttribute="bottom" id="WVJ-LI-mOF"/>
                             <constraint firstItem="2z9-m9-8ha" firstAttribute="leading" secondItem="nQS-i0-hgV" secondAttribute="leading" constant="8" id="alf-0A-jcj"/>
                             <constraint firstItem="nQS-i0-hgV" firstAttribute="trailing" secondItem="2z9-m9-8ha" secondAttribute="trailing" constant="8" id="bfk-bk-fby"/>
-                            <constraint firstItem="nQS-i0-hgV" firstAttribute="bottom" secondItem="Hfk-Cm-Xnr" secondAttribute="bottom" constant="360" id="feK-LH-jWV"/>
+                            <constraint firstItem="nQS-i0-hgV" firstAttribute="bottom" secondItem="Hfk-Cm-Xnr" secondAttribute="bottom" constant="380" id="feK-LH-jWV"/>
                             <constraint firstItem="FmF-Qo-t8Q" firstAttribute="top" secondItem="1dO-pJ-lTl" secondAttribute="top" id="hWu-94-G6r"/>
                             <constraint firstItem="Hfk-Cm-Xnr" firstAttribute="top" secondItem="nQS-i0-hgV" secondAttribute="top" id="v69-O2-4Fe"/>
                             <constraint firstItem="FmF-Qo-t8Q" firstAttribute="leading" secondItem="nQS-i0-hgV" secondAttribute="leading" id="wyp-2Y-o1h"/>
@@ -3537,7 +3537,7 @@
                                             <outlet property="newsCompanyLabel" destination="rlL-HJ-ifE" id="D4a-tL-Gbf"/>
                                             <outlet property="newsImageView" destination="RMt-GV-t4K" id="TYg-fg-7pA"/>
                                             <outlet property="newsTitleLabel" destination="hK8-oW-NhE" id="bM1-2s-A5u"/>
-                                            <segue destination="VX0-s8-NVR" kind="showDetail" identifier="toNewsDetailVCSegue" id="VVH-Ap-spM"/>
+                                            <segue destination="VX0-s8-NVR" kind="presentation" identifier="toNewsDetailVCSegue" modalPresentationStyle="fullScreen" id="VVH-Ap-spM"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NewsListNoImageCell" id="7MJ-4W-m6l" customClass="NewsListCell" customModule="Calculendar" customModuleProvider="target">
@@ -3592,7 +3592,7 @@
                                             <outlet property="newsCompanyLabel" destination="WKn-lb-ceP" id="0Ma-lh-VRy"/>
                                             <outlet property="newsImageView" destination="Okm-Z8-H81" id="vQc-7p-00X"/>
                                             <outlet property="newsTitleLabel" destination="P7g-SY-zoi" id="hns-Hr-b89"/>
-                                            <segue destination="VX0-s8-NVR" kind="showDetail" identifier="toNewsDetailVCSegue" id="NwQ-cY-Z6h"/>
+                                            <segue destination="VX0-s8-NVR" kind="presentation" identifier="toNewsDetailVCSegue" modalPresentationStyle="fullScreen" id="NwQ-cY-Z6h"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NewsListBigImageCell" rowHeight="260" id="ctH-yW-Hw8" customClass="NewsListCell" customModule="Calculendar" customModuleProvider="target">
@@ -3648,7 +3648,7 @@
                                             <outlet property="newsCompanyLabel" destination="7Qv-H4-ost" id="8GP-tf-MV9"/>
                                             <outlet property="newsImageView" destination="p3U-V1-cRc" id="p3P-1J-8Cf"/>
                                             <outlet property="newsTitleLabel" destination="Lo6-de-3Jm" id="Gev-xZ-wLu"/>
-                                            <segue destination="VX0-s8-NVR" kind="showDetail" identifier="toNewsDetailVCSegue" id="wxY-0q-lSp"/>
+                                            <segue destination="VX0-s8-NVR" kind="presentation" identifier="toNewsDetailVCSegue" modalPresentationStyle="fullScreen" id="wxY-0q-lSp"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -3700,11 +3700,11 @@
             <objects>
                 <viewController id="VX0-s8-NVR" customClass="NewsDetailViewController" customModule="Calculendar" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nef-sI-mZh">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" allowsBackForwardNavigationGestures="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fob-B2-NxW">
-                                <rect key="frame" x="0.0" y="40" width="393" height="802"/>
+                                <rect key="frame" x="0.0" y="40" width="393" height="812"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" allowsInlineMediaPlayback="YES">
                                     <dataDetectorTypes key="dataDetectorTypes" none="YES"/>
@@ -3762,7 +3762,7 @@
                                 </constraints>
                             </view>
                             <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FYT-vl-Ce2">
-                                <rect key="frame" x="0.0" y="772" width="393" height="70"/>
+                                <rect key="frame" x="0.0" y="782" width="393" height="70"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3GG-d2-uzq">
                                         <rect key="frame" x="115" y="0.0" width="65" height="40"/>
@@ -4113,8 +4113,8 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="nSe-UL-Uad"/>
-        <segue reference="tg5-H7-RRY"/>
-        <segue reference="VVH-Ap-spM"/>
+        <segue reference="TVe-rm-SVV"/>
+        <segue reference="wxY-0q-lSp"/>
         <segue reference="Eig-3d-Qus"/>
     </inferredMetricsTieBreakers>
     <resources>
