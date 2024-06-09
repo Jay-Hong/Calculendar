@@ -12,6 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     var launchScreenView: UIView?
     var firstLaunchTime: Date?
     var lastLaunchTime: Date?
+    var lastFullScreenAdTime: Date?
 
     private var purchaseManager = PurchaseManager()
 
@@ -25,9 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         
         firstLaunchTime = UserDefaults.standard.object(forKey: SettingsKeys.firstLaunchTime) as? Date
         lastLaunchTime = UserDefaults.standard.object(forKey: SettingsKeys.lastLaunchTime) as? Date
+        lastFullScreenAdTime = UserDefaults.standard.object(forKey: SettingsKeys.lastFullScreenAdTime) as? Date
         
         print("firstLaunchTime = \(String(describing: firstLaunchTime))")
         print("lastLaunchTime = \(String(describing: lastLaunchTime))")
+        print("lastFullScreenAdTime = \(String(describing: lastFullScreenAdTime))")
         
         if (firstLaunchTime == nil) {
             firstLaunchTime = Date()
@@ -41,6 +44,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
         if (lastLaunchTime == nil) {
             setLastLaunchTime()
             print("lastLaunchTime = \(String(describing: lastLaunchTime))")
+        }
+        
+        if (lastFullScreenAdTime == nil) {
+            lastFullScreenAdTime = Date(timeIntervalSinceNow: -(60 * 60 * 25))  //  현재시간 보다 25시 이전
+            UserDefaults.standard.setValue(lastFullScreenAdTime, forKey: SettingsKeys.lastFullScreenAdTime)
+            print("lastFullScreenAdTime = \(String(describing: lastFullScreenAdTime))")
         }
         
         fullScreenAd()
@@ -66,16 +75,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
             
 //            UserDefaults.standard.set(0, forKey: SettingsKeys.afterFirstLaunchTime)   //  Test 용
 //            UserDefaults.standard.set(0, forKey: SettingsKeys.afterLastLaunchTime)    //  Test 용
+//            UserDefaults.standard.set(0, forKey: SettingsKeys.lastFullScreenAdTime)   //  Test 용
             
             print("\n afterFirstLaunchTime = \(String(describing: UserDefaults.standard.double(forKey: SettingsKeys.afterFirstLaunchTime)))")
             print("\n afterLastLaunchTime = \(String(describing: UserDefaults.standard.double(forKey: SettingsKeys.afterLastLaunchTime)))")
             print("\n beforeLastLaunchTime = \(String(describing: UserDefaults.standard.double(forKey: SettingsKeys.beforeLastLaunchTime)))")
+            print("\n beforeLastFullScreenAdTime = \(String(describing: UserDefaults.standard.double(forKey: SettingsKeys.beforeLastFullScreenAdTime)))")
             
 //            if Date(timeInterval: 60 * 60 * 24 * 5, since: firstLaunchTime!) > Date() ||    //  첫 실행 후 5일 이내?
 //                Date(timeInterval: 60 * 60 * 24 * 5, since: lastLaunchTime!) < Date() {     //  마지막 실행 후 5일 이상 경과?
             if Date(timeInterval: 60 * 60 * UserDefaults.standard.double(forKey: SettingsKeys.afterFirstLaunchTime), since: firstLaunchTime!) >= Date() ||  //  처음 앱 시작하고 일정기간 전면광고 NO
-                Date(timeInterval: 60 * 60 * UserDefaults.standard.double(forKey: SettingsKeys.afterLastLaunchTime), since: lastLaunchTime!) <= Date() ||   //  마지막 앱 실행후 일정기간 실행안하면 전면광고 NO
-                Date(timeInterval: 60 * UserDefaults.standard.double(forKey: SettingsKeys.beforeLastLaunchTime), since: lastLaunchTime!) >= Date() {  //  마지막 앱 실행후 일정시간안에 다시 실행하면 전면광고 NO
+//                Date(timeInterval: 60 * 60 * UserDefaults.standard.double(forKey: SettingsKeys.afterLastLaunchTime), since: lastLaunchTime!) <= Date() ||   //  마지막 앱 실행후 일정기간 실행안하면 전면광고 NO
+//                Date(timeInterval: 60 * UserDefaults.standard.double(forKey: SettingsKeys.beforeLastLaunchTime), since: lastLaunchTime!) >= Date() ||  //  마지막 앱 실행후 일정시간안에 다시 실행하면 전면광고 NO
+                Date(timeInterval: 60 * 60 * UserDefaults.standard.double(forKey: SettingsKeys.beforeLastFullScreenAdTime), since: lastFullScreenAdTime!) >= Date() { //  마지막 전면광고 실행후 일정시간 전면광고 NO
                 //  앱 시작 전면광고 안함
                 print("\n 전면광고 NO \n")
             } else {
@@ -155,6 +167,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GADFullScreenContentDeleg
     
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         print("Ad did dismiss full screen content.")
+        lastFullScreenAdTime = Date()
+        UserDefaults.standard.setValue(lastFullScreenAdTime, forKey: SettingsKeys.lastFullScreenAdTime)
         launchScreenView?.removeFromSuperview()
     }
     

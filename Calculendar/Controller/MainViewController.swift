@@ -101,6 +101,8 @@ class MainViewController: UIViewController, UIPageViewControllerDataSource, UIPa
                     UserDefaults.standard.set(afterLastLaunchTime, forKey: SettingsKeys.afterLastLaunchTime)
                     let beforeLastLaunchTime = remoteConfig.configValue(forKey: RemoteConfigKeys.beforeLastLaunchTime).numberValue
                     UserDefaults.standard.set(beforeLastLaunchTime, forKey: SettingsKeys.beforeLastLaunchTime)
+                    let beforeLastFullScreenAdTime = remoteConfig.configValue(forKey: RemoteConfigKeys.beforeLastFullScreenAdTime).numberValue
+                    UserDefaults.standard.set(beforeLastFullScreenAdTime, forKey: SettingsKeys.beforeLastFullScreenAdTime)
                 }
             } else {
                 print("Remote Config not fetched")
